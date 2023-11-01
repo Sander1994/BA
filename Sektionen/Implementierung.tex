@@ -1,15 +1,169 @@
 \section{Implementierung}
+In diesem Kapitel wird die Implementierung des Projektes vorgestellt und erläutert. Zur Darstellung der Funktionsweise der einzelnen Funktionen wird Pseudocode verwendet. Dies soll dabei helfen die Funktionsweise verständlicher und knapper aufzuzeigen.
 \subsection{Spielumgebung}
+Die Implementierung besteht aus zwei wesentlichen Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Funktionen erläutert.
 \subsubsection{Klassenattribute}
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute, die für das Rundenmanagement wichtig sind:
+\vspace{0.5cm}
 \begin{lstlisting}
-do stuff(int alter):
-	wenn alter > 5:
-		alter += 1
+self.initial_rounds
+self.rounds
+self.roll_in_round
 \end{lstlisting}
+Code 1: Klassenattribute für Runden\\
+\end{minipage}
 
+Das Attribut initial\_rounds beschreibt die maximale Rundenanzahl des Spiels und wird beim Zurücksetzen der Umgebung verwendet, um die Rundenzahl auf den gewünschten Wert (im solo Spiel sechs) zu zurückzusetzen.
+
+Das Attribut rounds repräsentiert die aktuell verbleibende Rundenanzahl im Spiel.
+
+Das Attribut roll\_in\_round repräsentiert die Nummer des aktuellen Wurfes in der Runde.\\
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute, die für das Würfeln der Würfel relevant sind:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.invalid_dice = {"white": False, "yellow": False, ...}
+self.dice = {"white": 0, "yellow": 0, ...}
+\end{lstlisting}
+Code 2: Klassenattribute für Würfel\\
+\end{minipage}
+
+Die Attribute invalid\_dice und dice repräsentieren die Augenzahlen der Würfel, sowie die Gültigkeit der Würfel selbst. Bei invalid\_dice handelt es sich um ein Dictionary, welches die einzelnen Würfelfarben und einen boolschen Wert für die Gültigkeit des farbigen Würfels beinhaltet.\\
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.score
+self.score_history
+self.initialized
+\end{lstlisting}
+Code 3: Klassenattribute für Punktestand\\
+\end{minipage}
+
+Das Attribut score repräsentiert den aktuellen Score der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die score\_history einzutragen. Das Attribut score\_history ist eine Historie über die erreichten Punktestände in den Episoden beziehungsweise Spieldurchläufen beim Training. Das Attribut initialized wird verwendet, um zu gewährleisten, dass nur Einträge in der Score-History eingetragen werden, nachdem ein Spiel abgeschlossen worden ist. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert worden ist oder nicht.\\
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute, welche die farbigen Felder des Spielbrettes repräsentieren:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.yellow_field = [[3, 6, 5, 0], [2, 1, 0, 5], [1, 0, 2, 4], ...]
+self.blue_field = [[0, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+self.green_field = [0] * 11
+self.orange_field = [0] * 11
+self.purple_field = [0] * 11
+\end{lstlisting}
+Code 4: Klassenattribute für farbige Felder\\
+\end{minipage}
+
+Die Attribute yellow\_field, blue\_field, green\_field, orange\_field und purple\_field stehen für die fünf farbigen Felder auf dem Spielbrett. Sie repräsentieren die Eingetragenen Werte auf dem Spielbrett und bestimmen somit welche Felder aktuell ausgefüllt werden können (vorausgesetzt die Würfelergebnisse passen) und welche Belohnungen freigeschaltet werden beziehungsweise freigeschaltet worden sind.\\
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute, welche die zu erspielenden Boni auf den farbigen Feldern repräsentieren:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.yellow_rewards = {"row": ["blue_cross", ...], "dia": ...}
+self.blue_rewards = {"row": ["orange_five", ...], "col": ...}
+self.green_rewards = [None, None, None, "extra_pick", ...]
+self.orange_rewards = [None, None, "re_roll", ...]
+self.purple_rewards = [None, None, "re_roll", "blue_cross", ...]
+\end{lstlisting}
+Code 5: Klassenattribute für freizuschaltende Boni\\
+\end{minipage}
+
+Die Attribute yellow\_rewards, blue\_rewards, green, orange\_rewards und purple\_rewards repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Für das blaue Feld sind diese in Form von Reihen (row) und Spalten (col) aufgeführt. Das gelbe Feld besitzt Boni für das ausfüllen von Reihen (row) und einen Boni, der bei diagonalem ausfüllen (dia) freigeschaltet werden kann. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Boni aufweisen, was dem Wert None entspricht.\\
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute, für die Punktebelohnungen des gelben, blauen und grünen Feldes:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.yellow_rewards = {"col": [10, 14, 16, 20], ...}
+self.blue_count_rewards = [0, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+self.green_count_rewards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+\end{lstlisting}
+Code 6: Klassenattribute für Punktestand\\
+\end{minipage}
+
+Im Attribut yellow\_rewards sind im Spaltenbereich (col) die Punktebelohnungen des gelben Feldes aufgeführt. Die Attribute blue\_count\_rewards und green\_count\_rewards repräsentieren die Punktebelohnungen, welche erspielt werden können sobald ein blaues beziehungsweise grünes Kästchen ausgefüllt wird. Beginnend vom ersten Wert des Arrays und danach inkrementell aufsteigend, steigt die erhaltene Punktebelohnung bei jedem ausgefüllten Kästchen stetig an.\\
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und das beziehungsweise die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis das Flag nach dem Spiel zurückgesetzt wird:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.yellow_reward_flags = {"row": [False] * 4, "col": ...}
+self.blue_reward_flags = {"row": [False] * 3, "col": [False] * 4}
+self.blue_count_reward_flags = [False] * 12
+self.green_reward_flags = [False] * 11
+self.orange_reward_flags = [False] * 11
+self.purple_reward_flags = [False] * 11
+\end{lstlisting}
+Code 7: Klassenattribute für Belohnungsflags\\
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Diese werden aufaddiert, sobald Punkte im entsprechenden Feld erzielt worden sind und am Ende genutzt, um den Wert der Fuchs Boni zu bestimmen:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.yellow_field_score
+self.blue_field_score
+self.green_field_score
+self.orange_field_score
+self.purple_field_score
+\end{lstlisting}
+Code 8: Klassenattribute für Punktestände der Felder\\
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute für freigeschaltete Boni. Wird eine Boni erspielt wird der Wert inkrementiert, wird sie genutzt wird er dekrementiert:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.extra_pick
+self.re_roll
+self.fox
+self.yellow_cross
+self.blue_cross
+self.green_cross
+self.orange_four
+self.orange_five
+self.orange_six
+self.purple_six
+\end{lstlisting}
+Code 9: Klassenattribute für freigespielte Boni\\
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute für die Anzahl an gewählten Kästchen in den verschiedenen farbigen Feldern. Wenn ein Kästchen in einem der Felder ausgefüllt wird, wird der Wert dieses Attributes inkrementiert. Diese Attribute dienen nicht dem Spielablauf selbst, sondern zur Nachvollziehbarkeit der Strategie des Modells:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.picked_yellow
+self.picked_blue
+self.picked_green
+self.picked_orange
+self.picked_purple
+\end{lstlisting}
+Code 10: Klassenattribute für gewählte Kästchen in den farbigen Feldern\\
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Der folgende Code zeigt die Klassenattribute für den Aktions- sowie Beobachtungsraum:
+\vspace{0.5cm}
+\begin{lstlisting}
+self.number_of_actions = 247
+low_bound = np.array([0]*16 + [0]*12 + ...)
+high_bound = np.array([6]*16 + [6]*12 + ...)
+self.action_space = spaces.Discrete(self.number_of_actions)
+self.observation_space = spaces.Box(low_bound, high_bound, shape= ...
+self.valid_action_mask_value = np.ones(self.number_of_actions)
+\end{lstlisting}
+Code 11: Klassenattribute Aktionsraum und Beobachtungsraum\\
+\end{minipage}
+
+Das Attribut number\_of\_actions repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute low\_bound und high\_bound setzten die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null ([0]*16) bis sechs ([6]*16) reichen. Das Attribut action\_space repräsentiert den Aktionsraum des Modells. Es ist ein Diskreter Raum mit number\_of\_actions Werten von null bis number\_of\_actions minus Eins. Das Attribut observation\_space repräsentiert den Beobachtungsraum. Die Attribute low\_bound und high\_bound definieren die Grenzen und shape definiert die Größe des Beobachtungsraumes. Das Attribut valid\_action\_mask\_value repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes.
 \subsubsection{Methoden}
 \subsubsection{Einzelne Methoden...}
-\subsection{AI}
+\subsection{Künstliche Intelligenz}
 \subsubsection{Model Learn}
 \subsubsection{Model Predict}
 \subsubsection{Init Envs}
