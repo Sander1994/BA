@@ -37,16 +37,31 @@
 \usepackage[onehalfspacing]{setspace}         % Set line spacing to be 1.5x the default
 \usepackage{listings}                         % Code block support for LaTeX
 
+\definecolor{myorange}{rgb}{1,0.5,0} % RGB-Werte für Orange
+
 \lstset{
-	language=Python,                % Sprache des eingefügten Codes
-	basicstyle=\ttfamily,          % Stil der Schrift
-	commentstyle=\color{green},    % Stil der Kommentare
-	keywordstyle=\color{blue},     % Stil der Schlüsselwörter
-	stringstyle=\color{red},       % Stil von Strings
-	numbers=left,                  % Zeilenummern links anzeigen
-	numberstyle=\tiny,             % Stil der Zeilenummern
-	frame=single,                  % Rahmen um den Code
+	language=Python,
+	tabsize=4,
+	basicstyle=\ttfamily,
+	commentstyle=\color{green},
+	keywordstyle=[1]\color{blue}, % Standard Schlüsselwörter in Blau
+	stringstyle=\color{red},
+	numbers=left,
+	numberstyle=\tiny,
+	frame=single,
+	deletekeywords={not, in}, % Entfernen Sie Standard-Python-Schlüsselwörter, wenn nötig
+	morekeywords=[2]{Aktion, not, True, False}, % Fügen Sie benutzerdefinierte Schlüsselwörter hinzu
+	keywordstyle=[2]\color{myorange}, % Stil für benutzerdefinierte Schlüsselwörter in Orange
+	literate=%
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+	{ü}{{\"u}}1
+	{Ä}{{\"A}}1
+	{Ö}{{\"O}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
 }
+
 
 
 \usepackage[titles]{tocloft}                  % More options to modify list of figures & tables

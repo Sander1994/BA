@@ -1,7 +1,7 @@
 \section{Implementierung}
 In diesem Kapitel wird die Implementierung des Projektes vorgestellt und erläutert. Zur Darstellung der Funktionsweise der einzelnen Funktionen wird Pseudocode verwendet. Dies soll dabei helfen die Funktionsweise verständlicher und knapper aufzuzeigen.
 \subsection{Spielumgebung}
-Die Implementierung besteht aus zwei wesentlichen Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Funktionen erläutert.
+Die Implementierung besteht aus zwei wesentlichen Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert.
 \subsubsection{Klassenattribute}
 \begin{minipage}{\linewidth}
 Der folgende Code zeigt die Klassenattribute, die für das Rundenmanagement wichtig sind:
@@ -161,8 +161,269 @@ Code 11: Klassenattribute Aktionsraum und Beobachtungsraum\\
 \end{minipage}
 
 Das Attribut number\_of\_actions repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute low\_bound und high\_bound setzten die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null ([0]*16) bis sechs ([6]*16) reichen. Das Attribut action\_space repräsentiert den Aktionsraum des Modells. Es ist ein Diskreter Raum mit number\_of\_actions Werten von null bis number\_of\_actions minus Eins. Das Attribut observation\_space repräsentiert den Beobachtungsraum. Die Attribute low\_bound und high\_bound definieren die Grenzen und shape definiert die Größe des Beobachtungsraumes. Das Attribut valid\_action\_mask\_value repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes.
-\subsubsection{Methoden}
-\subsubsection{Einzelne Methoden...}
+\subsubsection{Schritt Methode}
+Der folgende Pseudocode zeigt die Funktionsweise der Schritt Methode (step method) der Spielumgebung. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus. Dabei ist zu beachten, dass es sowohl eine Aktion/Ausführung für jedes Kästchen auf dem Spielfeld mit dem weißen (Aktion 61-121) und dem jeweils zum Feld passenden farbigen Würfel (Aktion 0-60) gibt:
+\vspace{0.5cm}
+\begin{lstlisting}
+step(Aktion):
+	Setze Methodenattribute zurück
+	
+	if not Extrapickaktion:
+		if Aktion im gelben Feld:
+			Fülle entsprechendes gelbes Kästchen aus
+			if Gelbes Kreuz Boni >= 1
+				Bonusrunde = True
+				Gelbes Kreuz -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im blauen Feld:
+			Fülle entsprechendes blaues Kästchen aus
+			if Blaues Kreuz Boni >= 1:
+				Bonusrunde = True
+				Blaues Kreuz -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im grünen Feld:
+			Fülle entsprechendes grünes Kästchen aus
+			if Grünes Kreuz Boni >= 1:
+				Bonusrunde = True
+				Grünes Kreuz -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im orangene Feld:
+			Fülle entsprechendes orangenes Kästchen aus
+			if Orangene Feld Boni >= 1:
+				Bonusrunde = True
+				Orangene Feld Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im lila Feld:
+			Fülle entsprechendes lila Kästchen aus
+			if Lila Sechs Boni >= 1:
+				Bonusrunde = True
+				Lila Sechs Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+	
+	if Extrapickaktion:
+		Bonusrunde = True
+		if Extra Pick Boni benutzt:
+			Extra Pick Boni -= 1
+		Finde Kästchen zum ausfüllen und fülle es aus
+		Setze gewälten Würfel auf ungültig
+		if Extra Pick Boni <= 0 or Wahl erfolgte vom Silbertablett:
+			Runde wird inkrementiert
+			
+	if Neu Würfeln Boni wird benutzt:
+		Würfel Würfel neu
+		Neu Würfeln Boni -= 1
+		Aktualisiere Aktionsmaske
+		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
+		
+	if Statt Extra Pick Boni gepasst wird:
+		Runde wird inkrementiert
+		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
+	if ungültige Aktion gewählt da keine gültigen Aktionen vorhanden:
+		if Wahl vom Silbertablett:
+			Runde wird inkrementiert
+			
+	Punktebelohnung += erspielte Belohnung in diesem Zug
+	if not Bonusrunde:
+		Runde wird inkrementiert
+		if Rundenanzahl == 0:
+		terminiert = True
+		Punktebelohnung += Fuchsbonipunktebelohnung
+	Aktualisiere Aktionsmaske
+	return Beobachtungsraum, Punktebelohnung, Spiel terminiert?		
+\end{lstlisting}
+Code 12: Schritt Methode\\
+
+\subsubsection{Methode zum Zurücksetzen der Spielumgebung}
+\begin{minipage}{\linewidth}
+Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (reset method):
+\vspace{0.5cm}
+\begin{lstlisting}
+reset():
+	Setze alle Attribute für den Spielablauf auf den Startzustand
+\end{lstlisting}
+Code 13: Methode zum Zurücksetzen der Umgebung\\
+\end{minipage}
+
+\subsubsection{Methode zur Visualisierung der Spielumgebung}
+\begin{minipage}{\linewidth}
+Der folgende Pseudocode zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (render method):
+\vspace{0.5cm}
+\begin{lstlisting}
+render():
+	Zeige alle relevanten Attribute und Merkmale der Umgebung an
+\end{lstlisting}
+Code 14: Methode zur Visualisierung der Spielumgebung\\
+\end{minipage}
+
+\subsubsection{Würfel Methode}
+\begin{minipage}{\linewidth}
+Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Würfeln der Würfel:
+\vspace{0.5cm}
+\begin{lstlisting}
+roll_dice():
+	Würfle die Werte aller gültigen Würfel neu
+\end{lstlisting}
+Code 15: Würfel Methode\\
+\end{minipage}
+
+\subsubsection{Methode zur Überprüfung der freigespielten Belohnungen}
+\begin{minipage}{\linewidth}
+Der folgende Pseudocode zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (check\_rewards method):
+\vspace{0.5cm}
+\begin{lstlisting}
+check_rewards():
+	Überprüfe ob im gelben Feld Belohnungen freigeschaltet wurden
+	Schalte im gelben Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im blauen Feld Belohnungen freigeschaltet wurden
+	Schalte im blauen Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im grünen Feld Belohnungen freigeschaltet wurden
+	Schalte im grünen Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im orangenen Feld Belohnungen freigeschaltet wurden
+	Schalte im orangenen Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im lila Feld Belohnungen freigeschaltet wurden
+	Schalte im lila Feld freigeschaltete Belohnungen frei
+	
+	return Punktebelohnung
+\end{lstlisting}
+Code 16: Methode zur Überprüfung der freigespielten Belohnungen\\
+\end{minipage}
+
+\subsubsection{Methode zur Generierung des Beobachtungsraumes}
+\begin{minipage}{\linewidth}
+Der folgende Pseudocode zeigt die Funktionsweise für der Methode zur Generierung des Beobachtungsraumes (\_get\_obs method):
+\vspace{0.5cm}
+\begin{lstlisting}
+_get_obs():
+	Erstelle Numpy Arrays für farbige Felder
+	Erstelle Numpy Array für Würfelergebnisse
+	Erstelle Numpy Array für ungültige Würfel
+	Füge Arraywerte für Boni und Rundenzahl hinzu
+	Beobachtungsraum = Verbinde alle Arrays miteinander
+	
+	return Beobachtungsraum
+\end{lstlisting}
+Code 17: Methode zur Generierung des Beobachtungsraumes\\
+\end{minipage}
+
+\subsubsection{Methode zur Generierung der Aktionsmaske}
+Der folgende Pseudocode zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (valid\_action\_mask method). Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf Null gesetzt Jede Aktion wird jeweils einem Kästchen auf dem Spielbrett zugewiesen. Dabei entsprechen die Aktionen 0-15, 61-76, 122-137 und 183-198 Kästchen im gelben Feld. Die Aktionen 16-27, 77-88, 138-149 und 199-210 entsprechen Kästchen im blauen Feld. Die Aktionen 28-38, 89-99, 150-160 und 211-221 entsprechen Kästchen im grünen Feld. Die Aktionen 39-49, 100-110, 161-171 und 222-232 entsprechen Kästchen im orangenen Feld, und die Aktionen 50-60, 111-121, 172-182 und 233-243 entsprechen Kästchen im lila Feld. Diese Reichweiten spiegeln jeweils die Größe jedes Feldes in Anzahl an Kästchen wider. Außerdem sind sie den verschiedenen Arten von Würfel- oder Boniaktionen zuzuordnen [siehe Grundlagen]:
+\vspace{0.5cm}
+\begin{lstlisting}
+valid_action_mask():
+	Setze alle Werte auf Eins
+	
+	Werte für bereits ausgefüllte gelbe Kästchen = 0
+	Werte für gelbe Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte blaue Kästchen = 0
+	Werte für blaue Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte grüne Kästchen = 0
+	Werte für grüne Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte orangene Kästchen = 0
+	Werte für orangene Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte lila Kästchen = 0
+	Werte für lila Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für Akionen mithilfe ungültiger Würfel = 0
+	
+	if not Extra Wahl or ungültige Extra Wahl:
+		Werte von 122 bis 243 & Wert für das Ausetzen = 0
+	if gültige Extra Wahl:
+		Werte von 0 bis 121 = 0
+		Wert für das Aussetzen = 1
+	
+	if Extra Wahl Boni <= 0 or Extra Wahl:
+		Wert für Neu Würfel = 0
+	
+	if einer der Boni zum direkten Ankreuzen von Kästchen >= 1:
+		Alle Werte = 0
+	
+	if Gelbes Kreuz >= 1:
+		Werte von 0 bis 15 = 1
+	if Blaues Kreuz >= 1:
+		Werte von 16 bis 27 = 1
+	if Grünes Kreuz >= 1:
+		Werte von 28 bis 38 = 1
+	if (Orangene Vier or Orangene Fünf or Orangene Sechs) >= 1:
+		Werte von 39 bis 49 = 1
+	if Lila Sechs >= 1:
+		Werte von 50 bis 60 = 1
+	
+	if Alle Werte außer 246 == 0:
+		Wert für ungültige Aktion = 1
+	else:
+		Wert für ungültige Aktion = 0
+		
+	return Aktionsmaske
+\end{lstlisting}
+Code 18: Methode zur Generierung der Aktionsmaske\\
+
+\subsubsection{Methode zum Hinzufügen von Boni}
+\begin{minipage}{\linewidth}
+Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Hinzufügen von Boni (add\_reward method):
+\vspace{0.5cm}
+\begin{lstlisting}
+add_reward(Belohnungstyp):
+	Inkrementiere Wert für Belohnungstyp
+\end{lstlisting}
+Code 19: Methode zum Hinzufügen von Boni\\
+\end{minipage}
+
+\subsubsection{Methode zum Inkrementieren von Runden}
+Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Inkrementieren von Runden (increment\_rounds method):
+\vspace{0.5cm}
+\begin{lstlisting}
+increment_rounds():
+	if Extra Wahl nach eignener Runde:
+		Wahl vom Silbertablett = True
+		Extra Wahl nach eigener Runde = False
+		Setze alle Würfel auf gültig
+		Würfele Würfel neu
+		Setze drei zufällige Würfel auf ungültig
+		
+	elif Wahl vom Silbertablett:
+		if Extra Wahl Boni >= 1:
+			Extra Wahl nach Wahl vom Silbertablett = True
+		else:
+			Schalte Boni für erreichte Runde frei
+			Würfle Würfel neu
+		Wahl vom Silbertablett = False
+		Setze alle Würfel auf gültig
+	
+	elif Extra Wahl nach Wahl vom Siblertablett:
+		Extra Wahl nach Wahl vom Silbertablett = False
+		Würfle Würfel neu
+		Setze alle Würfel auf gültig
+		Schalte Boni für erreichte Runde frei
+	
+	elif Wurf in Runde >= 3:
+		Rundenanzahl -= 1
+		Wurf in Runde = 1
+		Setze alle Würfel auf gültig
+		if Extra Wahl Boni >= 1:
+			Extra Wahl nach eigener Runde = True
+		else:
+			Wahl vom Silbertablett = True
+			Würfle Würfel neu
+			Setze drei zufällige Würfel auf ungültig
+	else:
+		Wurf in Runde += 1
+		Würfle Würfel neu
+\end{lstlisting}
+Code 20: Methode zum Inkrementieren von Runden\\
+
 \subsection{Künstliche Intelligenz}
 \subsubsection{Model Learn}
 \subsubsection{Model Predict}
