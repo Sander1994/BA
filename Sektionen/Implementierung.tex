@@ -160,9 +160,17 @@ self.valid_action_mask_value = np.ones(self.number_of_actions)
 Code 11: Klassenattribute Aktionsraum und Beobachtungsraum\\
 \end{minipage}
 
-Das Attribut number\_of\_actions repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute low\_bound und high\_bound setzten die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null ([0]*16) bis sechs ([6]*16) reichen. Das Attribut action\_space repräsentiert den Aktionsraum des Modells. Es ist ein Diskreter Raum mit number\_of\_actions Werten von null bis number\_of\_actions minus eins. Das Attribut observation\_space repräsentiert den Beobachtungsraum. Shape definiert dabei die Größe des Beobachtungsraumes. Das Attribut valid\_action\_mask\_value repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise [0] oder [5]) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.
+Das Attribut number\_of\_actions repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute low\_bound und high\_bound setzten die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null ([0]*16) bis sechs ([6]*16) reichen. Das Attribut action\_space repräsentiert den Aktionsraum des Modells. Es ist ein Diskreter Raum mit number\_of\_actions Werten von null bis number\_of\_actions minus eins. Das Attribut observation\_space repräsentiert den Beobachtungsraum. Shape definiert dabei die Größe des Beobachtungsraumes. Das Attribut valid\_action\_mask\_value repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise [0] oder [5]) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.\\
+
+Die Struktur des Aktionsraumes ist für das Verständnis der Arbeit wichtig, daher wird sie hier erläutert:
+
+Die ersten 122 Werte des Aktionsraumes von 0 bis 121 sind sowohl normalen Wahlen bei eigenen Würfen als auch den verschiedenen Boni, welche es ermöglichen direkt ein Kästchen eines Felder anzukreuzen, zugeordnet. Dabei stehen die ersten 16 Werte für Kästchen des gelben Feldes, die nächsten 12 für Kästchen des blauen Feldes, und die folgenden 33 zu einer Aufteilung von jeweils 11 für Kästchen im grünen, orangenen und lila Feld. Die Werte von 61 bis 121 stehen für die selben Kästchen in der selben Reihenfolge wie die vorherigen 61 Werte, allerdings wird bei diesen der weiße Würfel verwendet statt des jeweils farbigen für das spezifische Feld.
+
+Die Werte von 122 bis 243 stehen für Wahlen mit der Extra Wahl Boni oder für Wahlen vom Silbertablett des Gegners. Die Struktur innerhalb dieser Reichweite ist die selbe wie bei den 122 Werte davor. Die ersten 16 Werte stehen für die selben Kästchen im gelben Feld und so weiter.
+
+Der Wert 244 steht für die Neu Würfeln Boni, der Wert 245 für das passen bei einem möglichen Einsatz der Extra Wahl Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen getätigt werden kann.
 \subsubsection{Schritt Methode}
-Der folgende Pseudocode zeigt die Funktionsweise der Schritt Methode (step method) der Spielumgebung. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus. Dabei ist zu beachten, dass es sowohl eine Aktion/Ausführung für jedes Kästchen auf dem Spielfeld mit dem weißen (Aktion 61-121, 183-243) und dem jeweils zum Feld passenden farbigen Würfel (Aktion 0-60, 122-182) gibt:
+Der folgende Pseudocode zeigt die Funktionsweise der Schritt Methode (step method) der Spielumgebung. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
 \vspace{0.5cm}
 \begin{lstlisting}
 step(Aktion):
@@ -207,11 +215,11 @@ step(Aktion):
 	
 	if Extrapickaktion:
 		Bonusrunde = True
-		if Extra Pick Boni benutzt:
-			Extra Pick Boni -= 1
+		if Extra Wahl Boni benutzt:
+			Extra Wahl Boni -= 1
 		Finde Kästchen zum ausfüllen und fülle es aus
 		Setze gewählten Würfel auf ungültig
-		if Extra Pick Boni <= 0 or Wahl erfolgte vom Silbertablett:
+		if Extra Wahl Boni <= 0 or Wahl erfolgte vom Silbertablett:
 			Runde wird inkrementiert
 			
 	if Neu Würfeln Boni wird benutzt:
@@ -220,7 +228,7 @@ step(Aktion):
 		Aktualisiere Aktionsmaske
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
 		
-	if Statt Extra Pick Boni gepasst wird:
+	if Statt Extra Wahl Boni gepasst wird:
 		Runde wird inkrementiert
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
 	if ungültige Aktion gewählt da keine gültigen Aktionen vorhanden:
@@ -314,7 +322,7 @@ Code 17: Methode zur Generierung des Beobachtungsraumes\\
 \end{minipage}
 
 \subsubsection{Methode zur Generierung der Aktionsmaske}
-Der folgende Pseudocode zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (valid\_action\_mask method). Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf Null gesetzt. Jede Aktion wird jeweils einem Kästchen auf dem Spielbrett zugewiesen. Ausnahmen bilden hierbei die Boni Aktionen Neu Würfeln (244), passen bei Extra Wahlen (245) und die ungültige Aktion (246). Dabei entsprechen die Aktionen 0-15, 61-76, 122-137 und 183-198 Kästchen im gelben Feld. Die Aktionen 16-27, 77-88, 138-149 und 199-210 entsprechen Kästchen im blauen Feld. Die Aktionen 28-38, 89-99, 150-160 und 211-221 entsprechen Kästchen im grünen Feld. Die Aktionen 39-49, 100-110, 161-171 und 222-232 entsprechen Kästchen im orangenen Feld, und die Aktionen 50-60, 111-121, 172-182 und 233-243 entsprechen Kästchen im lila Feld. Diese Reichweiten spiegeln jeweils die Größe jedes Feldes in Anzahl an Kästchen wider. Außerdem sind die Reichweiten den verschiedenen Arten von Würfel- oder Boni-Aktionen zuzuordnen, welche zur Ausfüllung von Kästchen führen. Werte von 122-243 stehen für Extra Wahlen[siehe Grundlagen]:
+Der folgende Pseudocode zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (valid\_action\_mask method). Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf Null gesetzt:
 \vspace{0.5cm}
 \begin{lstlisting}
 valid_action_mask():
@@ -551,5 +559,5 @@ def main():
 	model_predict(n_envs=1, render=True, n_steps=40000,
 	 model_name="maskableppo_ganzschoenclever")
 \end{lstlisting}
-Code 26: Anwendungsbeispiel\\
+Code 27: Anwendungsbeispiel\\
 \end{minipage}

@@ -17,7 +17,18 @@ Im folgenden werden der Spielablauf und die wesentlichen Regeln des Spiels erkl�
 Es gibt sechs farbige Würfel, wobei jeder bis auf den weißen einem der 5 farbigen Spielfelder zuzuordnen ist. Der weiße Würfel ist ein Sonderwürfel und kann als einer der anderen Würfel betrachtet werden. Wenn bestimmte Bedingungen erfüllt sind kann der Spieler einen Würfel wählen und das entsprechende Kästchen ausfüllen. Die Felder verfügen über Belohnungen, welche freigeschaltet werden, wenn eine bestimmte Kombination oder Anzahl an Feldern freigeschaltet worden ist. Beim orangenen und lila Feld kommt es bei der Belohnung zudem darauf an wie hoch das Würfelergebnis des gewählten Würfels ist, da die einzelnen Kästchen hier je nach Würfelergebnis zusätzlich belohnt werden.
 \\
 Das Spiel teilt sich in bis zu sechs Runden mit jeweils bis zu drei Würfen ein. Nach jeder Runde bekommt der Spieler zudem die Möglichkeit einen Würfel auf dem Silbertablett eines Mitspielers zu wählen. Diese Wahl verhält sich so wie bei der Wahl eines eigenen Würfels bei den Würfen des Spielers selbst. Die Anzahl der Runden werden von der Spielerzahl festgelegt. Bei ein bis zwei Spielern sind es sechs Runden. Bei drei Spielern sind es fünf Runden und bei vier Spielern sind es vier Runden. Die Anzahl der Würfe pro Runde ist immer drei, allerdings kann diese Anzahl reduziert werden, wenn kein Würfel mehr zum Würfeln zur Verfügung steht. Dann wird der Spielablauf fortgesetzt als hätte der Spieler seinen dritten Wurf in der Runde beendet und er kann einen Würfel vom Tablett des Mitspielers wählen bevor dann die neue Runde für ihn beginnt. Zu beginn der ersten, zweiten, dritten und vierten Runde bekommt jeder Spieler zudem eine Belohnung, welche oben rechts auf Abbildung 1 bei der jeweiligen Rundenzahl zu sehen ist. Die Belohnung in Runde vier steht dabei für das freie ausfüllen eines beliebigen Kästchens mit dem jeweils maximal möglichen Wert für das Kästchen.
-\\
+
+\begin{minipage}{\linewidth}
+Die folgende Abbildung zeigt das Runden-System des Spiels. Dieses wird noch einige male wichtig für das Verständnis der Arbeit werden:
+
+\vspace{0.5cm}
+\includegraphics[width=1\textwidth]{Bilder/Rundenablauf.drawio} 
+
+Abb. 2: Rundenablauf Ganz schön clever\\
+\end{minipage}
+
+Der Zyklus beginnt bei Wurf 1. Wenn danach noch gültige Würfel vorhanden sind geht es weiter mit Wurf 2. Sind dann noch gültige Würfel vorhanden folgt Wurf 3. Sind in der Zwischenzeit keine gültigen Würfel vorhanden oder spätestens nach Wurf 3 hat der Spieler die Möglichkeit seine Extra Wahl Boni einzusetzen und einen der aktuellen Würfel zu wählen. Entscheidet sich der Spieler dafür keine Extra Wahl Boni einzusetzen oder besitzt er keine, geht es weiter mit der Wahl vom Silbertablett. Dort wählt der Spieler einen Würfel und hat anschließend erneut die Möglichkeit Extra Wahl Boni zu verwenden, falls er mindestens eine besitzt. Entscheidet er sich dafür die Extra Wahl Boni nicht zu benutzen, oder besitzt er keine, beginnt der Zyklus erneut von Wurf 1. Dieser Zyklus wird so lange wiederholt, bis das Spiel endet.\\
+
 Es gibt zwei Arten von Belohnungen im Spiel. Punktebelohnungen und Boni. Bei Punktebelohnungen handelt es sich um Punkte welche auf den Score des Spielers addiert werden, welcher am Ende des Spiels entscheidet wer gewonnen hat. Der Spieler mit dem höchsten Score gewinnt das Spiel. Punktebelohnungen erhält man beim gelben Feld indem man eine Spalte vollständig ausfüllt. Die Anzahl der Punkte findet sich am Ende der Spalte. Im blauen Feld erhält man Punktebelohnungen mit zunehmender Anzahl an ausgefüllten blauen Kästchen. Die Anzahl der Punkte findet sich im oberen Bereich des blauen Feldes. Im grünen Feld ebenso mit zunehmender Anzahl der ausgefüllten grünen Kästchen. Die Anzahl der Punkte findet sich auch hier im oberen Bereich des grünen Feldes. Im orangenen und lila Feld muss man für Punktebelohnungen lediglich ein Kästchen ausfüllen. Die Punktebelohnung entspricht der Augenzahl des entsprechenden ausgefüllten Kästchens. Beim orangenen Feld wird diese Augenzahl bei einigen Feldern zusätzlich mit zwei oder drei multipliziert. Außerdem gibt es eine Boni Belohnung, welche indirekt eine Punktebelohnung darstellt. Es handelt sich hierbei um den sogenannten Fuchs beziehungsweise die Füchse. Die Anzahl der freigeschalteten Füchse wird am Ende des Spiels mit der Anzahl der erzielten Punkte des Feldes mit den niedrigsten erreichten Punktewert multipliziert und zum Gesamtpunktestand addiert.
 
 Bei Boni handelt es sich um Belohnungen, welche der Spieler nutzen kann oder muss, um sich im Spiel einen Vorteil zu verschaffen. Die Boni sind bei den entsprechenden Kästchen beziehungsweise am Rande von Spalten und Zeilen eingezeichnet und können freigeschaltet werden indem man diese (Kästchen beziehungsweise Zeilen oder Spalten) ausfüllt. Eine Ausnahme bildet hier die Boni welche beim gelben Feld freigeschaltet wird indem alle diagonalen Felder von links oben nach rechts unten ausgefüllt werden. \\
@@ -82,7 +93,7 @@ Belohnung: Positive oder negative Vergeltung je nachdem wie gut der Zustandswech
 
 Policy: Die Policy ist die Strategie des Agenten, nach welcher er seine nächsten Aktionen wählt [RL, Seite 11]. In dieser Arbeit wird die Policy durch ein Multilayer Perceptron (siehe Deep Learning) abgebildet.
 
-Episode: Eine Menge an Zusammenhängenden Aktionen, welche endet, wenn das Ziel erreicht worden ist [RL, Seite 11]. In dieser Arbeit ist eine Episode ein kompletter Spieldurchlauf von Ganz schön clever.
+Episode: Eine Menge an Zusammenhängenden Aktionen, welche endet, wenn das Ziel erreicht worden ist [RL, Seite 11]. In dieser Arbeit ist eine Episode ein kompletter Spieldurchlauf von Ganz schön clever.\\
 
 \begin{minipage}{\linewidth}
 	Die folgende Abbildung beschreibt einen Lernzyklus im Reinforcement Learning:
@@ -90,7 +101,7 @@ Episode: Eine Menge an Zusammenhängenden Aktionen, welche endet, wenn das Ziel 
 	\vspace{0.5cm}
 	\includegraphics[width=0.8\textwidth]{Bilder/rl}
 	
-	Abb. 2: Reinforcement Learning
+	Abb. 3: Reinforcement Learning
 	
 	Quelle: [RL, Seite 12]\\
 \end{minipage}
@@ -102,6 +113,19 @@ Hierbei ist das Ziel des Agenten die gesamte erreichte Belohnung zu maximieren. 
 Doch dabei gibt es einige Schwierigkeiten, die es zu beachten gilt. Belohnungen die in kurzer Zeit erreicht werden können, könnten wichtiger oder weniger wichtig sein als Belohnungen, die erst innerhalb vieler Schritte erreicht werden können. Ein gutes Beispiel hierfür wäre ein Balanceakt, bei dem es besonders wichtig ist kurzzeitige Belohnungen zu bevorzugen, da die Episode endet, wenn das Balancieren fehlschlägt, was eine starke negative Belohnung zur Folge haben kann.
 
 Ein weiterer Faktor ist die Balance zwischen Erkundung und Ausbeutung. Diese zwei Prinzipien sind wesentlich für das Reinforcement Learning. Dabei geht es darum, wie stark die Policy es vorzieht neue oder selten gesehene Zustände und Aktionen auszuprobieren oder bereits bekannte, welche eine gute Belohnung zu bringen scheinen auszunutzen beziehungsweise auszubeuten [RL, Seite 13].
+
+Im Grunde lernt das Modell, in bestimmten Zuständen bestimmte Aktionen zu tätigen, um das beste Gesamtergebnis zu erreichen. Jeder Zustand hat seinen erwarteten Wert beziehungsweise seine erwartete Belohnung, sobald das Modell in einen bestimmten Zustand gerät, wählt es die Aktion, welche die höchste erwartete Belohnung bietet beziehungsweise weist den möglichen Aktionen Wahrscheinlichkeiten zu, die bei bevorzugten Aktionen höher ausfallen.
+
+\begin{minipage}{\linewidth}
+Die folgende Abbildung zeigt einen Ausschnitt eines theoretischen Zustandsverlaufs von zwei Würfen des Spiels Ganz schön clever:
+	
+	\vspace{0.5cm}
+	\includegraphics[width=0.8\textwidth]{Bilder/Baumdiagramm_Spielzustände.drawio} 
+	
+	Abb. 4: Zustandsverlauf Ganz schön clever\\
+	
+Das Spiel beginnt. Die Würfel werden gewürfelt und der Agent wählt einen der sechs Würfel mit einer bestimmten Augenzahl und füllt das entsprechende Kästchen aus. Somit gerät er in einen neuen Zustand bei dem ein bestimmtes Kästchen ausgefüllt und ein oder mehrere Würfel ungültig sind. Die gültigen Würfel werden erneut geworfen und er wählt erneut einen der Würfel mit einer bestimmten Augenzahl und füllt das entsprechende Kästchen aus. Es ist schnell zu erkennen, dass sich eine große Zahl an möglichen Zustands-Aktions-Paaren ergibt. Ein Zustands-Aktions-Paar beschreibt genau eine mögliche Aktion in einem spezifischen Zustand des Spiels. Das Modell lernt durch die Auswertung eben dieser Zustands-Aktions-Paare, welche Aktionen am vorteilhaftesten sind und welche er vermeiden sollte. Die Abbildung ist lediglich eine Vereinfachung, da viele weitere Faktoren, wie erspielte Boni eine Rolle spielen.
+\end{minipage}
 \subsubsection{Deep Learning}
 Was unterscheidet Reinforcement Learning von Deep Reinforcement Learning? Im wesentlichen handelt es sich um das selbe Konzept, allerdings ist das eine Deep Learning und das andere nicht. Was ist also Deep Learning?
 
@@ -115,7 +139,7 @@ Ein solches Netz besteht aus einer Vielzahl von Neuronen. [DRL, Seite 75] Ein so
 	\vspace{0.5cm}
 	\includegraphics[width=0.8\textwidth]{Bilder/mlp} 
 	
-	Abb. 3: Multilayer Perceptron
+	Abb. 5: Multilayer Perceptron
 	
 	Quelle: [DRL, Seite 78]\\
 \end{minipage}
@@ -147,10 +171,6 @@ Gymnasium bietet eine gute Anbindung an die Bibliothek Stable Baselines 3, welch
 Die Algorithmen haben ein konsistentes Interface und eine umfangreiche Dokumentation, was es einfach macht verschiedene Reinforcement Learning Algorithmen zu testen. Die Implementierung bietet eine simple API. Modelle können in nur wenigen Codezeilen trainiert werden. Die Implementierung weist zudem eine hohe Qualität auf. Es gibt auch eine experimentelle Version der Bibliothek, welche Stable Baseline 3 Contributing genannt wird [SB3, Seite 1-3].
 
 In diese Arbeit wird vor Allem der MaskablePPO Algorithmus aus eben dieser Contributing Bibliothek benutzt. Dabei handelt es sich, um eine Erweiterung des PPO Algorithmus von Stable Baseline 3. Dieser MaskablePPO erweitert den PPO Algorithmus um die Funktionalität einer Maskierung. Diese Maskierung ermöglicht es die Wahlwahrscheinlichkeit bestimmter Aktionen auf Null zu setzen. Die Maskierung wurde in der Arbeit verwendet, um ungültige Aktionen auszuschließen, sodass das Modell nicht auf andere Weise lernen muss, diese zu vermeiden. Dies ist ein simpler und effizienter Weg, um zu gewährleisten, dass beim Training keine ungültigen Aktionen gewählt werden.
-\subsubsection{Pytorch}
-Pytorch ist eines der beiden am weitesten verbreiteten Deep Learning Frameworks. Es bietet die Möglichkeit vereinfacht eigene Deep Learning Algorithmen zu implementieren. Dies erfolgt vor allem mit sogenannten Tensoren. Dabei handelt es sich um mehrdimensionale Matrizen, mithilfe derer die Berechnungen vorgenommen werden. 
-
-Pytorch wurde in dieser Arbeit indirekt verwendet, da Stable Baselines 3 auf Pytorch basiert.
 \subsubsection{Matplotlib}
 Matplotlib ist eine umfangreiche und mächtige Bibliothek zum Plotten von Daten. In dieser Arbeit wird Matplotlib dafür verwendet, um die erreichten Punkte und ungültigen Züge zu visualisieren.
 \subsubsection{ChatGPT 4}

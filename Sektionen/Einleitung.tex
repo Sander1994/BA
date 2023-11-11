@@ -1,4 +1,14 @@
 \section{Einleitung}
+\subsection{Kurzzusammenfassung}
+Zunehmend prägen das maschinelle Lernen und KI die Arbeit und das Leben der Menschen. Besonders präsent sind im Jahr 2023 unter Anderem potente Chatbots wie ChatGPT 4. Solche Tools ermöglichen es Benutzern komplexe sowie komplizierte Aufgaben deutlich einfacher und schneller abzuarbeiten. Hervorzuheben ist hierbei auch, dass man mit solchen Tools deutlich weniger Fachwissen benötigt um in einem Bereich aufgaben effizient lösen zu können, da es einem eine Vielzahl von Informationen zum gewünschten Thema auf anfrage bereitstellen kann. Je komplexer das Problem oder die Fragestellung allerdings sind, desto unverlässlicher werden diese Tools. Man muss seine Anfragen deshalb möglichst präzise formulieren und die Problemstellung in für das Tool angemessene Teilaufgaben zerlegen.
+
+Auch in der Spielentwicklung spielen maschinelles Lernen und KI schon seit langem eine bedeutende Rolle. In den meisten Spielen gibt es sogenannte Bots, welche man als KI bezeichnen kann. Diese sollen bestimmte Aufgaben im Spiel erfüllen um den Spieler zu unterstützen oder im als Widersacher zu dienen. Je komplexer die Aufgabe, umso schwerer ist es einen solchen Bot zu erstellen, welcher die Aufgabe auf zufriedenstellende Weise erfüllen kann.
+
+Das Gesellschaftsspiel "Ganz schön clever" ist ein Würfelspiel, welches eine hohe Komplexität aufweist. Diese kommt vor allem durch die vielen Aktionsmöglichkeiten des Spielers und die multiplen zusammenhängen innerhalb des Belohnungssystems zustande. Außerdem weist es eine hohe Stochastizität auf, welche die Komplexität weiter erhöht.
+Ziel dieser Arbeit ist es eine KI beziehungsweise einen Bot für dieses Spiel zu entwickeln, der das Spiel effizient spielen kann, sowie zu analysieren welche Aspekte der Entwicklung dabei relevant und zu beachten sind.
+
+Dazu mussten Spielumgebung sowie KI zunächst implementiert werden. Dies geschah mithilfe von Bibliotheken wie Stable-Baselines3 und Gymnasium.
+Insgesamt ergab sich dabei, dass sich mithilfe des PPO-Algorithmus von Stable-Balseslines3 auf relativ einfache Weise ein effizientes Modell für das Spiel entwickeln lässt.
 \subsection{Hinführung zum Thema}
 In den vergangenen Jahren gewann maschinelles Lernen und insbesondere die Künstliche Intelligenz zunehmend an Bedeutung, Tendenz steigend. Im Jahr 2023 ist eines der präsentesten neuen Tools ChatGPT 4. Dieses Tool ist ein Chat-Bot, welcher es dem Benutzer ermöglicht mit ihm zu kommunizieren und ihm Fragen oder Aufgaben zu stellen. Solche Tools ermöglichen es Benutzern zunehmend ihre Tätigkeiten zu vereinfachen und prägen somit das Leben der Menschen zunehmend. Auch in dieser Arbeit wurde ChatGPT 4 als unterstützendes Tool verwendet. Es wurde vor Allem dafür benutzt um fachliche Fragen zu beantworten, aber auch anfangs um Code für den Prototypen zu generieren. Mit zunehmender Komplexität der zu bearbeitenden Aufgabe sinkt die Verlässlichkeit solcher Tools. Daher ist es wichtig die Anfragen an den Chat-Bot möglichst präzise zu formulieren und den Aufgabenbereich angemessen einzuschränken um das Tool nicht zu überfordern.
 
@@ -16,3 +26,26 @@ Es gibt des Weiteren noch keine Untersuchungen zu einer Spiel-KI für das Spiel 
 \subsection{Aufgabenstellung}
 Es ist eine KI für das Spiel "Ganz schön clever" zu implementieren. Hierbei sollen der Vorgang sowie Ergebnisse des Prozesses analysiert und bewertet werden. Hierzu wird zunächst ein Prototyp entwickelt, welcher eines der fünf Felder des Spiels beinhaltet. Dieser soll Einsichten über die Machbarkeit und die Rahmenbedingungen des Projektes geben. Daraufhin werden das Modell und die Spielumgebung schrittweise um ihre jeweiligen Funktionalitäten erweitert, bis das Spiel vollständig und möglichst effizient von der Künstlichen Intelligenz gespielt werden kann.
 \subsection{Aufbau der Arbeit}
+Die Arbeit beginnt mit einem Grundlagenteil, bei dem zunächst das Spiel Ganz schön clever und seine Mechaniken erklärt werden. Anschließend werden Maschinelles Lernen, Reinforcement Learning, Deep Learning und Proximal Policy Optimization behandelt, um eine Grundlage für das Verständnis der Abläuft beim Training der Künstlichen Intelligenz zu bieten. Im folgenden werden die verwendeten Technologien des Projektes behandelt. Die vorgestellten Technologien sind Gynmansium, Stable Baselines 3, Matplotlib und ChatGPT 4.
+
+Das nächste Kapitel befasst sich mit den Anforderungen und der Konzeption des Projektes. Es werden Rahmenbedingungen des Projektes sowie die Anforderungen und die Konzeption für die Spielumgebung und die Künstliche Intelligenz besprochen.
+
+Das nächste Kapitel zeigt und erklärt die Implementierung des Projektes. Dabei werden die Variablen und Methoden des Projektes erläutert und beschrieben. Zum einem großen Teil wird Pseudocode verwendet, um die Implementierung verständlicher zu machen und den Umfang zu begrenzen.
+
+Das letzte Kapitel befasst sich mit den Ergebnissen des Projektes. Zunächst wird der Implementierungsverlauf behandelt. Es wurde ein Prototyp erstellt und dieser wurde dann Stück für Stück erweitert. Daraufhin folgen die Analyse und zur Schau Stellung des finalen Modells.
+
+Zum Abschluss folgt eine Zusammenfassung und Anreize zur Weiterarbeit am Projekt.
+\subsection{Erläuterungen zur Lesbarkeit der Arbeit}
+Es gilt zu beachten, dass viele der Abbildungen innerhalb der Arbeit nicht selbsterklärend sind und es wichtig ist, den anliegenden Text zu lesen, um sie ordentlich verstehen zu können. 
+
+Es wird häufig von "Kästchen" und "Feldern" gesprochen. Ein "Kästchen" ist ein spezifisches Element auf dem Spielbrett, welches ausgefüllt werden kann, sobald bestimmte Konditionen erreicht sind, wobei sich "Feld" auf die Gesamtheit von "Kästchen" einer bestimmten Farbe bezieht.
+
+Es wird häufig von "Wahlen" gesprochen. Eine "Wahl" beschreibt das Auswählen eines Würfels oder einer Boni zum Ausfüllen eines Kästchens auf dem Spielbrett.
+
+Außerdem wird des öfteren von "Extra Wahlen" und "normalen Wahlen" gesprochen. Innerhalb des Spiels gibt es verschiedene Möglichkeiten Kästchen auszufüllen. Normal durch die Wahl eines Würfels nach einem eigenen Wurf. Mit der Wahl eines Würfels von Silbertablett des Gegners. Mit der Wahl eines Würfels mithilfe des Extra Wahl Boni und durch das Nutzen eines der anderen Boni, welches es erlauben ein Kästchen in einem der Kästchen des Spiels auszufüllen. "Extra Wahlen" beziehen sich hierbei auf Wahlen mithilfe des Extra Wahl Boni oder vom Silbertablett des Gegners, wobei sich "normale Wahlen" auf Wahlen nach dem eigenen Wurf oder mithilfe eines der anderen Boni beziehen.
+
+Es wird im Rahmen des Arbeit auch von "Bonusrunden" gesprochen. Diese beziehen sich auf Wahlen mithilfe von Boni bei "normalen Wahlen"
+
+Des weiteren werden häufig die Begriffe Modell, Agent und Künstliche Intelligenz in einem ähnlichen Zusammenhang verwendet. Ein Modell bezieht sich auf die Entität, welche vorhersagen treffen kann, wenn sie Zustände als Input bekommt. Ein Agent ist die Entität, welche seine Umgebung wahrnimmt und Anhand dieser eine Aktion wählt und ausführt und die Künstliche Intelligenz bezieht sich auf eine Entität, welche eigenständig in einer sich ändernden Umgebung lernen und sich entwickeln kann. Ein Modell ist im Rahmen dieser Arbeit ein Neuronales Netz, welches gelernt hat in bestimmten Zuständen bestimmte Aktionen vorherzusagen. Alle drei Begriffe beziehen sich in der Arbeit im Prinzip auf das selbe Konzept, allerdings setzen die Begriffe verschiedene Schwerpunkte für die Betrachtung des Konzeptes.
+
+Es wird auch häufig von "gültigen Aktionen" oder "gültigen Würfeln" gesprochen. "Gültige Aktionen" sind Aktionen, welche vom Spielablauf vorhergesehen sind. "Gültige Würfel" hingegen beschreiben Würfel, welche zur Wahl stehen und bei einem Wurf geworfen werden dürfen.

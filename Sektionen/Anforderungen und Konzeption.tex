@@ -44,7 +44,7 @@ In diesem Kapitel wird das Grundkonzept der Künstlichen Intelligenz, sowie der 
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/swimlane.drawio.pdf} 
 	
-	Abb. 4: Swimlane-Diagramm des Projektes \\
+	Abb. 6: Swimlane-Diagramm des Projektes \\
 
 \end{minipage}
 
@@ -55,12 +55,12 @@ Daraufhin aktualisiert die Künstliche Intelligenz ihr neuronales Netz mit der P
 Dies ist lediglich eine vereinfachte Darstellung des Prozesses. In Wirklichkeit wird die Policy nicht nach jedem Schritt/jeder Aktion aktualisiert, sondern es wird erst eine festgelegte Menge an Aktions-Zustands-Paaren gesammelt. Dann wird das neuronale Netz mit dieser Gesamtmenge aktualisiert. Diese Aktions-Zustands-Paare ermöglichen es festzustellen welche Aktionen in welchen Zuständen zu einem guten Ergebnis geführt haben und welche nicht.
 \subsubsection{Die Spielumgebung}
 \begin{minipage}{\linewidth}
-	Die folgenden beiden Abbildungen zeigen den/ prinzipiellen Funktionsablauf in der Spielumgebung. Dabei wird am Anfang eine Aktion entgegengenommen und am Schluss der neue Zustand dieser Umgebung nach Ausführung der Aktion zurückgegeben:\\
+	Die folgenden beiden Abbildungen zeigen den prinzipiellen Funktionsablauf in der Spielumgebung. Dabei wird am Anfang eine Aktion entgegengenommen und am Schluss der neue Zustand dieser Umgebung nach Ausführung der Aktion zurückgegeben:\\
 	
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/step3.drawio} 
 	
-	Abb. 5: Ablauf-Diagramm der Schritt Funktion 1 \\
+	Abb. 7: Ablauf-Diagramm der Schritt Funktion 1 \\
 \end{minipage}
 
 Nachdem die Schritt Funktion angestoßen wird, werden die Variablen dieser Funktion zurückgesetzt, um einen klaren Schnitt zwischen vergangenen Aktionen und der aktuellen Aktion zu erzielen.
@@ -84,7 +84,7 @@ Handelt es sich um eine Extra Wahl mit Boni, dann steht noch die Aktion "aussetz
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/step2.drawio}
 	
-	Abb. 6: Ablauf-Diagramm der Schritt Funktion 2 \\
+	Abb. 8: Ablauf-Diagramm der Schritt Funktion 2 \\
 \end{minipage}
 
 Der folgende Ablauf der Funktion gestaltet sich relativ ähnlich bei allen vier Varianten. Bei allen Vieren wird das Feld und das Kästchen ermittel, welches ausgefüllt werden soll und das entsprechende Kästchen wird anschließend ausgefüllt. Dann wird die Belohnung für diesen Schritt ermittelt.
@@ -107,7 +107,7 @@ Die folgende Abbildung zeigt die wesentlichen Hyperparameter, die bei der Entwic
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/KI}
 	
-	Abb. 7: Hyperparameter der Künstlichen Intelligenz \\
+	Abb. 9: Hyperparameter der Künstlichen Intelligenz \\
 \end{minipage}
 
 Die Künstliche Intelligenz basiert auf der MaskablePPO Version von Stable Baselines 3 Contributing. Weiterhin sind Konfigurationen zu treffen, welche das Training beeinflussen und steuern. Diese Einstellungen nennt man Hyperparameter. Sie legen die Ausprägung gewisser Steuerelemente des MaskablePPO Algorithmus und ähnlicher Algorithmen fest.
@@ -124,7 +124,7 @@ Aktivierungsfunktion: Die Aktivierungsfunktion legt fest, wann und wie stark Neu
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/ReLU.png}
 	
-	Abb. 8: ReLU Funktion \\
+	Abb. 10: ReLU Funktion \\
 \end{minipage}
 
 Gamma: Gamma legt fest wie stark Zukünftige Belohnungen wertgeschätzt werden. Es fungiert als eine Art Multiplikator. Potenzielle Belohnungen werden pro Spielschritt, den sie in der Zukunft entfernt liegen würden, mit Gamma multipliziert. Gamma ist so zu wählen, dass das Modell lernt, die bestmöglichen Aktionen zu wählen, um insgesamt das beste Ergebnis zu erzielen. Zu hohe Werte von Gamma können dazu führen, dass kurzzeitige Belohnungen vernachlässigt werden, was zu einem schlechteren Gesamtergebnis führen kann, wenn diese von besonderer Bedeutung sind. Zu niedrige Werte von Gamma können wiederum dazu führen, dass der Agent nicht zukunftsorientiert handelt und somit kein gutes Gesamtergebnis erzielt, da er sich nur auf kurzfristige Belohnungen konzentriert, anstatt in die Zukunft zu schauen und dieser Wert zuzumessen. In diesem Projekt bewegt sich der Wert von Gamma im Allgemeinen in einem Bereich zwischen 0.5 und 1.

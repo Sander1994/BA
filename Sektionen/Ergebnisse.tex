@@ -10,7 +10,7 @@ Bei dieser Version handelt es sich um den ersten lauffähigen Prototypen der Umg
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/firstpropertraining}
 	
-	Abb. 9: Erstes erfolgreiches Training\\
+	Abb. 11: Erstes erfolgreiches Training\\
 \end{minipage}
 
 In der Abbildung erkennt man, dass das Modell innerhalb einer Episode (eines Spiels) des öfteren in einen Punktebereich von 70 zu kommen scheint. Teilweise erzielt das Modell sogar über 150 Punkte. Fragwürdig ist, dass die maximale Punktezahl eigentlich bei 86 liegt und das Modell dennoch zu diesem Zeitpunkt zum Teil Punktewerte erzielt, die höher liegen. Dies ist darauf zurückzuführen, dass die Spielumgebung erzielte Punkte zum Teil mehrfach verwertete und somit mehr Punkte zu erspielen waren, als vorgesehen.
@@ -21,7 +21,7 @@ In der Abbildung erkennt man, dass das Modell innerhalb einer Episode (eines Spi
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/firstpropertraining100steps}
 	
-	Abb. 10: Erstes erfolgreiches Training 100 Schritte\\
+	Abb. 12: Erstes erfolgreiches Training 100 Schritte\\
 \end{minipage}
 
 In dieser Abbildung erkennt man, dass das Modell zwar zum Teil eine gute Menge an Punkten erzielt, im Großteil der Spiele allerdings nur null oder einen bis zwei Punkte erzielt. Dies ist darauf zurückzuführen, dass die Spielumgebung bei dieser Version des Projektes das Spiel unverzüglich beendet, wenn eine ungültige Aktion gewählt wird. Daraus kann man schließen, dass das Modell überwiegend ungültige Aktionen wählt, da bei nur 100 Schritten bereits über 40 Spiele abgeschlossen werden. Vorgesehen sind zu diesem Zeitpunkt pro Spiel zehn Spielschritte. Somit wurden über vier mal so viele Spiele abgeschlossen als unter optimalen Bedingungen vorgesehen. Fragwürdig ist hierbei auch, dass das Modell in manchen Episoden mindesten 50/86 Punkten erzielt und in den anderen nur 0 bis 2. Die Punkte werden in Abständen von 10 bis 20 Punkten erspielt, daher handelt es sich hierbei nicht um vereinzelte Erfolge im engeren Sinne.
@@ -32,7 +32,7 @@ In dieser Abbildung erkennt man, dass das Modell zwar zum Teil eine gute Menge a
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/trainingwithoutcancalation}
 	
-	Abb. 11: Training ohne Aktionsmaske\\
+	Abb. 13: Training ohne Aktionsmaske\\
 \end{minipage}
 
 Das Training erfolgte zunächst ohne die Verwendung einer Aktionsmaske. Das anfänglicher Verfahren bei dem das Spiel beendet wurde sobald eine ungültige Aktion getätigt wurde stellte sich als nicht geeignet heraus, da das Modell immer wieder ungültige Aktionen wählte, was zum Abbruch vieler Spielrunden führte. Daher wurde eine Trainingsverfahren mit negativer Belohnung bei ungültigen und positiver Belohnung bei gültigen Aktionen gewählt. Diese Belohnungen sind in dieser Abbildung nicht zu sehen, da sie herausgefiltert worden ist. Die Abbildung zeigt nur die aufsummierten Belohnungen, welche 10 oder mehr Punkte betragen. Insgesamt zeigt sich eine verhältnismäßig gute Performance bei der das Modell im Durchschnitt um die 50 Punkte erzielt. Bedenkt man, dass das Maximum bei 86 Punkten liegt ist dieses Ergebnis durchaus vertretbar. Das Modell erzielt somit im Durchschnitt ungefähr 60 Prozent der maximalen Punktezahl.
@@ -42,7 +42,7 @@ Das Training erfolgte zunächst ohne die Verwendung einer Aktionsmaske. Das anf�
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/trainingwithactionmask}
 	
-	Abb. 12: Training mit Aktionsmaske\\
+	Abb. 14: Training mit Aktionsmaske\\
 \end{minipage}
 
 In dieser Abbildung sieht man, dass die Performance im Gegensatz zu der Variante ohne Aktionsmaske zugenommen hat. Das Modell erzielt im Durchschnitt ungefähr 65 Punkte was einem Zuwachs von circa einem Drittel entspricht. Die erzielten Punkte steigen somit von ungefähr 60 Prozent des Maximums auf 75 Prozent. Zwar lässt sich sagen, dass die Performance des Vorgängermodells passabel war, allerdings erzielt die Variante mit Aktionsmaske ohne größere Umstände ein wesentlich besseres Ergebnis. Deshalb wurde das Projekt ab diesem Zeitpunkt mit Aktionsmaske fortgesetzt.
@@ -53,7 +53,7 @@ Die folgende Abbildung zeigt die ungültigen Züge einer Spielsimulation von 200
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/failswithtwodice}
 	
-	Abb. 13: Ungültige Züge mit zwei Würfeln\\
+	Abb. 15: Ungültige Züge mit zwei Würfeln\\
 \end{minipage}
 
 In der Abbildung ist zu erkennen, dass das Modell von null bis fünf ungültige Aktionen pro Spiel auswählt. Es ergibt sich ein Durchschnitt von ungefähr 1-2 ungültigen Zügen pro Spiel. Dies sollte nicht auftreten, wenn dem Modell gültige Aktionen zur Verfügung stehen, da die Aktionsmaske dafür sorgt, dass nur gültige Aktionen gewählt werden können. Was passiert allerdings, wenn es keine gültige Aktion gibt? Die Antwort auf die Frage ist: Das Modell wählt eine zufällige Aktion und berücksichtigt die Aktionsmaske nicht. Da nur zwei Würfel zur Verfügung stehen kommt es oft dazu, dass keiner der Würfel zu einem der Felder passt und somit kann keines der Felder ausgefüllt werden. Dadurch steht keine gültige Aktion zur Verfügung und es wird eine ungültige Aktion gewählt.
@@ -64,7 +64,7 @@ Die folgende Abbildung zeigt die ungültigen Züge einer Spielsimulation von 200
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/failswithfourdice}
 	
-	Abb. 14: Ungültige Züge mit vier Würfeln\\
+	Abb. 16: Ungültige Züge mit vier Würfeln\\
 \end{minipage}
 
 In der Abbildung erkennt man, dass die Anzahl an ungültigen Zügen im Gegensatz zur Variante mit zwei Würfeln drastisch abgenommen hat. Zwar kommt es vereinzelt immer noch zu Fällen bei denen dem Modell nichts anderes übrig bleibt, als eine ungültige Aktion zu wählen, allerdings ist die Wahrscheinlichkeit dafür bei vier Würfeln deutlich geringer.
@@ -75,7 +75,7 @@ In der Abbildung erkennt man, dass die Anzahl an ungültigen Zügen im Gegensatz
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/optimizetraining}
 	
-	Abb. 15: Optimiertes Training\\
+	Abb. 17: Optimiertes Training\\
 \end{minipage}
 Man erkennt, dass das Modell im Durchschnitt etwas mehr als 80 Punkte erzielt hat. Dies ist ein sehr guter Wert, da die maximale Punktezahl bei 86 liegt. Die maximale Punktezahl von 86 Punkten wurde innerhalb der zwanzig Episoden zehn mal erreicht.
 \subsection{Erstes Training mit allen Feldern und Boni}
@@ -85,7 +85,7 @@ Man erkennt, dass das Modell im Durchschnitt etwas mehr als 80 Punkte erzielt ha
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/firsttrainingwithallfields}
 	
-	Abb. 16: Erstes Training mit allen Feldern\\
+	Abb. 18: Erstes Training mit allen Feldern\\
 	
 Man kann erkennen, dass das Modell bereits vertretbare Werte erzielt, allerdings lässt sich an dieser Stelle noch viel optimieren. Im Schnitt erzielt es etwas mehr als 110 Punkte. So viele Punkte erzielt im allgemeinen auch ein Neueinsteiger, der das Spiel kaum kennt. Bei dieser Version des Spiels gibt es auch noch viele Bugs, die dazu führen, dass weniger Punkte erspielt werden, als es unter ordentlichen Bedingungen möglich wäre.
 \end{minipage}
@@ -97,10 +97,10 @@ Man kann erkennen, dass das Modell bereits vertretbare Werte erzielt, allerdings
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/maskableppo_ganzschoenclever_193avg_v3.1}
 	
-	Abb. 17: Performance 40000 Schritte\\
+	Abb. 19: Performance 40000 Schritte\\
 \end{minipage}
 
-Das Modell erzielt über mehr als 1000 Episoden eine durchschnittliche Punktezahl von ungefähr 205 Punkten. Das ist beachtlich, da menschliche Spieler in einem Versuch im Durchschnitt lediglich 160 Punkte erzielen konnten. Der Median liegt bei ...
+Das Modell erzielt über mehr als 1000 Episoden eine durchschnittliche Punktezahl von ungefähr 205 Punkten. Das ist beachtlich, da menschliche Spieler in einem Versuch im Durchschnitt lediglich 160 Punkte erzielen konnten. Bei einem weiteren Test über 10000 Schritte liegt Median liegt bei 212 und die durchschnittliche Punktezahl bei 207, was auf ein robustes Modell schließen lässt, da Median und durchschnittliche Punktezahl nah nah beieinander liegen.
 
 \begin{minipage}{\linewidth}
 	Die folgende Abbildung zeigt die ungültigen Züge des genannten Modells:
@@ -108,15 +108,34 @@ Das Modell erzielt über mehr als 1000 Episoden eine durchschnittliche Punktezah
 	\vspace{0.5cm}
 	\includegraphics[width=1\textwidth]{Bilder/maskableppo_ganzschoenclever_193avg_v3.1f}
 	
-	Abb. 18: Ungültige Züge 40000 Schritte\\
+	Abb. 20: Ungültige Züge 40000 Schritte\\
 	
 \end{minipage}
 
 Man erkennt, dass das Modell in den meisten fällen maximal einen ungültigen Zug macht. Teilweise sind noch 2 ungültige Züge pro Episode zu erkennen und noch seltener drei oder vier. Angesichts dessen, dass das Modell pro Spielrunde ungefähr 40 Züge gemacht hat und häufig Würfel bei der Wahl ungültig gemacht werden, ist das ein beachtliches Ergebnis. Das Modell hat gelernt solche Fälle effizient zu vermeiden.
+
+\begin{minipage}{\linewidth}
+	Die folgenden beiden Abbildungen zeigen einen Test mit nur 4000 Schritten. Diese Abbildungen sind deutlicher als die mit 40000 Schritten:
+	
+	\vspace{0.5cm}
+	\includegraphics[width=1\textwidth]{Bilder/final4000steps}
+	
+	Abb. 21: Performance 4000 Schritte\\
+	
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+	
+	\vspace{0.5cm}
+	\includegraphics[width=1\textwidth]{Bilder/final4000stepsf}
+	
+	Abb. 22: Ungültige Züge 4000 Schritte\\
+	
+\end{minipage}
 \subsubsection{Hyperparameter}
 Die finalen Hyperparameter sind:
 
-Das Neuronale Netz mit sieben Schichten von jeweils 1024 Neuronen. Ein Gamma von 1. Ein Entropie Koeffizient von 0.1. Eine Lernrate von 0.0006. Eine Clip Range von 0.2. Eine Umgebungsanzahl von 32. Datenpaketen mit 2048 Aktions-Zustands-Paaren, welche jeweils 5 mal verwendet werden und dabei in Batches von 128 Schritten aufgeteilt werden, sowie einem Entropie Koeffizienten für das verfestigen der gelernten Schritte von 0. Das Modell wurde in diesem Prozess zunächst für 2220000 Zeitschritte trainiert. Daraufhin wurde es mit dem Entropie Koeffizient von 0 für weitere 1110000 Zeitschritte trainiert, um das gelernte Verhalten weiter auszunutzen/auszubeuten. Dieser Prozess wurde dann zwei weitere male mit doppelt so vielen Zeitschritten wiederholt. Zunächst betrug die durchschnittliche Punktezahl der Modells annähernd 190, danach 201 und schließlich 205 Punkte.
+Das Neuronale Netz mit sieben Schichten von jeweils 1024 Neuronen. Ein Gamma von 1. Ein Entropie Koeffizient von 0.1. Eine Lernrate von 0.0006. Eine Clip Range von 0.2. Eine Umgebungsanzahl von 32. Datenpaketen mit 2048 Aktions-Zustands-Paaren, welche jeweils 5 mal verwendet werden und dabei in Batches von 128 Schritten aufgeteilt werden, sowie einem Entropie Koeffizienten für das verfestigen der gelernten Schritte von 0. Das Modell wurde in diesem Prozess zunächst für 2220000 Zeitschritte trainiert. Daraufhin wurde es mit dem Entropie Koeffizient von 0 für weitere 1110000 Zeitschritte trainiert, um das gelernte Verhalten weiter auszunutzen/auszubeuten. Dieser Prozess wurde dann zwei weitere male mit doppelt so vielen Zeitschritten wiederholt. Zunächst betrug die durchschnittliche Punktezahl des Modells annähernd 190, danach 201, danach 205 und nach weiteren Tests schließlich 207 Punkte.
 
 \subsubsection{ChatGPT 4}
 ChatGPT wurde verwendet, um den Prototypen des Projektes bis zu seinem ersten erfolgreichen Einsatz zu implementieren. Dabei hat es sich als besonders nützlich erwiesen, um lauffähigen Code mit den gewünschten, relativ standardmäßigen Methoden zu implementieren. Dies ist gerade bei der Erstellung eines ersten Prototypen vorteilhaft, oder um die Machbarkeit des Projektes zu überprüfen. Im späteren Verlauf wurden von ChatGPT generierte Inhalte nicht mehr direkt übernommen, sondern es wurde nur benutzt, um Auskunft über geeignete oder verwendete Technologien zu geben, Ideen zu sammeln oder Syntax zu erfragen. Auch für diese Aufgaben stellte es sich als sehr nützlich heraus, solange die Fragen nicht zu spezifisch oder komplex waren. Ist die Problemstellung zu komplex oder zu spezifisch, scheint ChatGPT Schwierigkeiten dabei zu bekommen eine vollständige oder geeignete Antwort zu liefern. Außerdem ist die Datenbank des ChatGPT 4 Modells vom September 2021, was den Nutzen für neuere Sachverhalte erschwert.
