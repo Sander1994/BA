@@ -1,14 +1,14 @@
 \section{Implementierung}
 In diesem Kapitel wird die Implementierung des Projektes vorgestellt und erläutert. Zur Darstellung der Funktionsweise der einzelnen Funktionen wird Pseudocode verwendet. Dies soll dabei helfen die Funktionsweise verständlicher und knapper aufzuzeigen.
 \subsubsection{Einschränkungen}
-Aus zeitlichen Gründen ergeben sich einige Einschränkungen für das Design der Implementierung. Das Spiel endet nach der Wahl des Würfels nach dem dritten Wurf in der sechsten Runde. Somit kann die Extra Wahl Boni kein letztes mal benutzt werden und es gibt in der letzten Runde auch keine Wahl vom Silbertablett. Außerdem werden beim solo Spiel nicht die niedrigsten sechs Würfel des Wurfes auf das Silbertablett des virtuellen Mitspielers gelegt, sondern drei zufällige.
+Aus zeitlichen Gründen ergeben sich einige Einschränkungen für das Design der Implementierung. Das Spiel endet nach der Wahl des Würfels nach dem dritten Wurf in der sechsten Runde. Somit kann die Extra Wahl Boni kein letztes Mal benutzt werden und es gibt in der letzten Runde auch keine Wahl vom Silbertablett. Außerdem werden beim solo Spiel nicht die niedrigsten sechs Würfel des Wurfes auf das Silbertablett des Mitspielers gelegt, sondern drei zufällige.
 \subsection{Spielumgebung}
-Die Implementierung besteht aus zwei wesentlichen Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [siehe Kapitel 2.2.1] verwendet.
+Die Implementierung besteht aus zwei Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [siehe Kapitel 2.2.1] verwendet.
 \subsubsection{Klassenattribute}
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute, die für das Rundenmanagement wichtig sind:
+Code 1 zeigt die Klassenattribute, die für das Rundenmanagement wichtig sind:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für Runden}]
+\begin{lstlisting}[caption={Klassenattribute für das Runden-System}, basicstyle=\ttfamily]
 self.initial_rounds
 self.rounds
 self.roll_in_round
@@ -22,9 +22,9 @@ Das Attribut rounds repräsentiert die aktuell verbleibende Rundenanzahl im Spie
 Das Attribut roll\_in\_round repräsentiert die Nummer des aktuellen Wurfes in der Runde.\\
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute, die für das Würfeln der Würfel relevant sind:
+Code 2 zeigt die Klassenattribute, die für das Würfeln der Würfel relevant sind:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für Würfel}]
+\begin{lstlisting}[caption={Klassenattribute für Würfel}, basicstyle=\ttfamily]
 self.invalid_dice = {"white": False, "yellow": False, ...}
 self.dice = {"white": 0, "yellow": 0, ...}
 \end{lstlisting}
@@ -33,22 +33,22 @@ self.dice = {"white": 0, "yellow": 0, ...}
 Die Attribute invalid\_dice und dice repräsentieren die Augenzahlen der Würfel, sowie die Gültigkeit der Würfel selbst. Ist der Wert von invalid\_dice False, ist der Würfel nicht ungültig und somit gültig.\\
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
+Code 3 zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für Punktestand}]
+\begin{lstlisting}[caption={Klassenattribute für die Nachvollziehbarkeit von Punkteständen}, basicstyle=\ttfamily]
 self.score
 self.score_history
 self.initialized
 \end{lstlisting}
 \end{minipage}
 
-Das Attribut score repräsentiert den aktuellen Score der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die score\_history einzutragen. Das Attribut score\_history ist eine Historie über die erreichten Punktestände in den Episoden beziehungsweise Spieldurchläufen beim Training. Das Attribut initialized wird verwendet, um zu gewährleisten, dass nur Einträge in der Score-History eingetragen werden, nachdem ein Spiel abgeschlossen worden ist. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert worden ist oder nicht.\\
+Das Attribut score repräsentiert den aktuellen Score der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die score\_history einzutragen. Das Attribut score\_history ist eine Historie über die erreichten Punktestände in den Episoden beziehungsweise Spieldurchläufen beim Training. Das Attribut initialized wird verwendet, um zu gewährleisten, dass nur Einträge in der Score-History eingetragen werden, nachdem ein Spiel abgeschlossen wurde. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert wurde oder nicht.\\
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute, welche die farbigen Felder des Spielbrettes repräsentieren:
+Code 4 zeigt die Klassenattribute, welche die farbigen Felder des Spielbrettes repräsentieren:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für farbige Felder}]
-self.yellow_field = [[3, 6, 5, 0], [2, 1, 0, 5], [1, 0, 2, 4], ...]
+\begin{lstlisting}[caption={Klassenattribute für die farbigen Felder des Spiels}, basicstyle=\ttfamily]
+self.yellow_field = [[3, 6, 5, 0], [2, 1, 0, 5], ...]
 self.blue_field = [[0, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
 self.green_field = [0] * 11
 self.orange_field = [0] * 11
@@ -56,26 +56,26 @@ self.purple_field = [0] * 11
 \end{lstlisting}
 \end{minipage}
 
-Die Attribute yellow\_field, blue\_field, green\_field, orange\_field und purple\_field stehen für die fünf farbigen Felder auf dem Spielbrett. Sie repräsentieren die eingetragenen Werte auf dem Spielbrett und bestimmen somit welche Kästchen aktuell ausgefüllt werden können (vorausgesetzt die Würfelergebnisse passen) und welche Belohnungen freigeschaltet werden beziehungsweise freigeschaltet worden sind.\\
+Die Attribute yellow\_field, blue\_field, green\_field, orange\_field und purple\_field stehen für die fünf farbigen Felder auf dem Spielbrett. Sie repräsentieren die eingetragenen Werte auf dem Spielbrett und bestimmen somit welche Kästchen aktuell ausgefüllt werden können (vorausgesetzt die Würfelergebnisse passen) und welche Belohnungen freigeschaltet werden beziehungsweise freigeschaltet wurden.\\
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute, welche die zu erspielenden Boni auf den farbigen Feldern repräsentieren:
+Code 5 zeigt die Klassenattribute, welche die zu erspielenden Boni auf den farbigen Feldern repräsentieren:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für freizuschaltende Boni}]
+\begin{lstlisting}[caption={Klassenattribute für freizuschaltende Boni}, basicstyle=\ttfamily]
 self.yellow_rewards = {"row": ["blue_cross", ...], "dia": ...}
 self.blue_rewards = {"row": ["orange_five", ...], "col": ...}
 self.green_rewards = [None, None, None, "extra_pick", ...]
 self.orange_rewards = [None, None, "re_roll", ...]
-self.purple_rewards = [None, None, "re_roll", "blue_cross", ...]
+self.purple_rewards = [None, None, "re_roll", ...]
 \end{lstlisting}
 \end{minipage}
 
 Die Attribute yellow\_rewards, blue\_rewards, green, orange\_rewards und purple\_rewards repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Für das blaue Feld sind diese in Form von Reihen (row) und Spalten (col) aufgeführt. Das gelbe Feld besitzt Boni für das ausfüllen von Reihen (row) und einen Boni, der bei diagonalem ausfüllen (dia) freigeschaltet werden kann. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Boni aufweisen, was dem Wert None entspricht.\\
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute, für die Punktebelohnungen des gelben, blauen und grünen Feldes:
+Code 6 zeigt die Klassenattribute, für die Punktebelohnungen des gelben, blauen und grünen Feldes:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für Punktestand}]
+\begin{lstlisting}[caption={Klassenattribute für freizuschaltende Punktebelohnungen des gelben, blauen und grünen Feldes}, basicstyle=\ttfamily]
 self.yellow_rewards = {"col": [10, 14, 16, 20], ...}
 self.blue_count_rewards = [0, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 self.green_count_rewards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -85,11 +85,11 @@ self.green_count_rewards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 Im Attribut yellow\_rewards sind im Spaltenbereich (col) die Punktebelohnungen des gelben Feldes aufgeführt. Die Attribute blue\_count\_rewards und green\_count\_rewards repräsentieren die Punktebelohnungen, welche erspielt werden können sobald ein blaues beziehungsweise grünes Kästchen ausgefüllt wird. Beginnend vom ersten Wert des Arrays und danach inkrementell aufsteigend, steigt die erhaltene Punktebelohnung bei jedem ausgefüllten Kästchen stetig an.\\
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und sind die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis sie nach dem Spiel wieder zurückgesetzt werden:
+Code 7 zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und sind die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis sie nach dem Spiel wieder zurückgesetzt werden:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für Belohnungsflags}]
+\begin{lstlisting}[caption={Klassenattribute für Belohnungsflags}, basicstyle=\ttfamily]
 self.yellow_reward_flags = {"row": [False] * 4, "col": ...}
-self.blue_reward_flags = {"row": [False] * 3, "col": [False] * 4}
+self.blue_reward_flags = {"row": [False] * 3, "col": ...}
 self.blue_count_reward_flags = [False] * 12
 self.green_reward_flags = [False] * 11
 self.orange_reward_flags = [False] * 11
@@ -98,9 +98,9 @@ self.purple_reward_flags = [False] * 11
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erzielt worden sind und am Ende genutzt, um den Wert der Fuchs Boni zu bestimmen [siehe Kapitel 2.1.1]:
+Code 8 zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erzielt worden sind und am Ende genutzt, um den Wert der Fuchs Boni zu bestimmen [siehe Kapitel 2.1.1]:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für Punktestände der Felder}]
+\begin{lstlisting}[caption={Klassenattribute für erreichte Punktestände der einzelnen farbigen Felder}, basicstyle=\ttfamily]
 self.yellow_field_score
 self.blue_field_score
 self.green_field_score
@@ -110,9 +110,9 @@ self.purple_field_score
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute für freigeschaltete Boni. Wird eine Boni erspielt wird der Wert inkrementiert, wird sie genutzt wird er dekrementiert:
+Code 9 zeigt die Klassenattribute für freigeschaltete Boni. Wird eine Boni erspielt wird der Wert inkrementiert, wird sie genutzt wird er dekrementiert:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für freigespielte Boni}]
+\begin{lstlisting}[caption={Klassenattribute für freigespielte Boni}, basicstyle=\ttfamily]
 self.extra_pick
 self.re_roll
 self.fox
@@ -127,9 +127,9 @@ self.purple_six
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute für die Anzahl an gewählten Kästchen in den verschiedenen farbigen Feldern. Wenn ein Kästchen in einem der Felder ausgefüllt wird, wird der Wert dieses Attributes inkrementiert. Diese Attribute dienen nicht dem Spielablauf selbst, sondern zur Nachvollziehbarkeit der Strategie des Modells:
+Code 10 zeigt die Klassenattribute für die Anzahl an gewählten Kästchen in den verschiedenen farbigen Feldern. Wenn ein Kästchen in einem der Felder ausgefüllt wird, wird der Wert dieses Attributes inkrementiert. Diese Attribute dienen nicht dem Spielablauf selbst, sondern zur Nachvollziehbarkeit der Strategie des Modells:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute für gewählte Kästchen in den farbigen Feldern}]
+\begin{lstlisting}[caption={Klassenattribute für die Anzahl an gewählte Kästchen innerhalb der farbigen Feldern}, basicstyle=\ttfamily]
 self.picked_yellow
 self.picked_blue
 self.picked_green
@@ -139,14 +139,14 @@ self.picked_purple
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt die Klassenattribute für den Aktions- sowie Beobachtungsraum:
+Code 11 zeigt die Klassenattribute für den Aktions- sowie Beobachtungsraum:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Klassenattribute Aktionsraum und Beobachtungsraum}]
+\begin{lstlisting}[caption={Klassenattribute des Aktions- und Beobachtungsraumes}, basicstyle=\ttfamily]
 self.number_of_actions = 247
 low_bound = np.array([0]*16 + [0]*12 + ...)
 high_bound = np.array([6]*16 + [6]*12 + ...)
 self.action_space = spaces.Discrete(self.number_of_actions)
-self.observation_space = spaces.Box(low_bound, high_bound, shape= ...
+self.observation_space = spaces.Box(low_bound, high_bound, ...)
 self.valid_action_mask_value = np.ones(self.number_of_actions)
 \end{lstlisting}
 \end{minipage}
@@ -159,11 +159,11 @@ Die ersten 122 Werte des Aktionsraumes von 0 bis 121 sind sowohl normalen Wahlen
 
 Die Werte von 122 bis 243 stehen für Wahlen mit der Extra Wahl Boni oder für Wahlen vom Silbertablett des Gegners. Die Struktur innerhalb dieser Reichweite ist die selbe wie bei den 122 Werte davor. Die ersten 16 Werte stehen für die selben Kästchen im gelben Feld und so weiter.
 
-Der Wert 244 steht für die Neu Würfeln Boni, der Wert 245 für das passen bei einem möglichen Einsatz der Extra Wahl Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen getätigt werden kann.
-\subsubsection{Schritt Methode}
-Der folgende Pseudocode zeigt die Funktionsweise der Schritt Methode (step method) der Spielumgebung. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
+Der Wert 244 steht für die Neu Würfeln Boni, der Wert 245 für das Passen bei einem möglichen Einsatz der Extra Wahl Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen getätigt werden kann.
+\subsubsection{Schritt-Methode}
+Code 12 zeigt die Funktionsweise der Schritt Methode (step method) der Spielumgebung mithilfe von Pseudocode. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Schritt Methode}]
+\begin{lstlisting}[caption={Schritt-Methode}]
 step(Aktion):
 	Setze Methodenattribute zurück
 	
@@ -236,7 +236,7 @@ step(Aktion):
 \end{lstlisting}
 \subsubsection{Methode zum Zurücksetzen der Spielumgebung}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (reset method). Sie setzt Umgebungen, in denen ein Spiel abgeschlossen worden ist auf den Anfangszustand zurück, damit eine weitere Runde gespielt werden kann:
+Code 13 zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (reset method) mithilfe von Pseudocode. Sie setzt Umgebungen, in denen ein Spiel abgeschlossen wurde auf den Anfangszustand zurück, damit eine weitere Runde gespielt werden kann:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Zurücksetzen der Umgebung}]
 reset():
@@ -246,7 +246,7 @@ reset():
 
 \subsubsection{Methode zur Visualisierung der Spielumgebung}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (render method). Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
+Code 14 zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (render method) mithilfe von Pseudocode. Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Visualisierung der Spielumgebung}]
 render():
@@ -254,11 +254,11 @@ render():
 \end{lstlisting}
 \end{minipage}
 
-\subsubsection{Würfel Methode}
+\subsubsection{Würfel-Methode}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Würfeln der Würfel. Würfel müssen nach jedem Wurf, bei Anfang jeder Spielrunde und beim Einsetzen des Neu Würfeln Boni neu gewürfelt werden:
+Code 15 zeigt die Funktionsweise der Methode zum Würfeln der Würfel mithilfe von Pseudocode. Würfel müssen nach jedem Wurf, bei Anfang jeder Spielrunde und beim Einsetzen des Neu Würfeln Boni neu gewürfelt werden:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Würfel Methode}]
+\begin{lstlisting}[caption={Methode zum werfen der Würfel}]
 roll_dice():
 	Würfle die Werte aller gültigen Würfel neu
 \end{lstlisting}
@@ -266,7 +266,7 @@ roll_dice():
 
 \subsubsection{Methode zur Überprüfung der freigespielten Belohnungen}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (check\_rewards method). Diese Methode überprüft jedes mal nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt worden ist und fügt diese dem Inventar des Spielers hinzu:
+Code 16 zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (check\_rewards method) mithilfe von Pseudocode. Diese Methode überprüft jedes mal nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt wurde und fügt diese dem Inventar des Spielers hinzu:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Überprüfung der freigespielten Belohnungen}]
 check_rewards():
@@ -291,7 +291,7 @@ check_rewards():
 
 \subsubsection{Methode zur Generierung des Beobachtungsraumes}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\_get\_obs method). Diese Methode vereinfacht es den Beobachtungsraum zu generieren, welcher jedes mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
+Code 17 zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\_get\_obs method) mithilfe von Pseudocode. Diese Methode vereinfacht es den Beobachtungsraum zu generieren, welcher jedes mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Generierung des Beobachtungsraumes}]
 _get_obs():
@@ -306,7 +306,7 @@ _get_obs():
 \end{minipage}
 
 \subsubsection{Methode zur Generierung der Aktionsmaske}
-Der folgende Pseudocode zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (valid\_action\_mask method). Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf Null gesetzt:
+Code 18 zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (valid\_action\_mask method) mithilfe von Pseudocode. Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf Null gesetzt:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Generierung der Aktionsmaske}]
 valid_action_mask():
@@ -361,18 +361,18 @@ valid_action_mask():
 \end{lstlisting}
 \subsubsection{Methode zum Hinzufügen von Boni}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Hinzufügen von Boni (add\_reward method). Diese Methode wird von der Methode zur Überprüfung der freigespielten Belohnungen genutzt, um Boni dem Inventar des Spielers hinzuzufügen:
+Code 19 zeigt die Funktionsweise der Methode zum Hinzufügen freigeschalteter Boni (add\_reward method) mithilfe von Pseudocode. Diese Methode wird von der Methode zur Überprüfung der freigespielten Belohnungen genutzt, um Boni dem Inventar des Spielers hinzuzufügen:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Hinzufügen von Boni}]
+\begin{lstlisting}[caption={Methode zum Hinzufügen freigschalteter Boni}]
 add_reward(Belohnungstyp):
 	Inkrementiere Wert für Belohnungstyp
 \end{lstlisting}
 \end{minipage}
 
 \subsubsection{Methode zum Inkrementieren von Runden}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Inkrementieren von Runden (increment\_rounds method). Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben und zu managen:
+Code 20 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Systems (increment\_rounds method) mithilfe von Pseudocode. Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben und zu managen:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Inkrementieren von Runden}]
+\begin{lstlisting}[caption={Methode zum Inkrementieren des Runden-Systems}]
 increment_rounds():
 	if Extra Wahl nach eignener Runde:
 		Wahl vom Silbertablett = True
@@ -411,12 +411,12 @@ increment_rounds():
 		Würfle Würfel neu
 \end{lstlisting}
 \subsection{Künstliche Intelligenz}
-Die Implementierung besteht aus zwei wesentlichen Klassen. Eine davon ist die Künstliche Intelligenz. In diesem Kapitel werden die Methoden der Künstlichen Intelligenz mithilfe von Pseudocode erläutert. Diese Methoden beinhaltet Methoden der Spielumgebung [siehe Kapitel 4.1] und Methoden zur Visualisierung [siehe Kapitel 4.3], auf die im nächsten Kapitel genauer eingegangen wird. Außerdem wurde für die Implementierung der Künstlichen Intelligenz die Bibliothek Stable Baselines [siehe Kapitel 2.2.2] verwendet.
-\subsubsection{Methode zu anlernen des Modells}
+Die Implementierung besteht aus zwei Klassen. Eine davon ist die Künstliche Intelligenz. In diesem Kapitel werden die Methoden der Künstlichen Intelligenz mithilfe von Pseudocode erläutert. Diese Methoden beinhaltet Methoden der Spielumgebung [siehe Kapitel 4.1] und Methoden zur Visualisierung [siehe Kapitel 4.3], auf die im nächsten Kapitel genauer eingegangen wird. Außerdem wurde für die Implementierung der Künstlichen Intelligenz die Bibliothek Stable Baselines [siehe Kapitel 2.2.2] verwendet.
+\subsubsection{Methode zum Anlernen des Modells}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum anlernen des Modells (model\_learn). Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO Modell zu bilden und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
+Code 21 zeigt die Funktionsweise der Methode zum Anlernen des Modells (model\_learn) mithilfe von Pseudocode. Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO Modell zu bilden und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zu anlernen des Modells}]
+\begin{lstlisting}[caption={Methode zu Anlernen des Modells}]
 model_learn(Hyperparameter):
 	Initialisiere Spielumgebungen
 	Modell = Initialisiere MaskablePPO Modell mit Hyperparamter
@@ -433,9 +433,9 @@ model_learn(Hyperparameter):
 \end{minipage}
 \subsubsection{Methode zum Vorhersagen mithilfe des Modells}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Vorhersagen mithilfe des Modells(model\_predict). Diese Methode ermöglicht es mithilfe des Modells Vorhersagen über günstige Aktionen in einem gegebenen Zustand der Spielumgebung zu bestimmen und anhand dessen, zusammen mit einer solchen Spielumgebung, einen Spielverlauf zu simulieren:
+Code 22 zeigt die Funktionsweise der Methode zum Vorhersagen von Aktionen mithilfe des Modells(model\_predict) unter Verwendung von Pseudocode. Diese Methode ermöglicht es mithilfe des Modells Vorhersagen über günstige Aktionen in einem gegebenen Zustand der Spielumgebung zu bestimmen und anhand dessen, zusammen mit einer solchen Spielumgebung, einen Spielverlauf zu simulieren:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Vorhersagen mithilfe des Modells}]
+\begin{lstlisting}[caption={Methode zum Vorhersagen von Aktionen mithilfe des Modells}]
 model_predict(Schrittanzahl):
 	Lade Modell
 	Initialisiere Spielumgebungen und Historien
@@ -451,7 +451,7 @@ model_predict(Schrittanzahl):
 \end{minipage}
 \subsubsection{Methode zur Initialisierung der Spielumgebungen}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen(\_init\_envs). Mit der Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
+Code 23 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen(\_init\_envs) mithilfe von Pseudocode. Mit der Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Initialisierung der Spielumgebungen}]
 _init_envs(Anzahl, Punktestände, Fehlversuche):
@@ -475,7 +475,7 @@ _init_envs(Anzahl, Punktestände, Fehlversuche):
 
 \subsubsection{Methode zum Anwenden der Aktionsmaske}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske(mask\_fn). Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
+Code 24 zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske(mask\_fn) mithilfe von Pseudocode. Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Anwenden der Aktionsmaske}]
 mask_fn(Spielumgebung):
@@ -488,9 +488,9 @@ mask_fn(Spielumgebung):
 Dieses Kapitel erläutert die Methoden zur Visualisierung mithilfe von Pseudocode. Für die Methoden wurde die Bibliothek Matplotlib [siehe Kapitel 2.2.3] verwendet.
 \subsubsection{Methoden zum Erstellen von Einträgen}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen(make\_fail\_entries, make\_score\_entries, make\_fail\_history\_entry, make\_score\_history\_entry). Diese Methoden erstellen Einträgen und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
+Code 25 zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen(make\_fail\_entries, make\_score\_entries, make\_fail\_history\_entry, make\_score\_history\_entry) mithilfe von Pseudocode. Diese Methoden erstellen Einträgen und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen}]
+\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen für Hisorien}]
 make_fail_entries(Punktebelohnungen, Anzahl, Fehlversuche):
 	if Punktebelohnung < 0:
 		Inkrementiere Fehlversuche der Umgebung
@@ -508,11 +508,11 @@ make_score_history_entry(Punktestände, Punktehistorie)
 		Hänge Punktestand der Umgebung Punktehistorie an
 \end{lstlisting}
 \end{minipage}
-\subsubsection{Methode zum plotten von Historien}
+\subsubsection{Methode zum Plotten von Historien}
 \begin{minipage}{\linewidth}
-Der folgende Pseudocode zeigt die Funktionsweise der Methode zum plotten von Historien(plot\_history). Diese Methode visualisiert die generierten Historien:
+Code 26 zeigt die Funktionsweise der Methode zum Plotten von Historien(plot\_history) mithilfe von Pseudocode. Diese Methode visualisiert die generierten Historien:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum plotten von Historien}]
+\begin{lstlisting}[caption={Methode zum Plotten von Historien}]
 plot_history(Historie):
 	Plotte jeden Eintrag der Historie
 	Setze Titel
@@ -520,11 +520,11 @@ plot_history(Historie):
 	Zeige Grafik an
 \end{lstlisting}
 \end{minipage}
-\subsection{Verwendung}
+\subsection{Anwendungsbeispiel für die Künstliche Intelligenz}
 \begin{minipage}{\linewidth}
-Der folgende Code zeigt ein Anwendungsbeispiel des Projektes. Es  wird ein Modell mit dem Namen model\_name geladen und für 1110000 Schritte (x3 durch die learn\_model methode) trainiert. Entsprechende Hyperparameter werden ebenfalls gesetzt. Daraufhin werden mithilfe des Modells Spieldurchläufe (40000 Schritte lang) simuliert:
+Code 27 zeigt ein Anwendungsbeispiel des Projektes. Es  wird ein Modell mit dem Namen model\_name geladen und für 1110000 Schritte (x3 durch die learn\_model methode) trainiert. Entsprechende Hyperparameter werden ebenfalls gesetzt. Daraufhin werden mithilfe des Modells Spieldurchläufe (ungefähr 1000 Episoden) simuliert:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Anwendungsbeispiel}]
+\begin{lstlisting}[caption={Anwendungsbeispiel für die Verwendung der Künstlichen Intelligenz}]
 def main():
 	model_learn(total_timesteps=1110000, ent_coef=0.1, gamma=1, 
 	 model_name="maskableppo_ganzschoenclever_193avg_v3")
