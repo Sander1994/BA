@@ -1,35 +1,35 @@
 \section{Ergebnisse}
-In diesem Kapitel werden die Ergebnisse des Projektes vorgestellt. Dabei werden sowohl der Verlauf der Implementierungsphase als auch die finalen Ergebnisse behandelt. Zunächst wurde ein Prototyp entwickelt, der die wesentlichen Funktionalitäten des Modells und der Spielumgebung beinhaltet, um sicherzustellen dass das Vorhaben im Rahmen der Vorgaben umsetzbar ist und, um Einblicke in möglichen Problemstellungen des Projektes zu erhalten. Danach wurde der Prototyp Stück für Stück erweitert, bis schließlich das komplette Spiel mit allen Funktionalitäten umgesetzt worden ist und das Modell damit trainiert werden konnte.
+In diesem Kapitel werden die Ergebnisse des Projektes vorgestellt. Dabei werden sowohl der Verlauf der Implementierungsphase als auch die finalen Ergebnisse behandelt. Zunächst wurde ein Prototyp entwickelt, der die wesentlichen Funktionalitäten der Künstlichen Intelligenz und der Spielumgebung beinhaltet, um sicherzustellen, dass das Vorhaben im Rahmen der Vorgaben umsetzbar ist und um Einblicke in möglichen Problemstellungen des Projektes zu gewinnen. Danach wurde der Prototyp schrittweise erweitert, bis schließlich das komplette Spiel mit allen Funktionalitäten umgesetzt worden ist und die Künstliche Intelligenz vollständig trainiert werden konnte.
 \subsection{Trainingshistorie}
 \subsubsection{Prototyp}
-Bei dieser Version handelt es sich um den ersten lauffähigen Prototypen der Umgebung. Es wurde nur eines der farbigen Felder (das gelbe) in der Spielumgebung implementiert. Das Modell kann mithilfe dieser Spielumgebung bereits trainiert werden und erzielt zum Teil durchaus passable Punktezahlen.\\
+Bei dieser Version handelt es sich um den ersten lauffähigen Prototypen der Umgebung. Es wurde nur eines der farbigen Felder (gelb) in der Spielumgebung implementiert. Das Modell kann mithilfe dieser Spielumgebung bereits trainiert werden und erzielt zum Teil gute Punktezahlen.\\
 
-Abbildung 11 zeigt das erste erfolgreiche Training des Modells:
+Abbildung 11 zeigt das die Punktestände des ersten erfolgreiche Trainings des Modells für 27000 Episoden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/firstpropertraining} 
 	\caption[Punktezahlen des ersten trainierten Modells für 27000 Episoden]{Punktezahlen des ersten trainierten Modells für 27000 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-In der Abbildung erkennt man, dass das Modell innerhalb einer Episode (eines Spiels) des öfteren in einen Punktebereich von 70 zu kommen scheint. Teilweise erzielt das Modell sogar über 150 Punkte. Fragwürdig ist, dass die maximale Punktezahl eigentlich bei 86 liegt und das Modell dennoch zu diesem Zeitpunkt zum Teil Punktewerte erzielt, die höher liegen. Dies ist darauf zurückzuführen, dass die Spielumgebung erzielte Punkte zum Teil mehrfach verwertete und somit mehr Punkte zu erspielen waren, als vorgesehen.\\
+Abbildung 11 zeigt, dass das Modell innerhalb einer Episode (eines Spiels) des öfteren in einen Punktebereich von 70 kommt. Teilweise erzielt das Modell sogar über 150 Punkte. Fragwürdig ist hierbei, dass die maximale Punktezahl eigentlich bei 86 liegt und das Modell zu diesem Zeitpunkt dennoch teilweise Punktewerte erzielt, die höher liegen. Dies war darauf zurückzuführen, dass die Spielumgebung erzielte Punkte teilweise mehrfach anrechnete und somit mehr Punkte zu erspielen waren, als vorgesehen.\\
 
-Abbildung 12 zeigt das erste erfolgreiche Training des Modells für 45 Episoden:
+Abbildung 12 zeigt das die Punktestände des ersten erfolgreiche Trainings des Modells für 45 Episoden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/firstpropertraining100steps} 
 	\caption[Punktezahlen des ersten trainierten Modells für 45 Episoden]{Punktezahlen des ersten trainierten Modells für 45 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-In dieser Abbildung erkennt man, dass das Modell zwar zum Teil eine gute Menge an Punkten erzielt, im Großteil der Spiele allerdings nur null oder einen bis zwei Punkte erzielt. Dies ist darauf zurückzuführen, dass die Spielumgebung bei dieser Version des Projektes das Spiel unverzüglich beendet, wenn eine ungültige Aktion gewählt wird. Daraus ist zu schließen, dass das Modell überwiegend ungültige Aktionen wählt, da bei nur 100 ausgeführten Schritten bereits 45 Spiele abgeschlossen wurden. Vorgesehen sind zu diesem Zeitpunkt pro Spiel zehn Spielschritte. Somit wurden über vier mal so viele Spiele abgeschlossen als unter optimalen Bedingungen vorgesehen. Fragwürdig ist hierbei auch, dass das Modell in manchen Episoden mindesten 50/86 Punkten erzielt und in den anderen nur 0 bis 2. Die Punkte werden in Abständen von 10 bis 20 Punkten erspielt, daher handelt es sich hierbei nicht um vereinzelte Erfolge im engeren Sinne.
+Abbildung 12 zeigt, dass das Modell in dieser Version zwar teilweise eine gute Menge an Punkten erzielt, im Großteil der Spiele allerdings nur null oder einen bis zwei Punkte erzielt. Dies ist darauf zurückzuführen, dass die Spielumgebung bei dieser Version das Spiel unverzüglich beendet, wenn eine ungültige Aktion gewählt wird. Daraus ist zu schließen, dass das Modell überwiegend ungültige Aktionen wählt, da bei nur 100 ausgeführten Schritten bereits 45 Spiele abgeschlossen wurden. Vorgesehen sind zu diesem Zeitpunkt pro Spiel zehn Spielschritte. Somit wurden mehr als vier mal so viele Spiele abgeschlossen als unter optimalen Bedingungen vorgesehen.
 \subsubsection{Training mit und ohne Aktionsmaske}
 Abbildung 13 zeigt die erzielten Punkte des Modells ohne Aktionsmaske für 20 Episoden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/trainingwithoutcancalation} 
-	\caption[Punktezahlen des Modells ohne Aktionsmaske für 20 Episoden]{Punktezahlen des Modells mit Aktionsmaske für 20 Episoden\\ Quelle: Eigene Darstellung}
+	\caption[Punktezahlen des Modells ohne Aktionsmaske für 20 Episoden]{Punktezahlen des Modells ohne Aktionsmaske für 20 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-Das Training erfolgte zunächst ohne die Verwendung einer Aktionsmaske. Das anfängliche Verfahren bei dem das Spiel beendet wurde, sobald eine ungültige Aktion getätigt wurde stellte sich als nicht geeignet heraus, da das Modell immer wieder ungültige Aktionen wählte, was zum Abbruch vieler Spielrunden führte. Daher wurde eine Trainingsverfahren mit negativer Belohnung bei ungültigen und positiver Belohnung bei gültigen Aktionen gewählt. Diese Belohnungen sind in dieser Abbildung nicht zu sehen, da sie herausgefiltert worden ist. Die Abbildung zeigt nur die aufsummierten Belohnungen, welche 10 oder mehr Punkte betragen. Diese Belohnungen entsprechen den Belohnungen des gelben Feldes, welche mindestens 10 und maximal 20 Punkte betragen. Insgesamt zeigt sich eine verhältnismäßig gute Performanz bei der das Modell im Durchschnitt um die 50 Punkte erzielt. Bedenkt man, dass das Maximum bei 86 Punkten liegt ist dieses Ergebnis gut. Das Modell erzielt somit im Durchschnitt ungefähr 60 Prozent der maximal erreichbaren Punktezahl.\\
+Das anfängliche Verfahren bei dem das Spiel beendet wurde, sobald eine ungültige Aktion getätigt wurde, stellte sich als nicht geeignet heraus, da das Modell immer wieder ungültige Aktionen wählte, was zum Abbruch vieler Spielrunden führte. Daher wurde ein Trainingsverfahren mit negativer Belohnung bei ungültigen und positiver Belohnung bei gültigen Aktionen gewählt. Diese Belohnungen sind in Abbildung 13 nicht zu sehen, da sie herausgefiltert worden sind. Abbildung 13 zeigt nur die aufsummierten Belohnungen, welche 10 oder mehr Punkte betragen. Diese Belohnungen entsprechen den Belohnungen des gelben Feldes, welche mindestens 10 und maximal 20 Punkte betragen. Insgesamt zeigt sich eine verhältnismäßig gute Performanz bei der das Modell im Durchschnitt um die 50 Punkte erzielt. Bedenkt man, dass das Maximum bei 86 Punkten liegt und ungültige Aktionen getätigt werden können ist dieses Ergebnis gut. Das Modell erzielt im Durchschnitt ungefähr 60 Prozent der maximal erreichbaren Punktezahl.\\
 
 Abbildung 14 zeigt die erzielten Punkte des Modells mit Aktionsmaske für 20 Episoden:
 \nopagebreak
@@ -38,45 +38,45 @@ Abbildung 14 zeigt die erzielten Punkte des Modells mit Aktionsmaske für 20 Epi
 	\caption[Punktezahlen des Modells mit Aktionsmaske für 20 Episoden]{Punktezahlen des Modells mit Aktionsmaske für 20 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-In dieser Abbildung sieht man, dass die Performance im Gegensatz zu der Variante ohne Aktionsmaske zugenommen hat. Das Modell erzielt im Durchschnitt ungefähr 65 Punkte was einem Zuwachs von circa einem Drittel entspricht. Die erzielten Punkte steigen somit von ungefähr 60 Prozent des Maximums auf 75 Prozent. Zwar lässt sich sagen, dass die Performance des Vorgängermodells passabel war, allerdings erzielt die Variante mit Aktionsmaske ohne größere Umstände ein wesentlich besseres Ergebnis. Deshalb wurde das Projekt ab diesem Zeitpunkt mit Aktionsmaske fortgesetzt.
-\subsubsection{Training mit zwei und mit vier Würfeln}
-Abbildung 15 zeigt die ungültigen Züge einer Spielsimulation von 200 Schritten mit zwei Würfeln:
+Abbildung 14 zeigt, dass die Performanz im Gegensatz zur Variante ohne Aktionsmaske zugenommen hat. Das Modell erzielt im Durchschnitt ungefähr 65 Punkte was einem Zuwachs von ungefähr einem Drittel entspricht. Die erzielten Punkte steigen somit von ungefähr 60 Prozent des Maximums auf 75 Prozent. Die Performanz des Vorgängermodells war passabel, den Umständen entsprechend gut, allerdings erzielt die Variante mit Aktionsmaske ohne größere Umstände ein wesentlich besseres Ergebnis. Deshalb wurde das Projekt ab diesem Zeitpunkt mit Aktionsmaske fortgesetzt.
+\subsubsection{Training mit zwei und vier Würfeln}
+Abbildung 15 zeigt die ungültigen Züge einer Spielsimulation mit zwei Würfeln für 20 Episoden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/failswithtwodice} 
-	\caption[Ungültige Züge des Modells unter Verwendung von zwei Würfeln]{Ungültige Züge des Modells unter Verwendung von zwei Würfeln\\ Quelle: Eigene Darstellung}
+	\caption[Ungültige Züge des Modells unter Verwendung von zwei Würfeln für 20 Episoden]{Ungültige Züge des Modells unter Verwendung von zwei Würfeln für 20 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-In der Abbildung ist zu erkennen, dass das Modell von null bis fünf ungültige Aktionen pro Spiel auswählt. Es ergibt sich ein Durchschnitt von ungefähr 1-2 ungültigen Zügen pro Spiel. Dies sollte nicht auftreten, wenn dem Modell gültige Aktionen zur Verfügung stehen, da die Aktionsmaske dafür sorgt, dass nur gültige Aktionen gewählt werden können. Was passiert allerdings, wenn es keine gültige Aktion gibt? Die Antwort auf die Frage ist: Das Modell wählt eine zufällige Aktion und berücksichtigt die Aktionsmaske nicht. Da nur zwei Würfel zur Verfügung stehen kommt es oft dazu, dass keiner der Würfel zu einem der Felder passt und somit kann keines der Felder ausgefüllt werden. Dadurch steht keine gültige Aktion zur Verfügung und es wird eine ungültige Aktion gewählt.\\
+Abbildung 15 zeigt, dass das Modell von null bis fünf ungültige Aktionen pro Spiel auswählt. Es ergibt sich ein Durchschnitt von ungefähr 1-2 ungültigen Zügen pro Spiel. Dies sollte nicht auftreten, wenn dem Modell gültige Aktionen zur Verfügung stehen, da die Aktionsmaske dafür sorgt, dass nur gültige Aktionen gewählt werden können. Das Problem entsteht, wenn dem Modell keine gültigen Aktionen zur Auswahl stehen. In diesem Fall wählt das Modell eine zufällige Aktion und berücksichtigt die Aktionsmaske nicht. Da in dieser Version nur zwei Würfel zur Verfügung stehen kommt es oft zu dem Fall, dass keiner der Würfel zu einem der Felder passt und somit kann keines der Felder ausgefüllt werden. Dadurch steht keine gültige Aktion zur Verfügung und es wird eine ungültige Aktion gewählt.\\
 
-Abbildung 16 zeigt die ungültigen Züge einer Spielsimulation von 200 Schritten mit vier Würfeln:
+Abbildung 16 zeigt die ungültigen Züge einer Spielsimulation mit vier Würfeln für 20 Episoden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/failswithfourdice} 
-	\caption[Ungültige Züge des Modells unter Verwendung von vier Würfeln]{Ungültige Züge des Modells unter Verwendung von vier Würfeln\\ Quelle: Eigene Darstellung}
+	\caption[Ungültige Züge des Modells unter Verwendung von vier Würfeln für 20 Episoden]{Ungültige Züge des Modells unter Verwendung von vier Würfeln für 20 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-In der Abbildung erkennt man, dass die Anzahl an ungültigen Zügen im Gegensatz zur Variante mit zwei Würfeln drastisch abnahm. Zwar kommt es vereinzelt immer noch zu Fällen bei denen dem Modell nichts anderes übrig bleibt, als eine ungültige Aktion zu wählen, allerdings ist die Wahrscheinlichkeit dafür bei vier Würfeln deutlich geringer.
+Abbildung 16 zeigt, dass die Anzahl an ungültigen Zügen im Gegensatz zur Variante mit zwei Würfeln drastisch abgenommen hat. Zwar kommt es vereinzelt immer noch zu Fällen bei denen das Modell ungültige Aktionen wählen muss, allerdings ist die Wahrscheinlichkeit dafür bei vier Würfeln deutlich geringer.
 \subsubsection{Optimiertes Training}
-Abbildung 17 zeigt die erzielten Punkte des Modells nachdem eine Vielzahl an Optimierungsversuchen durchgeführt wurden:
+Abbildung 17 zeigt die erzielten Punkte des Modells nachdem eine Vielzahl an Optimierungen vorgenommen wurden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/optimizetraining} 
 	\caption[Punktezahlen des Modells nach optimiertem Training für 20 Episoden]{Punktezahlen des Modells nach optimiertem Training für 20 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-Man erkennt, dass das Modell im Durchschnitt etwas mehr als 80 Punkte erzielt hat. Dies ist ein sehr guter Wert, da die maximale Punktezahl bei 86 liegt. Die maximale Punktezahl von 86 Punkten wurde innerhalb der zwanzig Episoden zehn mal erreicht.
+Abbildung 17 zeigt, dass das Modell im Durchschnitt etwas mehr als 80 Punkte erzielt hat. Dies ist ein sehr guter Wert, da die maximale Punktezahl bei 86 liegt. Die maximale Punktezahl von 86 Punkten wurde innerhalb der zwanzig Episoden zehn mal erreicht.
 \subsection{Erstes Training mit allen Feldern und Boni}
-Abbildung 18 zeigt die die Ergebnisse des ersten Trainings mit einer Spielumgebung bei der alle farbigen Felder und Boni implementiert worden sind:
+Abbildung 18 zeigt die Ergebnisse des ersten Trainings mit einer Spielumgebung bei der alle farbigen Felder und Boni implementiert worden sind:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/firsttrainingwithallfields} 
 	\caption[Punktezahlen des erstes trainierten Modells mit allen Feldern]{Punktezahlen des erstes trainierten Modells mit allen Feldern\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-Man kann erkennen, dass das Modell bereits vertretbare Werte erzielt, allerdings lässt sich an dieser Stelle noch viel optimieren. Im Schnitt erzielt es etwas mehr als 110 Punkte. So viele Punkte erzielt im allgemeinen auch ein Neueinsteiger, der das Spiel kaum kennt. Bei dieser Version des Spiels gibt es auch noch viele Bugs, die dazu führen, dass weniger Punkte erspielt werden, als es unter ordentlichen Bedingungen möglich wäre.
+Abbildung 18 zeigt, dass das Modell bereits vertretbare Werte erzielt, allerdings lässt sich an dieser Stelle noch viel optimieren. Im Schnitt erzielt es etwas mehr als 110 Punkte. So viele Punkte erzielt im Allgemeinen auch ein menschlicher Neueinsteiger, der das Spiel kaum kennt. Bei dieser Version des Spiels gibt es auch noch viele Bugs, die dazu führen, dass weniger Punkte erspielt werden, als es unter ordentlichen Bedingungen möglich wäre.
 \subsection{Finale Ergebnisse}
-\subsubsection{Performance}
+\subsubsection{Performanz}
 Abbildung 19 zeigt die erzielten Punktezahlen des Modells nach dem finalen Training für 1000 Episoden:
 \nopagebreak
 \begin{figure}[H]
@@ -84,7 +84,7 @@ Abbildung 19 zeigt die erzielten Punktezahlen des Modells nach dem finalen Train
 	\caption[Punktezahlen des finalen Modells für 1000 Episoden]{Punktezahlen des finalen Modells für 1000 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-Das Modell erzielt über einen Zeitraum von mehr als 1000 Episoden eine durchschnittliche Punktezahl von ungefähr 205 Punkten. Das ist beachtlich, da menschliche Spieler in einem Versuch im Durchschnitt lediglich 160 Punkte erzielen konnten. Bei einem weiteren Test über 10000 Schritte liegt Median liegt bei 212 und die durchschnittliche Punktezahl bei 207, was auf ein robustes Modell schließen lässt, da Median und durchschnittliche Punktezahl nah nah beieinander liegen.\\
+Abbildung 19 zeigt, dass das Modell über einen Zeitraum von mehr als 1000 Episoden eine durchschnittliche Punktezahl von ungefähr 205 Punkten erzielt. Das ist beachtlich, da menschliche Spieler in einem Versuch im Durchschnitt lediglich 160 Punkte erzielen konnten. Bei einem weiteren Test über 250 Episoden lag der Median bei 212 und die durchschnittliche Punktezahl bei 207.\\
 
 Abbildung 20 zeigt die ungültigen Züge des Modells nach dem finalen Training für 1000 Episoden:
 \nopagebreak
@@ -93,9 +93,9 @@ Abbildung 20 zeigt die ungültigen Züge des Modells nach dem finalen Training f
 	\caption[Ungültige Züge des finalen Modells für 1000 Episoden]{Ungültige Züge des finalen Modells für 1000 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-Man erkennt, dass das Modell in den meisten fällen maximal einen ungültigen Zug macht. Teilweise sind noch zwei ungültige Züge pro Episode zu erkennen und noch seltener drei oder vier. Angesichts dessen, dass das Modell pro Spielrunde ungefähr 40 Züge machte und häufig Würfel bei der Wahl ungültig gemacht werden, ist das ein beachtliches Ergebnis. Das Modell lernte solche Fälle zu vermeiden.\\
+Abbildung 20 zeigt, dass das Modell in den meisten Fällen maximal einen ungültigen Zug macht. Teilweise sind noch zwei ungültige Züge pro Episode zu erkennen und noch seltener drei oder vier. Angesichts dessen, dass das Modell pro Spielrunde ungefähr 40 Züge machte und häufig Würfel bei einer Wahl ungültig gemacht werden, ist das ein beachtliches Ergebnis. Das Modell lernte solche Fälle zu vermeiden.\\
 
-Die Abbildungen 21 und 22 zeigen die Punktezahlen und ungültigen Züge des finalen Modells für 100 Episoden. Die Abbildungen sind anschaulicher, als die Abbildungen für 1000 Episoden:
+Die Abbildungen 21 und 22 zeigen die Punktestände und ungültigen Züge des finalen Modells für 100 Episoden. Die Abbildungen sind anschaulicher als die Abbildungen für 1000 Episoden:
 \nopagebreak
 \begin{figure}[H]
 	\includegraphics[width=1\textwidth]{Bilder/final4000steps} 
@@ -106,12 +106,14 @@ Die Abbildungen 21 und 22 zeigen die Punktezahlen und ungültigen Züge des fina
 	\caption[Ungültige Züge des finalen Modells für 100 Episoden]{Ungültige Züge des finalen Modells für 100 Episoden\\ Quelle: Eigene Darstellung}
 \end{figure}
 \subsubsection{Hyperparameter}
-Die Hyperparameter für das finalen Training sind:
+Die Hyperparameter für das finale Training sind:
 
 \begin{itemize} 
-\item Das Neuronale Netz mit sieben Schichten von jeweils 1024 Neuronen. 
+\item Ein neuronale Netz mit sieben Schichten von jeweils 1024 Neuronen. 
 
-\item Ein Gamma von 1. Ein Entropie Koeffizient von 0.1. 
+\item Ein Gamma von 1. 
+
+\item Ein Entropie-Koeffizient von 0.1. 
 
 \item Eine Lernrate von 0.0006. 
 
@@ -119,13 +121,13 @@ Die Hyperparameter für das finalen Training sind:
 
 \item Eine Umgebungsanzahl von 32. 
 
-\item Datenpaketen mit 2048 Aktions-Zustands-Paaren, welche jeweils 5 mal verwendet werden und dabei in Batches von 128 Schritten aufgeteilt werden. 
+\item Datenpakete mit 2048 Aktions-Zustands-Paaren, welche jeweils 5 Mal verwendet werden und dabei in Batches von 128 Schritten aufgeteilt werden. 
 
-\item Ein Entropie Koeffizienten von 0 für das verfestigen der gelernten Schritte. 
+\item Ein Entropie-Koeffizient von 0 für das Verfestigen des gelernten Vorgehens. 
 \end{itemize} 
 
-Das Modell wurde in diesem Prozess zunächst für 2220000 Zeitschritte trainiert. Daraufhin wurde es mit dem Entropie Koeffizient von 0 für weitere 1110000 Zeitschritte trainiert, um das gelernte Verhalten weiter auszubeuten. Dieser Prozess wurde dann zwei weitere Male mit doppelt so vielen Zeitschritten wiederholt. Zunächst betrug die durchschnittliche Punktezahl des Modells annähernd 190, danach 201, danach 205 und nach weiteren Tests schließlich 207 Punkte.
+Das Modell wurde in diesem Prozess zunächst für 2220000 Zeitschritte trainiert. Daraufhin wurde es mit dem Entropie-Koeffizient von 0 für weitere 1110000 Zeitschritte trainiert, um das gelernte Verhalten weiter zu verfestigen. Dieser Prozess wurde dann zwei weitere Male mit doppelt so vielen Zeitschritten wiederholt. Zunächst betrug die durchschnittliche Punktezahl des Modells annähernd 190, danach 201, danach 205 und nach weiteren Tests schließlich 207 Punkte.
 
 
 \subsubsection{ChatGPT 4}
-ChatGPT [siehe Kapitel 2.2.4] wurde verwendet, um den Prototypen des Projektes bis zu seinem ersten erfolgreichen Einsatz zu implementieren. Dabei hat es sich als besonders nützlich erwiesen, um einen lauffähigen Code mit den gewünschten, relativ standardmäßigen Methoden zu implementieren. Dies ist gerade bei der Erstellung eines ersten Prototypen vorteilhaft, oder um die Machbarkeit des Projektes zu überprüfen. Im späteren Verlauf wurden von ChatGPT generierte Inhalte nicht mehr direkt übernommen, sondern es wurde nur benutzt, um Auskunft über geeignete oder verwendete Technologien zu geben, Ideen zu sammeln oder Syntax zu erfragen. Auch für diese Aufgaben stellte es sich als sehr nützlich heraus, solange die Fragen nicht zu spezifisch oder komplex waren. Ist die Problemstellung zu komplex oder zu spezifisch, scheint ChatGPT Schwierigkeiten dabei zu bekommen eine vollständige oder geeignete Antwort zu liefern. Außerdem ist die Datenbank des ChatGPT 4 Modells auf den September 2021 datiert, was den Nutzen für neuere Sachverhalte erschwert.
+ChatGPT 4 [siehe Kapitel 2.2.4] wurde verwendet, um den Prototypen des Projektes bis zu seinem ersten erfolgreichen Einsatz zu implementieren. Dabei hat es sich als besonders nützlich erwiesen, um einen lauffähigen Code mit den gewünschten, relativ standardisierten Methoden zu implementieren. Dies ist besonders bei der Erstellung eines ersten Prototypen, oder um die Machbarkeit des Projektes zu überprüfen, vorteilhaft. Im späteren Verlauf wurden von ChatGPT 4 generierte Inhalte nicht mehr direkt übernommen. ChatGPT 4 wurde in weiteren Verlauf lediglich benutzt, um Auskunft über geeignete oder bereits verwendete Technologien zu geben, Ideen zu sammeln oder Syntax zu erfragen. Auch für diese Aufgaben stellte sich ChatGPT 4 als sehr nützlich heraus. Solange die Fragen nicht zu spezifisch oder komplex waren lieferte ChatGPT 4 häufig gute und hilfreiche Antworten. Ist die Problemstellung zu komplex oder zu spezifisch, scheint ChatGPT 4 Schwierigkeiten zu haben eine vollständige oder geeignete Antwort zu liefern. Außerdem ist die Datenbank des ChatGPT 4 Modells auf den September 2021 datiert, was den Nutzen für neuere Sachverhalte erschwert.
