@@ -24,17 +24,3 @@
 \Large{Betreut durch:}
 
 \Large{\Betreuer, Hochschule Coburg}
-
-\newpage
-\begin{abstract}
-\raggedright
-Ziel dieser Arbeit war es, eine Künstliche Intelligenz, für das Brettspiel \textit{"Ganz schön clever"}, zu entwickeln und den Entwicklungs- sowie Trainingsprozess zu evaluieren.
-Diese Künstliche Intelligenz wurde erfolgreich entwickelt und kann das Brettspiel \textit{"Ganz schön clever"} gut spielen. Zunächst wurde dafür ein Prototyp entwickelt, welcher dann schrittweise erweitert wurde, um die gesamte Komplexität des Spiels zu erfassen.
-
-Das Brettspiel \textit{"Ganz schön clever"} ist ein Würfelspiel, welches eine hohe Komplexität aufweist. Diese kommt vor allem durch die vielen Aktionsmöglichkeiten des Spielers und die multiplen Zusammenhängen innerhalb des Belohnungssystems zustande. Außerdem weist es eine hohe Stochastizität auf, welche die Komplexität weiter erhöht.
-
-Für die Implementierung der Künstlichen Intelligenz wurde Deep Reinforcement Learning verwendet. Während der Implementierungsphase kam es zunächst zu einem Problem, bei dem die Künstliche Intelligenz es nur schwer selbstständig schaffte, gültige Aktionen zu wählen, welche nicht zum Abbruch des Spiels geführt haben. Dieses Vorgehen, bei dem das Spiel nach Wahl einer ungültigen Aktion abgebrochen wurde, wurde nach einigen Tagen verworfen. Daraufhin wurde zunächst ein Verfahren implementiert, bei dem das Spiel bei ungültigen Aktionen nicht sofort abgebrochen, sondern negativ belohnt wurde. Diese Vorgehen stellte sich als gut geeignet heraus, wurde aber schnell von einem Vorgehen, welches eine Aktionsmaske verwendet abgelöst. Im Folgenden wurde eine Aktionsmaske implementiert, welche gewährleistet, dass nur gültige Aktionen gewählt werden können. Die Performanz stieg mit diesem Vorgehen von vorher durchschnittlich ungefähr 60 Prozent der Maximalpunktzahl auf 75 Prozent. Zudem ergaben sich Schwierigkeiten bei der Erweiterung des Runden-Systems und viele weitere Probleme, die behoben werden mussten.
-
-Das Ergebnis des finalen Trainings war eine Künstliche Intelligenz, welche durchschnittlich 208 Punkte mit einer Standardabweichung von 31 im Spiel erzielt. Im Vergleich dazu erzielten menschliche Spieler in einem Test im Durchschnitt lediglich 160 Punkte.
-\end{abstract}
-\newpage

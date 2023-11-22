@@ -1,0 +1,140 @@
+\section{Code für die Attribute der Spielumgebung}
+\begin{minipage}{\linewidth}
+Code 17 zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Klassenattribute für die Nachvollziehbarkeit von Punkteständen}, basicstyle=\ttfamily]
+self.score
+self.score_history
+self.initialized
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 18 zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und sind die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis die Attribute nach dem Spiel zurückgesetzt werden:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Klassenattribute für Belohnungsflags}, basicstyle=\ttfamily]
+self.yellow_reward_flags = {"row": [False] * 4, "col": ...}
+self.blue_reward_flags = {"row": [False] * 3, "col": ...}
+self.blue_count_reward_flags = [False] * 12
+self.green_reward_flags = [False] * 11
+self.orange_reward_flags = [False] * 11
+self.purple_reward_flags = [False] * 11
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 19 zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erspielt worden sind und am Ende genutzt, um den Wert der Fuchs-Boni zu bestimmen [siehe Unterabschnitt 2.1.1]:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Klassenattribute für erreichte Punktestände der einzelnen farbigen Felder}, basicstyle=\ttfamily]
+self.yellow_field_score
+self.blue_field_score
+self.green_field_score
+self.orange_field_score
+self.purple_field_score
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 20 zeigt die Klassenattribute für die Anzahl an gewählten Kästchen in den verschiedenen farbigen Feldern. Wenn ein Kästchen in einem der Felder ausgefüllt wird, wird der Wert des entsprechenden Attributes inkrementiert. Diese Attribute dienen nicht dem Spielablauf selbst, sondern der Nachvollziehbarkeit der Strategie des Modells:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Klassenattribute für die Anzahl an gewählte Kästchen innerhalb der farbigen Feldern}, basicstyle=\ttfamily]
+self.picked_yellow
+self.picked_blue
+self.picked_green
+self.picked_orange
+self.picked_purple
+\end{lstlisting}
+\end{minipage}
+
+\newpage
+\section{Pseudocode für Methoden der Implementierung}
+\begin{minipage}{\linewidth}
+Code 21 zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (\texttt{render method}) mithilfe von Pseudocode. Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zur Visualisierung der Spielumgebung}]
+render():
+	Zeige alle relevanten Attribute und Merkmale der Umgebung an
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 22 zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\texttt{\_get\_obs method}) mithilfe von Pseudocode. Diese Methode vereinfacht es, den Beobachtungsraum zu generieren, welcher jedes Mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zur Generierung des Beobachtungsraumes}]
+_get_obs():
+	Erstelle Numpy Arrays für farbige Felder
+	Erstelle Numpy Array für Würfelergebnisse
+	Erstelle Numpy Array für ungültige Würfel
+	Füge Arraywerte für Boni und Rundenzahl hinzu
+	Beobachtungsraum = Verbinde alle Arrays miteinander
+
+	return Beobachtungsraum
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 23 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\texttt{\_init\_envs method}) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zur Initialisierung der Spielumgebungen}]
+_init_envs(Anzahl, Punktestände, Fehlversuche):
+	_init():
+		Spielumgebung = Initialisieren eine Spielumgebung
+		Setze Aktionsmasker für die Spielumgebung
+		return Spielumgebung
+	Initialisiere Verktorumgebung(Anzahl, _init)
+		if not Punktestände and not Fehlversuche:
+			return Vektorumgebung
+		if Punktestände and not Fehlversuche:
+			Erstelle Variablen für Punkteständehistorie
+		if not Punktestände and Fehlversuche:
+			Erstelle Variablen für Fehlversuchehistorie
+		if Punktestände and Fehlversuche:
+			Erstelle Variablen für Punkteständehistorie
+			Erstelle Variablen für Fehlversuchehistorie
+	return Vektorumgebung, Variablen für Historien
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 24 zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske (\texttt{mask\_fn method}) mithilfe von Pseudocode. Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zum Anwenden der Aktionsmaske}]
+mask_fn(Spielumgebung):
+	Caste Spielumgebung in benutzerdefinierte Spielumgebung
+	return Aktionsmaske der Spielumgebung
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 25 zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen und Historien (\texttt{make\_fail\_entries method, make\_score\_entries method, make\_fail\_history\_entry method, make\_score\_history\_entry method}) mithilfe von Pseudocode. Diese Methoden erstellen Einträge und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen für Historien}]
+make_fail_entries(Punktebelohnungen, Anzahl, Fehlversuche):
+	if Punktebelohnung < 0:
+		Inkrementiere Fehlversuche der Umgebung
+
+make_score_entries(Punktebelohnungen, Anzahl, Punktestände):
+	if Punktebelohnung > 0:
+		Addiere Punktebelohnung zum Punktestand der Umgebung
+
+make_fail_history_entry(Fehlversuche, Fehlversuchshistorie)
+	if Umgebung terminiert:
+		Hänge Fehlversuche an Fehlversuchshistorie an
+
+make_score_history_entry(Punktestände, Punktehistorie)
+	if Umgebung terminiert:
+		Hänge Punktestand der Umgebung Punktehistorie an
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 26 zeigt die Funktionsweise der Methode zum Plotten von Historien (\texttt{plot\_history method}) mithilfe von Pseudocode. Diese Methode visualisiert die generierten Historien:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zum Plotten von Historien}]
+plot_history(Historie):
+	Plotte jeden Eintrag der Historie
+	Setze Titel
+	Setze Labels
+	Zeige Grafik an
+\end{lstlisting}
+\end{minipage}
