@@ -3,7 +3,7 @@ In diesem Kapitel wird die Implementierung des Projektes vorgestellt und erläut
 \subsection{Einschränkungen}
 Aus zeitlichen Gründen ergeben sich einige Einschränkungen für das Design der Implementierung. Das Spiel endet nach der Wahl des Würfels nach dem dritten Wurf in der sechsten Runde. Somit kann der Extra-Wahl-Bonus kein letztes Mal benutzt werden und es gibt in der letzten Runde auch keine Wahl vom Silbertablett. Außerdem werden nicht die niedrigsten sechs Würfel des Wurfes auf das Silbertablett des Mitspielers gelegt, sondern drei zufällige.
 \subsection{Spielumgebung}
-Die Implementierung besteht aus zwei Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [siehe Kapitel 2.2.1] verwendet.
+Die Implementierung besteht aus zwei Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [siehe Unterabschnitt 2.2.1] verwendet.
 \subsubsection{Klassenattribute}
 \begin{minipage}{\linewidth}
 Code 1 zeigt die Klassenattribute, die für das Rundenmanagement wichtig sind:
@@ -15,11 +15,11 @@ self.roll_in_round
 \end{lstlisting}
 \end{minipage}
 
-Das Attribut initial\_rounds beschreibt die maximale Rundenanzahl des Spiels und wird beim Zurücksetzen der Umgebung verwendet, um die Rundenzahl auf den gewünschten Wert (im Solo-Spiel sechs) zurückzusetzen.
+Das Attribut \texttt{initial\_rounds} beschreibt die maximale Rundenanzahl des Spiels und wird beim Zurücksetzen der Umgebung verwendet, um die Rundenzahl auf den gewünschten Wert (im Solo-Spiel sechs) zurückzusetzen.
 
-Das Attribut rounds repräsentiert die aktuell verbleibende Rundenanzahl im Spiel.
+Das Attribut \texttt{rounds} repräsentiert die aktuell verbleibende Rundenanzahl im Spiel.
 
-Das Attribut roll\_in\_round repräsentiert die Nummer des aktuellen Wurfes in der Runde.\\
+Das Attribut \texttt{roll\_in\_round} repräsentiert die Nummer des aktuellen Wurfes in der Runde.\\
 
 \begin{minipage}{\linewidth}
 Code 2 zeigt die Klassenattribute, die für das Würfeln der Würfel relevant sind:
@@ -30,7 +30,7 @@ self.dice = {"white": 0, "yellow": 0, ...}
 \end{lstlisting}
 \end{minipage}
 
-Die Attribute invalid\_dice und dice repräsentieren die Augenzahlen der Würfel, sowie die Gültigkeit der Würfel selbst. Ist der Wert von invalid\_dice False, ist der Würfel nicht ungültig und somit gültig.\\
+Die Attribute \texttt{invalid\_dice} und dice repräsentieren die Augenzahlen der Würfel, sowie die Gültigkeit der Würfel selbst. Ist der Wert von \texttt{invalid\_dice} False, ist der Würfel nicht ungültig und somit gültig.\\
 
 \begin{minipage}{\linewidth}
 Code 3 zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
@@ -42,7 +42,7 @@ self.initialized
 \end{lstlisting}
 \end{minipage}
 
-Das Attribut score repräsentiert den aktuellen Punktestand der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die score\_history einzutragen. Das Attribut score\_history ist eine Historie über die erreichten Punktestände in den einzelnen Episoden beziehungsweise Spieldurchläufen. Das Attribut initialized wird verwendet, um zu gewährleisten, dass nur Einträge in der Punktestandhistorie eingetragen werden, nachdem ein Spiel abgeschlossen wurde. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert wurde oder nicht.\\
+Das Attribut \texttt{score} repräsentiert den aktuellen Punktestand der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die \texttt{score\_history} einzutragen. Das Attribut \texttt{score\_history} ist eine Historie über die erreichten Punktestände in den einzelnen Episoden beziehungsweise Spieldurchläufen. Das Attribut \texttt{initialized} wird verwendet, um zu gewährleisten, dass nur Einträge in der Punktestandhistorie eingetragen werden, nachdem ein Spiel abgeschlossen wurde. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert wurde oder nicht.\\
 
 \begin{minipage}{\linewidth}
 Code 4 zeigt die Klassenattribute, welche die farbigen Felder des Spielbrettes repräsentieren:
@@ -56,7 +56,7 @@ self.purple_field = [0] * 11
 \end{lstlisting}
 \end{minipage}
 
-Die Attribute yellow\_field, blue\_field, green\_field, orange\_field und purple\_field stehen für die fünf farbigen Felder auf dem Spielbrett. Sie repräsentieren die eingetragenen Werte auf dem Spielbrett und bestimmen somit welche Kästchen aktuell ausgefüllt werden können (vorausgesetzt die Würfelergebnisse passen) und welche Belohnungen freigeschaltet werden.\\
+Die Attribute \texttt{yellow\_field}, \texttt{blue\_field}, \texttt{green\_field}, \texttt{orange\_field} und \texttt{purple\_field} stehen für die fünf farbigen Felder auf dem Spielbrett. Sie repräsentieren die eingetragenen Werte auf dem Spielbrett und bestimmen somit welche Kästchen aktuell ausgefüllt werden können (vorausgesetzt die Würfelergebnisse passen) und welche Belohnungen freigeschaltet werden.\\
 
 \begin{minipage}{\linewidth}
 Code 5 zeigt die Klassenattribute, welche die zu erspielenden Boni auf den farbigen Feldern repräsentieren:
@@ -70,7 +70,7 @@ self.purple_rewards = [None, None, "re_roll", ...]
 \end{lstlisting}
 \end{minipage}
 
-Die Attribute yellow\_rewards, blue\_rewards, green, orange\_rewards und purple\_rewards repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Für das blaue Feld sind diese in Form von Reihen (row) und Spalten (col) aufgeführt. Das gelbe Feld besitzt Boni für das Ausfüllen von Reihen (row) und einen Boni, der bei diagonalem Ausfüllen (dia) freigeschaltet werden kann. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Bonus aufweisen, was dem Wert None entspricht.\\
+Die Attribute \texttt{yellow\_rewards}, \texttt{blue\_rewards}, \texttt{green\_rewards}, \texttt{orange\_rewards} und \texttt{purple\_rewards} repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Für das blaue Feld sind diese in Form von Reihen (\texttt{row}) und Spalten (\texttt{col}) aufgeführt. Das gelbe Feld besitzt Boni für das Ausfüllen von Reihen (\texttt{row}) und einen Boni, der bei diagonalem Ausfüllen (\texttt{dia}) freigeschaltet werden kann. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Bonus aufweisen, was dem Wert None entspricht.\\
 
 \begin{minipage}{\linewidth}
 Code 6 zeigt die Klassenattribute, für die Punktebelohnungen des gelben, blauen und grünen Feldes:
@@ -82,7 +82,7 @@ self.green_count_rewards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 \end{lstlisting}
 \end{minipage}
 
-Im Attribut yellow\_rewards sind die Punktebelohnungen im Spaltenbereich (col) des gelben Feldes aufgeführt. Die Attribute blue\_count\_rewards und green\_count\_rewards repräsentieren die Punktebelohnungen, welche erspielt werden können, sobald ein blaues beziehungsweise grünes Kästchen ausgefüllt wird. Beginnend vom ersten Wert des Arrays und danach inkrementell aufsteigend, steigt die erhaltene Punktebelohnung bei jedem ausgefüllten Kästchen stetig an.\\
+Im Attribut \texttt{yellow\_rewards} sind die Punktebelohnungen im Spaltenbereich (\texttt{col}) des gelben Feldes aufgeführt. Die Attribute \texttt{blue\_count\_rewards} und \texttt{green\_count\_rewards} repräsentieren die Punktebelohnungen, welche erspielt werden können, sobald ein blaues beziehungsweise grünes Kästchen ausgefüllt wird. Beginnend vom ersten Wert des Arrays und danach inkrementell aufsteigend, steigt die erhaltene Punktebelohnung bei jedem ausgefüllten Kästchen stetig an.\\
 
 \begin{minipage}{\linewidth}
 Code 7 zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und sind die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis die Attribute nach dem Spiel zurückgesetzt werden:
@@ -98,7 +98,7 @@ self.purple_reward_flags = [False] * 11
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 8 zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erspielt worden sind und am Ende genutzt, um den Wert der Fuchs-Boni zu bestimmen [siehe Kapitel 2.1.1]:
+Code 8 zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erspielt worden sind und am Ende genutzt, um den Wert der Fuchs-Boni zu bestimmen [siehe Unterabschnitt 2.1.1]:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für erreichte Punktestände der einzelnen farbigen Felder}, basicstyle=\ttfamily]
 self.yellow_field_score
@@ -151,7 +151,7 @@ self.valid_action_mask_value = np.ones(self.number_of_actions)
 \end{lstlisting}
 \end{minipage}
 
-Das Attribut number\_of\_actions repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute low\_bound und high\_bound setzen die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null ([0]*16) bis sechs ([6]*16) reichen. Das Attribut action\_space repräsentiert den Aktionsraum des Modells. Es ist ein diskreter Raum mit number\_of\_actions Werten von null bis number\_of\_actions - 1. Das Attribut observation\_space repräsentiert den Beobachtungsraum. Shape definiert dabei die Größe des Beobachtungsraumes. Das Attribut valid\_action\_mask\_value repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise [0] oder [5]) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.\\
+Das Attribut \texttt{number\_of\_actions} repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute \texttt{low\_bound} und \texttt{high\_bound} setzen die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null \texttt{([0]*16)} bis sechs \texttt{([6]*16)} reichen. Das Attribut \texttt{action\_space} repräsentiert den Aktionsraum des Modells. Es ist ein diskreter Raum mit \texttt{number\_of\_actions} Werten von null bis \texttt{number\_of\_actions} minus eins. Das Attribut \texttt{observation\_space} repräsentiert den Beobachtungsraum. \texttt{Shape} definiert dabei die Größe des Beobachtungsraumes. Das Attribut \texttt{valid\_action\_mask\_value} repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise \texttt{[0]} oder \texttt{[5]}) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.\\
 
 Die Struktur des Aktionsraumes ist für das Verständnis der Arbeit wichtig, daher wird sie hier erläutert:
 
@@ -161,7 +161,7 @@ Die Werte von 122 bis 243 stehen für Wahlen mit der Extra-Wahl-Boni oder für W
 
 Der Wert 244 steht für die Neu Würfeln Boni, der Wert 245 für das Passen bei einem möglichen Einsatz von Extra-Wahl-Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen getätigt werden kann.
 \subsubsection{Schritt-Methode}
-Code 12 zeigt die Funktionsweise der Schritt-Methode (step method) der Spielumgebung mithilfe von Pseudocode. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
+Code 12 zeigt die Funktionsweise der Schritt-Methode (\texttt{step method}) der Spielumgebung mithilfe von Pseudocode. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Schritt-Methode}]
 step(Aktion):
@@ -236,7 +236,7 @@ step(Aktion):
 \end{lstlisting}
 \subsubsection{Methode zum Zurücksetzen der Spielumgebung}
 \begin{minipage}{\linewidth}
-Code 13 zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (reset method) mithilfe von Pseudocode. Sie setzt Umgebungen, in denen ein Spiel abgeschlossen wurde, auf den Anfangszustand zurück, damit eine weitere Runde gespielt werden kann:
+Code 13 zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (\texttt{reset method}) mithilfe von Pseudocode. Sie setzt Umgebungen, in denen ein Spiel abgeschlossen wurde, auf den Anfangszustand zurück, damit eine weitere Runde gespielt werden kann:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Zurücksetzen der Umgebung}]
 reset():
@@ -246,7 +246,7 @@ reset():
 
 \subsubsection{Methode zur Visualisierung der Spielumgebung}
 \begin{minipage}{\linewidth}
-Code 14 zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (render method) mithilfe von Pseudocode. Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
+Code 14 zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (\texttt{render method}) mithilfe von Pseudocode. Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Visualisierung der Spielumgebung}]
 render():
@@ -256,9 +256,9 @@ render():
 
 \subsubsection{Würfel-Methode}
 \begin{minipage}{\linewidth}
-Code 15 zeigt die Funktionsweise der Methode zum Werfen der Würfel mithilfe von Pseudocode. Würfel müssen nach jedem Wurf, bei Anfang jeder Spielrunde und beim Einsetzen des Neu-Würfeln-Bonus neu geworfen werden:
+Code 15 zeigt die Funktionsweise der Methode zum Werfen der Würfel (\texttt{roll\_dice method}) mithilfe von Pseudocode. Würfel müssen nach jedem Wurf, bei Anfang jeder Spielrunde und beim Einsetzen des Neu-Würfeln-Bonus neu geworfen werden:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum werfen der Würfel}]
+\begin{lstlisting}[caption={Methode zum Werfen der Würfel}]
 roll_dice():
 	Werfe Würfel neu
 \end{lstlisting}
@@ -266,7 +266,7 @@ roll_dice():
 
 \subsubsection{Methode zur Überprüfung der freigespielten Belohnungen}
 \begin{minipage}{\linewidth}
-Code 16 zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (check\_rewards method) mithilfe von Pseudocode. Diese Methode überprüft jedes Mal, nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt wurde und fügt diese dem Inventar des Spielers hinzu:
+Code 16 zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (\texttt{check\_rewards method}) mithilfe von Pseudocode. Diese Methode überprüft jedes Mal, nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt wurde und fügt diese dem Inventar des Spielers hinzu:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Überprüfung der freigespielten Belohnungen}]
 check_rewards():
@@ -291,7 +291,7 @@ check_rewards():
 
 \subsubsection{Methode zur Generierung des Beobachtungsraumes}
 \begin{minipage}{\linewidth}
-Code 17 zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\_get\_obs method) mithilfe von Pseudocode. Diese Methode vereinfacht es, den Beobachtungsraum zu generieren, welcher jedes Mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
+Code 17 zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\texttt{\_get\_obs method}) mithilfe von Pseudocode. Diese Methode vereinfacht es, den Beobachtungsraum zu generieren, welcher jedes Mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Generierung des Beobachtungsraumes}]
 _get_obs():
@@ -306,7 +306,7 @@ _get_obs():
 \end{minipage}
 
 \subsubsection{Methode zur Generierung der Aktionsmaske}
-Code 18 zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (valid\_action\_mask method) mithilfe von Pseudocode. Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf null gesetzt:
+Code 18 zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (\texttt{valid\_action\_mask method}) mithilfe von Pseudocode. Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf null gesetzt:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Generierung der Aktionsmaske}]
 valid_action_mask():
@@ -361,7 +361,7 @@ valid_action_mask():
 \end{lstlisting}
 \subsubsection{Methode zum Hinzufügen von Boni}
 \begin{minipage}{\linewidth}
-Code 19 zeigt die Funktionsweise der Methode zum Hinzufügen freigeschalteter Boni (add\_reward method) mithilfe von Pseudocode. Diese Methode wird von der Methode zur Überprüfung der freigespielten Belohnungen genutzt, um Boni dem Inventar des Spielers hinzuzufügen:
+Code 19 zeigt die Funktionsweise der Methode zum Hinzufügen freigeschalteter Boni (\texttt{add\_reward method}) mithilfe von Pseudocode. Diese Methode wird von der Methode zur Überprüfung der freigespielten Belohnungen genutzt, um Boni dem Inventar des Spielers hinzuzufügen:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Hinzufügen freigschalteter Boni}]
 add_reward(Belohnungstyp):
@@ -370,7 +370,7 @@ add_reward(Belohnungstyp):
 \end{minipage}
 
 \subsubsection{Methode zum Inkrementieren von Runden}
-Code 20 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Systems (increment\_rounds method) mithilfe von Pseudocode. Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben:
+Code 20 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Systems (\texttt{increment\_rounds method}) mithilfe von Pseudocode. Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Inkrementieren des Runden-Systems}]
 increment_rounds():
@@ -411,10 +411,10 @@ increment_rounds():
 		Werfe Würfel neu
 \end{lstlisting}
 \subsection{Künstliche Intelligenz}
-Die Implementierung besteht aus zwei Klassen. Eine davon ist die Künstliche Intelligenz. In diesem Kapitel werden die Methoden der Künstlichen Intelligenz mithilfe von Pseudocode erläutert. Diese Methoden beinhaltet Methoden der Spielumgebung [siehe Kapitel 4.1] und Methoden zur Visualisierung [siehe Kapitel 4.3]. Für die Implementierung der Künstlichen Intelligenz die Bibliothek Stable Baselines [siehe Kapitel 2.2.2] verwendet.
+Die Implementierung besteht aus zwei Klassen. Eine davon ist die Künstliche Intelligenz. In diesem Kapitel werden die Methoden der Künstlichen Intelligenz mithilfe von Pseudocode erläutert. Diese Methoden beinhaltet Methoden der Spielumgebung [siehe Abschnitt 4.1] und Methoden zur Visualisierung [siehe Abschnitt 4.3]. Für die Implementierung der Künstlichen Intelligenz die Bibliothek Stable Baselines [siehe Unterabschnitt 2.2.2] verwendet.
 \subsubsection{Methode zum Anlernen des Modells}
 \begin{minipage}{\linewidth}
-Code 21 zeigt die Funktionsweise der Methode zum Anlernen des Modells (model\_learn) mithilfe von Pseudocode. Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO-Modell zu generieren und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
+Code 21 zeigt die Funktionsweise der Methode zum Anlernen des Modells (\texttt{model\_learn method}) mithilfe von Pseudocode. Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO-Modell zu generieren und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zu Anlernen des Modells}]
 model_learn(Hyperparameter):
@@ -433,7 +433,7 @@ model_learn(Hyperparameter):
 \end{minipage}
 \subsubsection{Methode zum Vorhersagen mithilfe des Modells}
 \begin{minipage}{\linewidth}
-Code 22 zeigt die Funktionsweise der Methode zum Vorhersagen von Aktionen mithilfe des Modells (model\_predict) unter Verwendung von Pseudocode. Diese Methode ermöglicht es, mithilfe des Modells Vorhersagen über günstige Aktionen in einem gegebenen Zustand der Spielumgebung vorherzusagen und anhand dessen einen Spielverlauf zu simulieren:
+Code 22 zeigt die Funktionsweise der Methode zum Vorhersagen von Aktionen mithilfe des Modells (\texttt{model\_predict method}) unter Verwendung von Pseudocode. Diese Methode ermöglicht es, mithilfe des Modells Vorhersagen über günstige Aktionen in einem gegebenen Zustand der Spielumgebung vorherzusagen und anhand dessen einen Spielverlauf zu simulieren:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Vorhersagen von Aktionen mithilfe des Modells}]
 model_predict(Schrittanzahl):
@@ -451,7 +451,7 @@ model_predict(Schrittanzahl):
 \end{minipage}
 \subsubsection{Methode zur Initialisierung der Spielumgebungen}
 \begin{minipage}{\linewidth}
-Code 23 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\_init\_envs) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
+Code 23 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\texttt{\_init\_envs method}) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Initialisierung der Spielumgebungen}]
 _init_envs(Anzahl, Punktestände, Fehlversuche):
@@ -475,7 +475,7 @@ _init_envs(Anzahl, Punktestände, Fehlversuche):
 
 \subsubsection{Methode zum Anwenden der Aktionsmaske}
 \begin{minipage}{\linewidth}
-Code 24 zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske (mask\_fn) mithilfe von Pseudocode. Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
+Code 24 zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske (\texttt{mask\_fn method}) mithilfe von Pseudocode. Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Anwenden der Aktionsmaske}]
 mask_fn(Spielumgebung):
@@ -485,12 +485,12 @@ mask_fn(Spielumgebung):
 \end{minipage}
 
 \subsection{Darstellung}
-Dieses Kapitel erläutert die Methoden zur Visualisierung mithilfe von Pseudocode. Für diese Methoden wurde die Bibliothek Matplotlib [siehe Kapitel 2.2.3] verwendet.
+Dieses Kapitel erläutert die Methoden zur Visualisierung mithilfe von Pseudocode. Für diese Methoden wurde die Bibliothek Matplotlib [siehe Unterabschnitt 2.2.3] verwendet.
 \subsubsection{Methoden zum Erstellen von Einträgen}
 \begin{minipage}{\linewidth}
-Code 25 zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen und Historien (make\_fail\_entries, make\_score\_entries, make\_fail\_history\_entry, make\_score\_history\_entry) mithilfe von Pseudocode. Diese Methoden erstellen Einträge und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
+Code 25 zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen und Historien (\texttt{make\_fail\_entries method, make\_score\_entries method, make\_fail\_history\_entry method, make\_score\_history\_entry method}) mithilfe von Pseudocode. Diese Methoden erstellen Einträge und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen für Hisorien}]
+\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen für Historien}]
 make_fail_entries(Punktebelohnungen, Anzahl, Fehlversuche):
 	if Punktebelohnung < 0:
 		Inkrementiere Fehlversuche der Umgebung
@@ -510,7 +510,7 @@ make_score_history_entry(Punktestände, Punktehistorie)
 \end{minipage}
 \subsubsection{Methode zum Plotten von Historien}
 \begin{minipage}{\linewidth}
-Code 26 zeigt die Funktionsweise der Methode zum Plotten von Historien (plot\_history) mithilfe von Pseudocode. Diese Methode visualisiert die generierten Historien:
+Code 26 zeigt die Funktionsweise der Methode zum Plotten von Historien (\texttt{plot\_history method}) mithilfe von Pseudocode. Diese Methode visualisiert die generierten Historien:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Plotten von Historien}]
 plot_history(Historie):
@@ -522,9 +522,9 @@ plot_history(Historie):
 \end{minipage}
 \subsection{Anwendungsbeispiel für die Künstliche Intelligenz}
 \begin{minipage}{\linewidth}
-Code 27 zeigt ein Anwendungsbeispiel des Projektes. Es wird ein Modell mit dem Namen model\_name geladen und für 1110000 Schritte (x3 durch die learn\_model methode) trainiert. Entsprechende Hyperparameter werden ebenfalls gesetzt. Daraufhin werden mithilfe des Modells Spieldurchläufe (für ungefähr 1000 Episoden) simuliert:
+Code 27 zeigt ein Anwendungsbeispiel des Projektes. Es wird ein Modell mit dem Namen \texttt{model\_name} geladen und für 1110000 Schritte (x3 durch die \texttt{learn\_model methode}) trainiert. Entsprechende Hyperparameter werden ebenfalls gesetzt. Daraufhin werden mithilfe des Modells Spieldurchläufe (für ungefähr 1000 Episoden) simuliert:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Anwendungsbeispiel für die Verwendung der Künstlichen Intelligenz}]
+\begin{lstlisting}[caption={Anwendungsbeispiel für die Künstliche Intelligenz}]
 def main():
 	model_learn(total_timesteps=1110000, ent_coef=0.1, gamma=1, 
 	 model_name="maskableppo_ganzschoenclever_193avg_v3")
