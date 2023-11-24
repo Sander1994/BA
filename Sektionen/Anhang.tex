@@ -1,6 +1,6 @@
 \section{Code für die Attribute der Spielumgebung}
 \begin{minipage}{\linewidth}
-Code 17 zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
+Code 18 zeigt die Klassenattribute, die für das bilden einer Punktestandhistorie relevant sind:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für die Nachvollziehbarkeit von Punkteständen}, basicstyle=\ttfamily]
 self.score
@@ -9,8 +9,10 @@ self.initialized
 \end{lstlisting}
 \end{minipage}
 
+Das Attribut \texttt{score} repräsentiert den aktuellen Punktestand der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die \texttt{score\_history} einzutragen. Das Attribut \texttt{score\_history} ist eine Historie über die erreichten Punktestände in den einzelnen Episoden beziehungsweise Spieldurchläufen. Das Attribut \texttt{initialized} wird verwendet, um zu gewährleisten, dass nur Einträge in der Punktestandhistorie eingetragen werden, nachdem ein Spiel abgeschlossen wurde. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert wurde oder nicht.\\
+
 \begin{minipage}{\linewidth}
-Code 18 zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und sind die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis die Attribute nach dem Spiel zurückgesetzt werden:
+Code 19 zeigt die Klassenattribute der Flags für die Belohnungen der farbigen Felder. Sind diese gesetzt und sind die entsprechenden Kästchen für die Belohnung ausgefüllt, wurde die Belohnung bereits ausgeschüttet und wird es nicht erneut, bis die Attribute nach dem Spiel zurückgesetzt werden:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für Belohnungsflags}, basicstyle=\ttfamily]
 self.yellow_reward_flags = {"row": [False] * 4, "col": ...}
@@ -23,7 +25,7 @@ self.purple_reward_flags = [False] * 11
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 19 zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erspielt worden sind und am Ende genutzt, um den Wert der Fuchs-Boni zu bestimmen [siehe Unterabschnitt 2.1.1]:
+Code 20 zeigt die Klassenattribute für Punktestände der einzelnen farbigen Felder. Die Punktewerte werden aufaddiert, sobald Punkte im entsprechenden Feld erspielt worden sind und am Ende genutzt, um den Wert der Fuchs-Boni zu bestimmen [siehe Unterabschnitt 2.1.1]:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für erreichte Punktestände der einzelnen farbigen Felder}, basicstyle=\ttfamily]
 self.yellow_field_score
@@ -35,7 +37,7 @@ self.purple_field_score
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 20 zeigt die Klassenattribute für die Anzahl an gewählten Kästchen in den verschiedenen farbigen Feldern. Wenn ein Kästchen in einem der Felder ausgefüllt wird, wird der Wert des entsprechenden Attributes inkrementiert. Diese Attribute dienen nicht dem Spielablauf selbst, sondern der Nachvollziehbarkeit der Strategie des Modells:
+Code 21 zeigt die Klassenattribute für die Anzahl an gewählten Kästchen in den verschiedenen farbigen Feldern. Wenn ein Kästchen in einem der Felder ausgefüllt wird, wird der Wert des entsprechenden Attributes inkrementiert. Diese Attribute dienen nicht dem Spielablauf selbst, sondern der Nachvollziehbarkeit der Strategie des Modells:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für die Anzahl an gewählte Kästchen innerhalb der farbigen Feldern}, basicstyle=\ttfamily]
 self.picked_yellow
@@ -49,7 +51,7 @@ self.picked_purple
 \newpage
 \section{Pseudocode für Methoden der Implementierung}
 \begin{minipage}{\linewidth}
-Code 21 zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (\texttt{render method}) mithilfe von Pseudocode. Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
+Code 22 zeigt die Funktionsweise der Funktion zur Visualisierung der Spielumgebung (\texttt{render method}) mithilfe von Pseudocode. Die Visualisierung dient einer verbesserten Nachvollziehbarkeit der Ereignisse innerhalb der Spielumgebung:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Visualisierung der Spielumgebung}]
 render():
@@ -58,7 +60,7 @@ render():
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 22 zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\texttt{\_get\_obs method}) mithilfe von Pseudocode. Diese Methode vereinfacht es, den Beobachtungsraum zu generieren, welcher jedes Mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
+Code 23 zeigt die Funktionsweise der Methode zur Generierung des Beobachtungsraumes (\texttt{\_get\_obs method}) mithilfe von Pseudocode. Diese Methode vereinfacht es, den Beobachtungsraum zu generieren, welcher jedes Mal benötigt wird, wenn ein Schritt in der Umgebung ausgeführt wird:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Generierung des Beobachtungsraumes}]
 _get_obs():
@@ -73,9 +75,9 @@ _get_obs():
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 23 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\texttt{\_init\_envs method}) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
+Code 24 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\texttt{\_init\_envs method}) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zur Initialisierung der Spielumgebungen}]
+\begin{lstlisting}[caption={Methode zur Initialisierung der Spielumgebungen},morekeywords={Anzahl, Punktestände, Fehlversuche}]
 _init_envs(Anzahl, Punktestände, Fehlversuche):
 	_init():
 		Spielumgebung = Initialisieren eine Spielumgebung
@@ -96,9 +98,9 @@ _init_envs(Anzahl, Punktestände, Fehlversuche):
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 24 zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske (\texttt{mask\_fn method}) mithilfe von Pseudocode. Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
+Code 25 zeigt die Funktionsweise der Methode zum Anwenden der Aktionsmaske (\texttt{mask\_fn method}) mithilfe von Pseudocode. Die Methode dient dazu dem Modell die Aktionsmasken der einzelnen Spielumgebungen zu übergeben:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Anwenden der Aktionsmaske}]
+\begin{lstlisting}[caption={Methode zum Anwenden der Aktionsmaske},morekeywords={Spielumgebung}]
 mask_fn(Spielumgebung):
 	Caste Spielumgebung in benutzerdefinierte Spielumgebung
 	return Aktionsmaske der Spielumgebung
@@ -106,9 +108,9 @@ mask_fn(Spielumgebung):
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 25 zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen und Historien (\texttt{make\_fail\_entries method, make\_score\_entries method, make\_fail\_history\_entry method, make\_score\_history\_entry method}) mithilfe von Pseudocode. Diese Methoden erstellen Einträge und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
+Code 26 zeigt die Funktionsweise der Methoden zum Erstellen von Einträgen und Historien (\texttt{make\_fail\_entries method, make\_score\_entries method, make\_fail\_history\_entry method, make\_score\_history\_entry method}) mithilfe von Pseudocode. Diese Methoden erstellen Einträge und Historien von erzielten Punkteständen und der Anzahl getätigter ungültiger Aktionen innerhalb abgeschlossener Spiele:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen für Historien}]
+\begin{lstlisting}[caption={Methoden zum Erstellen von Einträgen für Historien},morekeywords={Punktebelohnungen, Anzahl, Fehlversuche}]
 make_fail_entries(Punktebelohnungen, Anzahl, Fehlversuche):
 	if Punktebelohnung < 0:
 		Inkrementiere Fehlversuche der Umgebung
@@ -128,13 +130,244 @@ make_score_history_entry(Punktestände, Punktehistorie)
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 26 zeigt die Funktionsweise der Methode zum Plotten von Historien (\texttt{plot\_history method}) mithilfe von Pseudocode. Diese Methode visualisiert die generierten Historien:
+Code 27 zeigt die Funktionsweise der Methode zum Plotten von Historien (\texttt{plot\_history method}) mithilfe von Pseudocode. Diese Methode visualisiert die generierten Historien:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Plotten von Historien}]
+\begin{lstlisting}[caption={Methode zum Plotten von Historien},morekeywords={Historien}]
 plot_history(Historie):
 	Plotte jeden Eintrag der Historie
 	Setze Titel
 	Setze Labels
 	Zeige Grafik an
+\end{lstlisting}
+\end{minipage}
+\section{Ausführlicher Code der wesentlichen Methoden der Implementierung}
+Code 28 zeigt die Funktionsweise der Schritt-Methode (\texttt{step method}) der Spielumgebung mithilfe von Pseudocode. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Schritt-Methode},morekeywords={Aktion}]
+step(Aktion):
+	Setze Methodenattribute zurück
+	
+	if not Extra-Wahl:
+		if Aktion im gelben Feld:
+			Fülle entsprechendes gelbes Kästchen aus
+			if Gelbes-Kreuz-Boni >= 1
+				Bonusrunde = True
+				Gelbes-Kreuz-Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im blauen Feld:
+			Fülle entsprechendes blaues Kästchen aus
+			if Blaues-Kreuz-Boni >= 1:
+				Bonusrunde = True
+				Blaues-Kreuz-Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im grünen Feld:
+			Fülle entsprechendes grünes Kästchen aus
+			if Grünes-Kreuz-Boni >= 1:
+				Bonusrunde = True
+				Grünes-Kreuz-Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im orangene Feld:
+			Fülle entsprechendes orangenes Kästchen aus
+			if Orangene-Feld-Boni >= 1:
+				Bonusrunde = True
+				Orangene-Feld-Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+		if Aktion im lila Feld:
+			Fülle entsprechendes lila Kästchen aus
+			if Lila-Sechs-Boni >= 1:
+				Bonusrunde = True
+				Lila-Sechs-Boni -= 1
+			if not Bonusrunde:
+				Setze entsprechende Würfel auf ungültig
+	
+	if Extra-Wahl:
+		Bonusrunde = True
+		if Extra-Wahl-Bonus benutzt:
+			Extra-Wahl-Boni -= 1
+		Finde Kästchen zum ausfüllen und fülle es aus
+		Setze gewählten Würfel auf ungültig
+		if Extra-Wahl-Boni <= 0 or Wahl erfolgte vom Silbertablett:
+			Runde wird inkrementiert
+	
+	if Neu-Würfeln-Bonus wird benutzt:
+		Werfe Würfel neu
+		Neu-Würfeln-Boni -= 1
+		Aktualisiere Aktionsmaske
+		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
+	
+	if Statt Extra-Wahl-Boni gepasst wird:
+		Runde wird inkrementiert
+		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
+	if ungültige Aktion gewählt da keine gültigen Aktionen vorhanden:
+		Nichts tun
+	
+	if not Bonusrunde:
+		Runde wird inkrementiert
+		if Rundenanzahl == 0:
+			terminiert = True
+	Punktebelohnung += Fuchsbonipunktebelohnung
+	Punktebelohnung += erspielte Belohnung in diesem Schritt
+	Aktualisiere Aktionsmaske
+	return Beobachtungsraum, Punktebelohnung, Spiel terminiert?		
+\end{lstlisting}
+
+\begin{minipage}{\linewidth}
+Code 29 zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (\texttt{check\_rewards method}) mithilfe von Pseudocode. Diese Methode überprüft jedes Mal, nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt wurde und fügt diese dem Inventar des Spielers hinzu:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zur Überprüfung der freigespielten Belohnungen}]
+check_rewards():
+	Überprüfe ob im gelben Feld Belohnungen freigeschaltet wurden
+	Schalte im gelben Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im blauen Feld Belohnungen freigeschaltet wurden
+	Schalte im blauen Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im grünen Feld Belohnungen freigeschaltet wurden
+	Schalte im grünen Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im orangenen Feld Belohnungen freigeschaltet wurden
+	Schalte im orangenen Feld freigeschaltete Belohnungen frei
+	
+	Überprüfe ob im lila Feld Belohnungen freigeschaltet wurden
+	Schalte im lila Feld freigeschaltete Belohnungen frei
+
+return Punktebelohnung
+\end{lstlisting}
+\end{minipage}
+
+Code 30 zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (\texttt{valid\_action\_mask method}) mithilfe von Pseudocode. Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf null gesetzt:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zur Generierung der Aktionsmaske}]
+valid_action_mask():
+	Setze alle Werte auf Eins
+	
+	Werte für bereits ausgefüllte gelbe Kästchen = 0
+	Werte für gelbe Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte blaue Kästchen = 0
+	Werte für blaue Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte grüne Kästchen = 0
+	Werte für grüne Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte orangene Kästchen = 0
+	Werte für orangene Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für bereits ausgefüllte lila Kästchen = 0
+	Werte für lila Kästchen ohne passende Würfelergebnisse = 0
+	
+	Werte für Akionen mithilfe ungültiger Würfel = 0
+	
+	if not Extra-Wahl or ungültige Extra-Wahl:
+		Werte von 122 bis 243 & Wert für das Aussetzen = 0
+	if gültige Extra-Wahl:
+		Werte von 0 bis 121 = 0
+		Wert für das Aussetzen = 1
+	
+	if Neu-Würfeln-Boni <= 0 or Extra-Wahl:
+		Wert für Neu-Würfeln-Bonus = 0
+	
+	if einer der Boni zum direkten Ankreuzen von Kästchen >= 1:
+		Alle Werte = 0
+	
+	if Gelbes-Kreuz >= 1:
+		Werte von 0 bis 15 = 1
+	if Blaues-Kreuz >= 1:
+		Werte von 16 bis 27 = 1
+	if Grünes-Kreuz >= 1:
+		Werte von 28 bis 38 = 1
+	if (Orangene-Vier or Orangene-Fünf or Orangene-Sechs) >= 1:
+		Werte von 39 bis 49 = 1
+	if Lila-Sechs >= 1:
+		Werte von 50 bis 60 = 1
+	
+	if Alle Werte außer 246 == 0:
+		Wert für ungültige Aktion = 1
+	else:
+		Wert für ungültige Aktion = 0
+	
+	return Aktionsmaske
+\end{lstlisting}
+
+Code 31 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Systems (\texttt{increment\_rounds method}) mithilfe von Pseudocode. Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zum Inkrementieren des Runden-Systems}]
+increment_rounds():
+	if Extra-Wahl nach eignener Runde:
+		Wahl vom Silbertablett = True
+		Extra Wahl nach eigener Runde = False
+		Setze alle Würfel auf gültig
+		Würfele Würfel neu
+		Setze drei zufällige Würfel auf ungültig
+	
+	elif Wahl vom Silbertablett:
+		if Extra-Wahl-Boni >= 1:
+			Extra-Wahl nach Wahl vom Silbertablett = True
+		else:
+			Schalte Boni für erreichte Runde frei
+			Werfe Würfel neu
+		Wahl vom Silbertablett = False
+		Setze alle Würfel auf gültig
+	
+	elif Extra-Wahl nach Wahl vom Siblertablett:
+		Extra-Wahl nach Wahl vom Silbertablett = False
+		Werfe Würfel neu
+		Setze alle Würfel auf gültig
+		Schalte Boni für erreichte Runde frei
+	
+	elif Wurf in Runde >= 3:
+		Rundenanzahl -= 1
+		Wurf in Runde = 1
+		Setze alle Würfel auf gültig
+		if Extra-Wahl-Boni >= 1:
+			Extra Wahl nach eigener Runde = True
+		else:
+			Wahl vom Silbertablett = True
+			Werfe Würfel neu
+			Setze drei zufällige Würfel auf ungültig
+			
+	else:
+		Wurf in Runde += 1
+		Werfe Würfel neu
+\end{lstlisting}
+
+\begin{minipage}{\linewidth}
+	Code 32 zeigt die Funktionsweise der Methode zum Anlernen des Modells (\texttt{model\_learn method}) mithilfe von Pseudocode. Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO-Modell zu generieren und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
+	\vspace{0.5cm}
+	\begin{lstlisting}[caption={Methode zu Anlernen des Modells},morekeywords={Hyperparameter}]
+		model_learn(Hyperparameter):
+		Initialisiere Spielumgebungen
+		Modell = Initialisiere MaskablePPO-Modell mit Hyperparamter
+		if Modellname in Hyperparameter:
+		Modell = Lade Modell mit Modellname
+		Modell.Spielumgebungen = Initialisieren Spielumgebungen
+		Setze Entropie-Koeffizient
+		Lerne Modell an
+		Setze Gamma für Vorhersagen
+		Setze Entropie-Koeffizient für Vorhersagen
+		Lerne Modell erneut an
+		Speichere Modell
+	\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Code 33 zeigt die Funktionsweise der Methode zum Vorhersagen von Aktionen mithilfe des Modells (\texttt{model\_predict method}) unter Verwendung von Pseudocode. Diese Methode ermöglicht es, mithilfe des Modells Vorhersagen über günstige Aktionen in einem gegebenen Zustand der Spielumgebung vorherzusagen und anhand dessen einen Spielverlauf zu simulieren:
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Methode zum Vorhersagen von Aktionen mithilfe des Modells},morekeywords={Schrittanzahl}]
+model_predict(Schrittanzahl):
+	Lade Modell
+	Initialisiere Spielumgebungen und Historien
+	Setze Beobachtungsraum
+	for i in range(Schrittanzahl):
+		Aktualisiere Aktionsmaske
+		Aktion = Vorhersage der nächsten Aktion
+		Führe Aktion in Spielumgebung aus
+		Trage Werte in Historien ein
+		Visualisiere Spielumgebung
+	Plotte Historien
 \end{lstlisting}
 \end{minipage}

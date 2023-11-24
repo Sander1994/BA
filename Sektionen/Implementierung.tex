@@ -1,11 +1,11 @@
 \section{Implementierung}
 In diesem Kapitel wird die Implementierung des Projektes vorgestellt und erläutert. Zur Darstellung der Funktionsweise der einzelnen Funktionen wird Pseudocode verwendet. Dies soll dabei helfen die Funktionsweise verständlicher und knapper aufzuzeigen.
 
-Einige der Attribute und Methoden der Implementierung sind in diesem Kapitel nicht aufgeführt und können in den Anhängen A1 und A2 nachgeschlagen werden.
+Einige der Attribute und Methoden der Implementierung sind in diesem Kapitel nicht aufgeführt und können in den Anhängen A1 und A2 nachgeschlagen werden. Außerdem gibt es ausführlichere Versionen des Pseudocodes vieler in diesem Kapitel aufgeführter Methoden, welche in Anhang A3 nachgeschlagen werden können.
 \subsection{Einschränkungen}
-Aus zeitlichen Gründen ergeben sich einige Einschränkungen für das Design der Implementierung. Das Spiel endet nach der Wahl des Würfels nach dem dritten Wurf in der sechsten Runde. Somit kann der Extra-Wahl-Bonus kein letztes Mal benutzt werden und es gibt in der letzten Runde auch keine Wahl vom Silbertablett. Außerdem werden nicht die niedrigsten sechs Würfel des Wurfes auf das Silbertablett des Mitspielers gelegt, sondern drei zufällige.
+Aus zeitlichen Gründen ergeben sich einige Einschränkungen für das Design der Implementierung. Das Spiel endet nach der Wahl des Würfels nach dem dritten Wurf in der letzten Runde. Somit kann der Extra-Wahl-Bonus kein letztes Mal benutzt werden und es gibt in der letzten Runde auch keine Wahl vom Silbertablett. Außerdem werden nicht die niedrigsten sechs Würfel des Wurfes auf das Silbertablett des Mitspielers gelegt, sondern drei zufällige. Zudem wird in Runde vier zufällig eine der Boni Gelbes-Kreuz, Blaues-Kreuz, Grünes-Kreuz, Orangene-Sechs oder Lila-Sechs freigeschaltet, statt eines der Kästchen frei wählbar zu machen.
 \subsection{Spielumgebung}
-Die Implementierung besteht aus zwei Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Kapitel die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [s. Unterabschnitt 2.2.1] verwendet.
+Die Implementierung besteht aus zwei Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Abschnitt die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [s. Unterabschnitt 2.2.1] verwendet.
 \subsubsection{Klassenattribute}
 \begin{minipage}{\linewidth}
 Code 1 zeigt die Klassenattribute, die für das Rundenmanagement wichtig sind:
@@ -24,7 +24,7 @@ Das Attribut \texttt{rounds} repräsentiert die aktuell verbleibende Rundenanzah
 Das Attribut \texttt{roll\_in\_round} repräsentiert die Nummer des aktuellen Wurfes in der Runde.\\
 
 \begin{minipage}{\linewidth}
-Code 2 zeigt die Klassenattribute, die für das Würfeln der Würfel relevant sind:
+Code 2 zeigt die Klassenattribute, die für das Management der Würfel relevant sind:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für Würfel}, basicstyle=\ttfamily]
 self.invalid_dice = {"white": False, "yellow": False, ...}
@@ -33,8 +33,6 @@ self.dice = {"white": 0, "yellow": 0, ...}
 \end{minipage}
 
 Die Attribute \texttt{invalid\_dice} und dice repräsentieren die Augenzahlen der Würfel, sowie die Gültigkeit der Würfel selbst. Ist der Wert von \texttt{invalid\_dice} False, ist der Würfel nicht ungültig und somit gültig.\\
-
-Das Attribut \texttt{score} repräsentiert den aktuellen Punktestand der Spielumgebung. Es wird verwendet, um erreichte Punktestände in die \texttt{score\_history} einzutragen. Das Attribut \texttt{score\_history} ist eine Historie über die erreichten Punktestände in den einzelnen Episoden beziehungsweise Spieldurchläufen. Das Attribut \texttt{initialized} wird verwendet, um zu gewährleisten, dass nur Einträge in der Punktestandhistorie eingetragen werden, nachdem ein Spiel abgeschlossen wurde. Es trifft eine Aussage darüber ob die Spielumgebung bereits einmal initialisiert wurde oder nicht.\\
 
 \begin{minipage}{\linewidth}
 Code 3 zeigt die Klassenattribute, welche die farbigen Felder des Spielbrettes repräsentieren:
@@ -62,10 +60,10 @@ self.purple_rewards = [None, None, "re_roll", ...]
 \end{lstlisting}
 \end{minipage}
 
-Die Attribute \texttt{yellow\_rewards}, \texttt{blue\_rewards}, \texttt{green\_rewards}, \texttt{orange\_rewards} und \texttt{purple\_rewards} repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Für das blaue Feld sind diese in Form von Reihen (\texttt{row}) und Spalten (\texttt{col}) aufgeführt. Das gelbe Feld besitzt Boni für das Ausfüllen von Reihen (\texttt{row}) und einen Boni, der bei diagonalem Ausfüllen (\texttt{dia}) freigeschaltet werden kann. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Bonus aufweisen, was dem Wert None entspricht.\\
+Die Attribute \texttt{yellow\_rewards}, \texttt{blue\_rewards}, \texttt{green\_rewards}, \texttt{orange\_rewards} und \texttt{purple\_rewards} repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Das gelbe Feld besitzt Boni für das Ausfüllen von Reihen (\texttt{row}) und einen Boni, der bei diagonalem Ausfüllen (\texttt{dia}) freigeschaltet werden kann. Für das blaue Feld sind Boni in Form von Reihen (\texttt{row}) und Spalten (\texttt{col}) aufgeführt. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Bonus aufweisen, was dem Wert None entspricht.\\
 
 \begin{minipage}{\linewidth}
-Code 5 zeigt die Klassenattribute, für die Punktebelohnungen des gelben, blauen und grünen Feldes:
+Code 5 zeigt die Klassenattribute, für Punktebelohnungen des gelben, blauen und grünen Feldes:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für freizuschaltende Punktebelohnungen des gelben, blauen und grünen Feldes}, basicstyle=\ttfamily]
 self.yellow_rewards = {"col": [10, 14, 16, 20], ...}
@@ -77,7 +75,7 @@ self.green_count_rewards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 Im Attribut \texttt{yellow\_rewards} sind die Punktebelohnungen im Spaltenbereich (\texttt{col}) des gelben Feldes aufgeführt. Die Attribute \texttt{blue\_count\_rewards} und \texttt{green\_count\_rewards} repräsentieren die Punktebelohnungen, welche erspielt werden können, sobald ein blaues beziehungsweise grünes Kästchen ausgefüllt wird. Beginnend vom ersten Wert des Arrays und danach inkrementell aufsteigend, steigt die erhaltene Punktebelohnung bei jedem ausgefüllten Kästchen stetig an.\\
 
 \begin{minipage}{\linewidth}
-Code 6 zeigt die Klassenattribute für freigeschaltete Boni. Wird eine Boni erspielt, wird ihr Wert inkrementiert, wird sie genutzt, wird er dekrementiert:
+Code 6 zeigt die Klassenattribute für freigeschaltete Boni. Wird ein Bonus erspielt, wird sein Wert inkrementiert, wird er genutzt, wird sein Wert dekrementiert:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Klassenattribute für freigespielte Boni}, basicstyle=\ttfamily]
 self.extra_pick
@@ -106,59 +104,28 @@ self.valid_action_mask_value = np.ones(self.number_of_actions)
 \end{lstlisting}
 \end{minipage}
 
-Das Attribut \texttt{number\_of\_actions} repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute \texttt{low\_bound} und \texttt{high\_bound} setzen die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null \texttt{([0]*16)} bis sechs \texttt{([6]*16)} reichen. Das Attribut \texttt{action\_space} repräsentiert den Aktionsraum des Modells. Es ist ein diskreter Raum mit \texttt{number\_of\_actions} Werten von null bis \texttt{number\_of\_actions} minus eins. Das Attribut \texttt{observation\_space} repräsentiert den Beobachtungsraum. \texttt{Shape} definiert dabei die Größe des Beobachtungsraumes. Das Attribut \texttt{valid\_action\_mask\_value} repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise \texttt{[0]} oder \texttt{[5]}) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.\\
+Das Attribut \texttt{number\_of\_actions} repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute \texttt{low\_bound} und \texttt{high\_bound} setzen die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null \texttt{([0]*16)} bis sechs \texttt{([6]*16)} reichen. Das Attribut \texttt{action\_space} repräsentiert den Aktionsraum des Modells. Der Aktionsraum ist ein diskreter Raum mit \texttt{number\_of\_actions} Werten von null bis \texttt{number\_of\_actions} minus eins. Das Attribut \texttt{observation\_space} repräsentiert den Beobachtungsraum. \texttt{Shape} definiert dabei die Größe des Beobachtungsraumes. Das Attribut \texttt{valid\_action\_mask\_value} repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise \texttt{[0]} oder \texttt{[5]}) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.\\
 
-Die Struktur des Aktionsraumes ist für das Verständnis der Arbeit wichtig, daher wird sie hier erläutert:
+Die Struktur des Aktionsraumes ist für das Verständnis der Arbeit wichtig, daher wird diese im Folgenden erläutert:
 
 Die ersten 122 Werte des Aktionsraumes von 0 bis 121 sind sowohl normalen Wahlen bei eigenen Würfen als auch den verschiedenen Boni, welche es ermöglichen direkt ein Kästchen eines Felder anzukreuzen, zugeordnet. Dabei stehen die ersten 16 Werte für Kästchen des gelben Feldes, die nächsten 12 für Kästchen des blauen Feldes, und die folgenden 33 zu einer Aufteilung von jeweils 11 für Kästchen im grünen, orangenen und lila Feld. Die Werte von 61 bis 121 stehen für die selben Kästchen in der selben Reihenfolge wie die vorherigen 61 Werte, allerdings wird bei diesen der weiße Würfel verwendet statt des jeweils farbigen Würfels für das spezifische Feld.
 
 Die Werte von 122 bis 243 stehen für Wahlen mit der Extra-Wahl-Boni oder für Wahlen vom Silbertablett des Gegners. Die Struktur innerhalb dieser Reichweite ist die selbe wie bei den 122 Werte zuvor. Die ersten 16 Werte stehen für die selben Kästchen im gelben Feld und so weiter.
 
-Der Wert 244 steht für die Neu Würfeln Boni, der Wert 245 für das Passen bei einem möglichen Einsatz von Extra-Wahl-Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen getätigt werden kann.\\
+Der Wert 244 steht für den Neu-Würfeln-Bonus, der Wert 245 für das Passen bei einem möglichen Einsatz von Extra-Wahl-Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen gewählt werden kann.
 \subsubsection{Schritt-Methode}
-Code 12 zeigt die Funktionsweise der Schritt-Methode (\texttt{step method}) der Spielumgebung mithilfe von Pseudocode. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
+\begin{minipage}{\linewidth}
+Code 8 zeigt die Funktionsweise der Schritt-Methode (\texttt{step method}) der Spielumgebung mithilfe von Pseudocode. Diese Methode führt Spielschritte beziehungsweise Aktionen in der Spielumgebung aus:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Schritt-Methode}]
+\begin{lstlisting}[caption={Schritt-Methode},morekeywords={Aktion}]
 step(Aktion):
-	Setze Methodenattribute zurück
-	
 	if not Extra-Wahl:
-		if Aktion im gelben Feld:
-			Fülle entsprechendes gelbes Kästchen aus
-			if Gelbes-Kreuz-Boni >= 1
-				Bonusrunde = True
-				Gelbes-Kreuz-Boni -= 1
-			if not Bonusrunde:
-				Setze entsprechende Würfel auf ungültig
-		if Aktion im blauen Feld:
-			Fülle entsprechendes blaues Kästchen aus
-			if Blaues-Kreuz-Boni >= 1:
-				Bonusrunde = True
-				Blaues-Kreuz-Boni -= 1
-			if not Bonusrunde:
-				Setze entsprechende Würfel auf ungültig
-		if Aktion im grünen Feld:
-			Fülle entsprechendes grünes Kästchen aus
-			if Grünes-Kreuz-Boni >= 1:
-				Bonusrunde = True
-				Grünes-Kreuz-Boni -= 1
-			if not Bonusrunde:
-				Setze entsprechende Würfel auf ungültig
-		if Aktion im orangene Feld:
-			Fülle entsprechendes orangenes Kästchen aus
-			if Orangene-Feld-Boni >= 1:
-				Bonusrunde = True
-				Orangene-Feld-Boni -= 1
-			if not Bonusrunde:
-				Setze entsprechende Würfel auf ungültig
-		if Aktion im lila Feld:
-			Fülle entsprechendes lila Kästchen aus
-			if Lila-Sechs-Boni >= 1:
-				Bonusrunde = True
-				Lila-Sechs-Boni -= 1
-			if not Bonusrunde:
-				Setze entsprechende Würfel auf ungültig
-	
+		Fülle Kästchen für Aktion aus
+		if Bonus wurde benutzt (nicht Extra-Wahl-Bonus):
+			Bonusrunde = True
+			Benutzter Bonus -= 1
+		else:
+			Setze entsprechende Würfel auf ungültig
 	if Extra-Wahl:
 		Bonusrunde = True
 		if Extra-Wahl-Bonus benutzt:
@@ -167,31 +134,27 @@ step(Aktion):
 		Setze gewählten Würfel auf ungültig
 		if Extra-Wahl-Boni <= 0 or Wahl erfolgte vom Silbertablett:
 			Runde wird inkrementiert
-			
 	if Neu-Würfeln-Bonus wird benutzt:
 		Werfe Würfel neu
 		Neu-Würfeln-Boni -= 1
 		Aktualisiere Aktionsmaske
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
-		
 	if Statt Extra-Wahl-Boni gepasst wird:
 		Runde wird inkrementiert
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
-	if ungültige Aktion gewählt da keine gültigen Aktionen vorhanden:
-		Nichts tun
-			
-	Punktebelohnung += erspielte Belohnung in diesem Schritt
 	if not Bonusrunde:
 		Runde wird inkrementiert
 		if Rundenanzahl == 0:
 			terminiert = True
 			Punktebelohnung += Fuchsbonipunktebelohnung
+	Punktebelohnung += erspielte Belohnung in diesem Schritt
 	Aktualisiere Aktionsmaske
 	return Beobachtungsraum, Punktebelohnung, Spiel terminiert?		
 \end{lstlisting}
+\end{minipage}
 \subsubsection{Methode zum Zurücksetzen der Spielumgebung}
 \begin{minipage}{\linewidth}
-Code 8 zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (\texttt{reset method}) mithilfe von Pseudocode. Sie setzt Umgebungen, in denen ein Spiel abgeschlossen wurde, auf den Anfangszustand zurück, damit eine weitere Runde gespielt werden kann:
+Code 9 zeigt die Funktionsweise der Methode zum Zurücksetzen der Spielumgebung (\texttt{reset method}) mithilfe von Pseudocode. Sie setzt Umgebungen, in denen ein Spiel abgeschlossen wurde, auf den Anfangszustand zurück, damit eine weitere Runde gespielt werden kann:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Zurücksetzen der Umgebung}]
 reset():
@@ -201,7 +164,7 @@ reset():
 
 \subsubsection{Würfel-Methode}
 \begin{minipage}{\linewidth}
-Code 9 zeigt die Funktionsweise der Methode zum Werfen der Würfel (\texttt{roll\_dice method}) mithilfe von Pseudocode. Würfel müssen nach jedem Wurf, bei Anfang jeder Spielrunde und beim Einsetzen des Neu-Würfeln-Bonus neu geworfen werden:
+Code 10 zeigt die Funktionsweise der Methode zum Werfen der Würfel (\texttt{roll\_dice method}) mithilfe von Pseudocode. Würfel müssen nach jedem Wurf, beim Beginn einer Wahl vom Silbertablett und beim Einsetzen des Neu-Würfeln-Bonus neu geworfen werden:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Werfen der Würfel}]
 roll_dice():
@@ -211,74 +174,39 @@ roll_dice():
 
 \subsubsection{Methode zur Überprüfung der freigespielten Belohnungen}
 \begin{minipage}{\linewidth}
-Code 10 zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (\texttt{check\_rewards method}) mithilfe von Pseudocode. Diese Methode überprüft jedes Mal, nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt wurde und fügt diese dem Inventar des Spielers hinzu:
+Code 11 zeigt die Funktionsweise der Methode zur Überprüfung der freigespielten Belohnungen (\texttt{check\_rewards method}) mithilfe von Pseudocode. Diese Methode überprüft jedes Mal, nachdem ein Kästchen in der Spielumgebung ausgefüllt worden ist, ob und welche Belohnung freigespielt wurde und fügt diese dem Inventar des Spielers hinzu:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Überprüfung der freigespielten Belohnungen}]
 check_rewards():
-	Überprüfe ob im gelben Feld Belohnungen freigeschaltet wurden
-	Schalte im gelben Feld freigeschaltete Belohnungen frei
-	
-	Überprüfe ob im blauen Feld Belohnungen freigeschaltet wurden
-	Schalte im blauen Feld freigeschaltete Belohnungen frei
-	
-	Überprüfe ob im grünen Feld Belohnungen freigeschaltet wurden
-	Schalte im grünen Feld freigeschaltete Belohnungen frei
-	
-	Überprüfe ob im orangenen Feld Belohnungen freigeschaltet wurden
-	Schalte im orangenen Feld freigeschaltete Belohnungen frei
-	
-	Überprüfe ob im lila Feld Belohnungen freigeschaltet wurden
-	Schalte im lila Feld freigeschaltete Belohnungen frei
-	
+	Überprüfe ob Belohnungen freigeschaltet wurden
+	Schalte entsprechende Belohnungen frei
 	return Punktebelohnung
 \end{lstlisting}
 \end{minipage}
 \subsubsection{Methode zur Generierung der Aktionsmaske}
-Code 11 zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (\texttt{valid\_action\_mask method}) mithilfe von Pseudocode. Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf null gesetzt:
+\begin{minipage}{\linewidth}
+Code 12 zeigt Die Funktionsweise der Methode zur Generierung der Aktionsmaske (\texttt{valid\_action\_mask method}) mithilfe von Pseudocode. Einsen stehen für gültige Aktionen und Nullen für ungültige. Die Wahlwahrscheinlichkeit des Modells für ungültige Aktionen wird auf null gesetzt:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Generierung der Aktionsmaske}]
 valid_action_mask():
 	Setze alle Werte auf Eins
 	
-	Werte für bereits ausgefüllte gelbe Kästchen = 0
-	Werte für gelbe Kästchen ohne passende Würfelergebnisse = 0
-	
-	Werte für bereits ausgefüllte blaue Kästchen = 0
-	Werte für blaue Kästchen ohne passende Würfelergebnisse = 0
-	
-	Werte für bereits ausgefüllte grüne Kästchen = 0
-	Werte für grüne Kästchen ohne passende Würfelergebnisse = 0
-	
-	Werte für bereits ausgefüllte orangene Kästchen = 0
-	Werte für orangene Kästchen ohne passende Würfelergebnisse = 0
-	
-	Werte für bereits ausgefüllte lila Kästchen = 0
-	Werte für lila Kästchen ohne passende Würfelergebnisse = 0
-	
+	Werte für bereits ausgefüllte Kästchen = 0
+	Werte für Kästchen ohne passende Würfelergebnisse = 0
 	Werte für Akionen mithilfe ungültiger Würfel = 0
 	
 	if not Extra-Wahl or ungültige Extra-Wahl:
 		Werte von 122 bis 243 & Wert für das Aussetzen = 0
 	if gültige Extra-Wahl:
 		Werte von 0 bis 121 = 0
-		Wert für das Aussetzen = 1
+		Wert für das Passen = 1
 	
 	if Neu-Würfeln-Boni <= 0 or Extra-Wahl:
 		Wert für Neu-Würfeln-Bonus = 0
 	
-	if einer der Boni zum direkten Ankreuzen von Kästchen >= 1:
+	if einer der Boni zum direkten Ausfüllen von Kästchen >= 1:
 		Alle Werte = 0
-	
-	if Gelbes-Kreuz >= 1:
-		Werte von 0 bis 15 = 1
-	if Blaues-Kreuz >= 1:
-		Werte von 16 bis 27 = 1
-	if Grünes-Kreuz >= 1:
-		Werte von 28 bis 38 = 1
-	if (Orangene-Vier or Orangene-Fünf or Orangene-Sechs) >= 1:
-		Werte von 39 bis 49 = 1
-	if Lila-Sechs >= 1:
-		Werte von 50 bis 60 = 1
+		Werte für verfügbare Boni zum direkten Ausfüllen = 1
 	
 	if Alle Werte außer 246 == 0:
 		Wert für ungültige Aktion = 1
@@ -287,99 +215,79 @@ valid_action_mask():
 		
 	return Aktionsmaske
 \end{lstlisting}
+\end{minipage}
 \subsubsection{Methode zum Hinzufügen von Boni}
 \begin{minipage}{\linewidth}
-Code 12 zeigt die Funktionsweise der Methode zum Hinzufügen freigeschalteter Boni (\texttt{add\_reward method}) mithilfe von Pseudocode. Diese Methode wird von der Methode zur Überprüfung der freigespielten Belohnungen genutzt, um Boni dem Inventar des Spielers hinzuzufügen:
+Code 13 zeigt die Funktionsweise der Methode zum Hinzufügen freigeschalteter Boni (\texttt{add\_reward method}) mithilfe von Pseudocode. Diese Methode wird von der Methode zur Überprüfung der freigespielten Belohnungen genutzt, um Boni dem Inventar des Spielers hinzuzufügen:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Hinzufügen freigschalteter Boni}]
+\begin{lstlisting}[caption={Methode zum Hinzufügen freigschalteter Boni},morekeywords={Belohnungstyp}]
 add_reward(Belohnungstyp):
 	Inkrementiere Wert für Belohnungstyp
 \end{lstlisting}
 \end{minipage}
 
 \subsubsection{Methode zum Inkrementieren von Runden}
-Code 13 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Systems (\texttt{increment\_rounds method}) mithilfe von Pseudocode. Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben:
+\begin{minipage}{\linewidth}
+Code 14 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Systems (\texttt{increment\_rounds method}) mithilfe von Pseudocode. Diese Methode ist dafür zuständig das Runden-System des Spiels voranzutreiben:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zum Inkrementieren des Runden-Systems}]
 increment_rounds():
 	if Extra-Wahl nach eignener Runde:
-		Wahl vom Silbertablett = True
-		Extra Wahl nach eigener Runde = False
-		Setze alle Würfel auf gültig
-		Würfele Würfel neu
-		Setze drei zufällige Würfel auf ungültig
+		Weiter mit Wahl vom Silbertablett
 		
 	elif Wahl vom Silbertablett:
 		if Extra-Wahl-Boni >= 1:
-			Extra-Wahl nach Wahl vom Silbertablett = True
+			Weiter mit Extra-Wahl
 		else:
-			Schalte Boni für erreichte Runde frei
-			Werfe Würfel neu
-		Wahl vom Silbertablett = False
-		Setze alle Würfel auf gültig
+			Weiter mit nächster Runde
 	
 	elif Extra-Wahl nach Wahl vom Siblertablett:
-		Extra-Wahl nach Wahl vom Silbertablett = False
-		Werfe Würfel neu
-		Setze alle Würfel auf gültig
-		Schalte Boni für erreichte Runde frei
+		Weiter mit nächster Runde
 	
 	elif Wurf in Runde >= 3:
 		Rundenanzahl -= 1
 		Wurf in Runde = 1
-		Setze alle Würfel auf gültig
 		if Extra-Wahl-Boni >= 1:
-			Extra Wahl nach eigener Runde = True
+			Weiter mit Extra-Wahl
 		else:
-			Wahl vom Silbertablett = True
-			Werfe Würfel neu
-			Setze drei zufällige Würfel auf ungültig
+			Weiter mit Wahl vom Silbertablett
 	else:
 		Wurf in Runde += 1
 		Werfe Würfel neu
 \end{lstlisting}
+\end{minipage}
 \subsection{Künstliche Intelligenz}
 Die Implementierung besteht aus zwei Klassen. Eine davon ist die Künstliche Intelligenz. In diesem Kapitel werden die wesentlichen Methoden der Künstlichen Intelligenz mithilfe von Pseudocode erläutert. Für die Implementierung der Künstlichen Intelligenz wurde die Bibliothek Stable Baselines 3 [s. Unterabschnitt 2.2.2] verwendet.
 \subsubsection{Methode zum Anlernen des Modells}
 \begin{minipage}{\linewidth}
-Code 14 zeigt die Funktionsweise der Methode zum Anlernen des Modells (\texttt{model\_learn method}) mithilfe von Pseudocode. Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO-Modell zu generieren und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
+Code 15 zeigt die Funktionsweise der Methode zum Anlernen des Modells (\texttt{model\_learn method}) mithilfe von Pseudocode. Es werden Hyperparameter festgelegt, welche genutzt werden, um ein MaskablePPO-Modell zu generieren und mithilfe der Spielumgebung zu trainieren. Alternativ kann ein bereits trainiertes Modell geladen und weiter trainiert werden:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zu Anlernen des Modells}]
+\begin{lstlisting}[caption={Methode zu Anlernen des Modells},morekeywords={Hyperparameter}]
 model_learn(Hyperparameter):
 	Initialisiere Spielumgebungen
 	Modell = Initialisiere MaskablePPO-Modell mit Hyperparamter
 	if Modellname in Hyperparameter:
 		Modell = Lade Modell mit Modellname
 		Modell.Spielumgebungen = Initialisieren Spielumgebungen
-		Setze Entropie-Koeffizient
 	Lerne Modell an
-	Setze Gamma für Vorhersagen
-	Setze Entropie-Koeffizient für Vorhersagen
-	Lerne Modell erneut an
-	Speichere Modell
 \end{lstlisting}
 \end{minipage}
 \subsubsection{Methode zum Vorhersagen mithilfe des Modells}
 \begin{minipage}{\linewidth}
-Code 15 zeigt die Funktionsweise der Methode zum Vorhersagen von Aktionen mithilfe des Modells (\texttt{model\_predict method}) unter Verwendung von Pseudocode. Diese Methode ermöglicht es, mithilfe des Modells Vorhersagen über günstige Aktionen in einem gegebenen Zustand der Spielumgebung vorherzusagen und anhand dessen einen Spielverlauf zu simulieren:
+Code 16 zeigt die Funktionsweise der Methode zum Vorhersagen von Aktionen mithilfe des Modells (\texttt{model\_predict method}) unter Verwendung von Pseudocode. Diese Methode ermöglicht es, mithilfe des Modells günstige Aktionen in einem gegebenen Zustand der Spielumgebung vorherzusagen und anhand dessen einen Spielverlauf zu simulieren:
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Methode zum Vorhersagen von Aktionen mithilfe des Modells}]
+\begin{lstlisting}[caption={Methode zum Vorhersagen von Aktionen mithilfe des Modells},morekeywords={Schrittanzahl}]
 model_predict(Schrittanzahl):
-	Lade Modell
-	Initialisiere Spielumgebungen und Historien
-	Setze Beobachtungsraum
+	Lade Modell und initialisiere Spielumgebungen
 	for i in range(Schrittanzahl):
 		Aktualisiere Aktionsmaske
 		Aktion = Vorhersage der nächsten Aktion
 		Führe Aktion in Spielumgebung aus
-		Trage Werte in Historien ein
-		Visualisiere Spielumgebung
-	Plotte Historien
 \end{lstlisting}
 \end{minipage}
 \subsection{Anwendungsbeispiel für die Künstliche Intelligenz}
 \begin{minipage}{\linewidth}
-Code 16 zeigt ein Anwendungsbeispiel des Projektes. Es wird ein Modell mit dem Namen \texttt{model\_name} geladen und für 1110000 Schritte (x3 durch die \texttt{learn\_model methode}) trainiert. Entsprechende Hyperparameter werden ebenfalls gesetzt. Daraufhin werden mithilfe des Modells Spieldurchläufe (für ungefähr 1000 Episoden) simuliert:
+Code 17 zeigt ein Anwendungsbeispiel des Projektes. Es wird ein Modell mit dem Namen \texttt{model\_name} geladen und für 1110000 Schritte (x3 durch die \texttt{learn\_model methode}) trainiert. Entsprechende Hyperparameter werden ebenfalls gesetzt. Daraufhin werden mithilfe des Modells Spieldurchläufe (für ungefähr 1000 Episoden) simuliert:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Anwendungsbeispiel für die Künstliche Intelligenz}]
 def main():
