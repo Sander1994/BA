@@ -2,8 +2,6 @@
 In diesem Kapitel wird die Implementierung des Projektes vorgestellt und erläutert. Zur Darstellung der Funktionsweise der einzelnen Funktionen wird Pseudocode verwendet. Dies soll dabei helfen die Funktionsweise verständlicher und knapper aufzuzeigen.
 
 Einige der Attribute und Methoden der Implementierung sind in diesem Kapitel nicht aufgeführt und können in den Anhängen A1 und A2 nachgeschlagen werden. Außerdem gibt es ausführlichere Versionen des Pseudocodes vieler in diesem Kapitel aufgeführter Methoden, welche in Anhang A3 nachgeschlagen werden können.
-\subsection{Einschränkungen}
-Aus zeitlichen Gründen ergeben sich einige Einschränkungen für das Design der Implementierung. Das Spiel endet nach der Wahl des Würfels nach dem dritten Wurf in der letzten Runde. Somit kann der Extra-Wahl-Bonus kein letztes Mal benutzt werden und es gibt in der letzten Runde auch keine Wahl vom Silbertablett. Außerdem werden nicht die niedrigsten sechs Würfel des Wurfes auf das Silbertablett des Mitspielers gelegt, sondern drei zufällige. Zudem wird in Runde vier zufällig eine der Boni Gelbes-Kreuz, Blaues-Kreuz, Grünes-Kreuz, Orangene-Sechs oder Lila-Sechs freigeschaltet, statt eines der Kästchen frei wählbar zu machen.
 \subsection{Spielumgebung}
 Die Implementierung besteht aus zwei Klassen. Eine davon ist die Spielumgebung. Zunächst werden in diesem Abschnitt die wesentlichen Attribute der Spielumgebung und anschließend ihre Methoden erläutert. Für die Implementierung der Spielumgebung wurde die Bibliothek Gymnasium [s. Unterabschnitt 2.2.1] verwendet.
 \subsubsection{Klassenattribute}
@@ -48,6 +46,7 @@ self.purple_field = [0] * 11
 
 Die Attribute \texttt{yellow\_field}, \texttt{blue\_field}, \texttt{green\_field}, \texttt{orange\_field} und \texttt{purple\_field} stehen für die fünf farbigen Felder auf dem Spielbrett. Sie repräsentieren die eingetragenen Werte auf dem Spielbrett und bestimmen somit welche Kästchen aktuell ausgefüllt werden können (vorausgesetzt die Würfelergebnisse passen) und welche Belohnungen freigeschaltet werden.\\
 
+\newpage
 \begin{minipage}{\linewidth}
 Code 4 zeigt die Klassenattribute, welche die zu erspielenden Boni auf den farbigen Feldern repräsentieren:
 \vspace{0.5cm}
@@ -60,7 +59,7 @@ self.purple_rewards = [None, None, "re_roll", ...]
 \end{lstlisting}
 \end{minipage}
 
-Die Attribute \texttt{yellow\_rewards}, \texttt{blue\_rewards}, \texttt{green\_rewards}, \texttt{orange\_rewards} und \texttt{purple\_rewards} repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Das gelbe Feld besitzt Boni für das Ausfüllen von Reihen (\texttt{row}) und einen Boni, der bei diagonalem Ausfüllen (\texttt{dia}) freigeschaltet werden kann. Für das blaue Feld sind Boni in Form von Reihen (\texttt{row}) und Spalten (\texttt{col}) aufgeführt. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Bonus aufweisen, was dem Wert None entspricht.\\
+Die Attribute \texttt{yellow\_rewards}, \texttt{blue\_rewards}, \texttt{green\_rewards}, \texttt{orange\_rewards} und \texttt{purple\_rewards} repräsentieren die freizuschaltenden Boni für die jeweiligen farbigen Felder. Das gelbe Feld besitzt Boni für das Ausfüllen von Reihen (\texttt{row}) und einen Bonus, der bei diagonalem Ausfüllen (\texttt{dia}) freigeschaltet werden kann. Für das blaue Feld sind Boni in Form von Reihen (\texttt{row}) und Spalten (\texttt{col}) aufgeführt. Für die Farben grün, orange und lila sind die Boni jeweils direkt einem der Kästchen im Feld zugewiesen, wobei viele der Kästchen keinen freizuschaltenden Bonus aufweisen, was dem Wert None entspricht.\\
 
 \begin{minipage}{\linewidth}
 Code 5 zeigt die Klassenattribute, für Punktebelohnungen des gelben, blauen und grünen Feldes:
@@ -91,6 +90,7 @@ self.purple_six
 \end{lstlisting}
 \end{minipage}
 
+\newpage
 \begin{minipage}{\linewidth}
 Code 7 zeigt die Klassenattribute für den Aktions- sowie Beobachtungsraum:
 \vspace{0.5cm}
@@ -104,13 +104,11 @@ self.valid_action_mask_value = np.ones(self.number_of_actions)
 \end{lstlisting}
 \end{minipage}
 
-Das Attribut \texttt{number\_of\_actions} repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute \texttt{low\_bound} und \texttt{high\_bound} setzen die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null \texttt{([0]*16)} bis sechs \texttt{([6]*16)} reichen. Das Attribut \texttt{action\_space} repräsentiert den Aktionsraum des Modells. Der Aktionsraum ist ein diskreter Raum mit \texttt{number\_of\_actions} Werten von null bis \texttt{number\_of\_actions} minus eins. Das Attribut \texttt{observation\_space} repräsentiert den Beobachtungsraum. \texttt{Shape} definiert dabei die Größe des Beobachtungsraumes. Das Attribut \texttt{valid\_action\_mask\_value} repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise \texttt{[0]} oder \texttt{[5]}) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.\\
+Das Attribut \texttt{number\_of\_actions} repräsentiert die Gesamtanzahl an möglichen Aktionen des Modells. Die Attribute \texttt{low\_bound} und \texttt{high\_bound} setzen die obere und untere Grenze von Werten im Beobachtungsraum fest. Beispielsweise steht der erste Eintrag in beiden für Werte des gelben Feldes. Diese können von null \texttt{([0]*16)} bis sechs \texttt{([6]*16)} reichen. Das Attribut \texttt{action\_space} repräsentiert den Aktionsraum des Modells. Der Aktionsraum ist ein diskreter Raum mit \texttt{number\_of\_actions} Werten von null bis \texttt{number\_of\_actions} minus eins. Das Attribut \texttt{observation\_space} repräsentiert den Beobachtungsraum. \texttt{Shape} definiert dabei die Größe des Beobachtungsraumes. Das Attribut \texttt{valid\_action\_mask\_value} repräsentiert die Aktionsmaske. Initial handelt es sich dabei um ein Numpy Array aus Einsen. Einsen stehen für gültige Aktionen, Nullen für ungültige. Die Werte verlaufen parallel zu den Werten des Aktionsraumes. Somit repräsentieren alle Werte (beispielsweise \texttt{[0]} oder \texttt{[5]}) sowohl im Aktionsraum als auch bei der Aktionsmaske die selbe Aktion.
 
-Die Struktur des Aktionsraumes ist für das Verständnis der Arbeit wichtig, daher wird diese im Folgenden erläutert:
+Die Struktur des Aktionsraumes ist für das Verständnis der Arbeit wichtig, daher wird diese im Folgenden erläutert: Die ersten 122 Werte des Aktionsraumes von 0 bis 121 sind sowohl normalen Wahlen bei eigenen Würfen als auch den verschiedenen Boni, welche es ermöglichen direkt ein Kästchen eines Felder anzukreuzen, zugeordnet. Dabei stehen die ersten 16 Werte für Kästchen des gelben Feldes, die nächsten 12 für Kästchen des blauen Feldes, und die folgenden 33 zu einer Aufteilung von jeweils 11 für Kästchen im grünen, orangenen und lila Feld. Die Werte von 61 bis 121 stehen für die selben Kästchen in der selben Reihenfolge wie die vorherigen 61 Werte, allerdings wird bei diesen der weiße Würfel verwendet statt des jeweils farbigen Würfels für das spezifische Feld.
 
-Die ersten 122 Werte des Aktionsraumes von 0 bis 121 sind sowohl normalen Wahlen bei eigenen Würfen als auch den verschiedenen Boni, welche es ermöglichen direkt ein Kästchen eines Felder anzukreuzen, zugeordnet. Dabei stehen die ersten 16 Werte für Kästchen des gelben Feldes, die nächsten 12 für Kästchen des blauen Feldes, und die folgenden 33 zu einer Aufteilung von jeweils 11 für Kästchen im grünen, orangenen und lila Feld. Die Werte von 61 bis 121 stehen für die selben Kästchen in der selben Reihenfolge wie die vorherigen 61 Werte, allerdings wird bei diesen der weiße Würfel verwendet statt des jeweils farbigen Würfels für das spezifische Feld.
-
-Die Werte von 122 bis 243 stehen für Wahlen mit der Extra-Wahl-Boni oder für Wahlen vom Silbertablett des Gegners. Die Struktur innerhalb dieser Reichweite ist die selbe wie bei den 122 Werte zuvor. Die ersten 16 Werte stehen für die selben Kästchen im gelben Feld und so weiter.
+Die Werte von 122 bis 243 stehen für Wahlen mit Extra-Wahl-Boni oder für Wahlen vom Silbertablett des Gegners. Die Struktur innerhalb dieser Reichweite ist die selbe wie bei den 122 Werte zuvor. Die ersten 16 Werte stehen für die selben Kästchen im gelben Feld und so weiter.
 
 Der Wert 244 steht für den Neu-Würfeln-Bonus, der Wert 245 für das Passen bei einem möglichen Einsatz von Extra-Wahl-Boni und der Wert 246 für eine ungültige Aktion, die nur möglich ist, wenn keine der anderen Aktionen gewählt werden kann.
 \subsubsection{Schritt-Methode}
@@ -141,12 +139,11 @@ step(Aktion):
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
 	if Statt Extra-Wahl-Boni gepasst wird:
 		Runde wird inkrementiert
+		Prüfe ob Spiel abgeschlossen wurde
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
 	if not Bonusrunde:
 		Runde wird inkrementiert
-		if Rundenanzahl == 0:
-			terminiert = True
-			Punktebelohnung += Fuchsbonipunktebelohnung
+		Prüfe ob Spiel abgeschlossen wurde
 	Punktebelohnung += erspielte Belohnung in diesem Schritt
 	Aktualisiere Aktionsmaske
 	return Beobachtungsraum, Punktebelohnung, Spiel terminiert?		
@@ -234,21 +231,18 @@ Code 14 zeigt die Funktionsweise der Methode zum Inkrementieren des Runden-Syste
 increment_rounds():
 	if Extra-Wahl nach eignener Runde:
 		Weiter mit Wahl vom Silbertablett
-		
 	elif Wahl vom Silbertablett:
 		if Extra-Wahl-Boni >= 1:
-			Weiter mit Extra-Wahl
+			Weiter mit Extra-Wahl-Boni
 		else:
 			Weiter mit nächster Runde
-	
 	elif Extra-Wahl nach Wahl vom Siblertablett:
 		Weiter mit nächster Runde
-	
 	elif Wurf in Runde >= 3:
 		Rundenanzahl -= 1
 		Wurf in Runde = 1
 		if Extra-Wahl-Boni >= 1:
-			Weiter mit Extra-Wahl
+			Weiter mit Extra-Wahl-Boni
 		else:
 			Weiter mit Wahl vom Silbertablett
 	else:

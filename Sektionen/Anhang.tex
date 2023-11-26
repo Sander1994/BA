@@ -75,7 +75,7 @@ _get_obs():
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Code 24 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\texttt{\_init\_envs method}) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu bearbeiten. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (Historien) initialisiert:
+Code 24 zeigt die Funktionsweise der Methode zur Initialisierung der Spielumgebungen (\texttt{\_init\_envs method}) mithilfe von Pseudocode. Mit dieser Methode werden Spielumgebungen initialisiert und einer Vektorumgebung zugewiesen. Diese Vektorumgebung ermöglicht es mehrere Spielumgebungen gleichzeitig zu betreiben. Außerdem werden Variablen für die Nachvollziehbarkeit der Abläufe innerhalb der Spielumgebung (sogenannte Historien) initialisiert:
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Methode zur Initialisierung der Spielumgebungen},morekeywords={Anzahl, Punktestände, Fehlversuche}]
 _init_envs(Anzahl, Punktestände, Fehlversuche):
@@ -201,14 +201,14 @@ step(Aktion):
 	
 	if Statt Extra-Wahl-Boni gepasst wird:
 		Runde wird inkrementiert
+		Prüfe ob Spiel abgeschlossen wurde
 		return Beobachtungsraum, Punktebelohnung, Spiel terminiert?
 	if ungültige Aktion gewählt da keine gültigen Aktionen vorhanden:
 		Nichts tun
 	
 	if not Bonusrunde:
 		Runde wird inkrementiert
-		if Rundenanzahl == 0:
-			terminiert = True
+		Prüfe ob Spiel abgeschlossen wurde
 	Punktebelohnung += Fuchsbonipunktebelohnung
 	Punktebelohnung += erspielte Belohnung in diesem Schritt
 	Aktualisiere Aktionsmaske
@@ -303,33 +303,31 @@ increment_rounds():
 		Setze alle Würfel auf gültig
 		Würfele Würfel neu
 		Setze drei zufällige Würfel auf ungültig
-	
 	elif Wahl vom Silbertablett:
 		if Extra-Wahl-Boni >= 1:
 			Extra-Wahl nach Wahl vom Silbertablett = True
 		else:
-			Schalte Boni für erreichte Runde frei
+			Schalte Bonus für erreichte Runde frei
 			Werfe Würfel neu
+			Prüfe ob Spiel abgeschlossen wurde
 		Wahl vom Silbertablett = False
 		Setze alle Würfel auf gültig
-	
 	elif Extra-Wahl nach Wahl vom Siblertablett:
 		Extra-Wahl nach Wahl vom Silbertablett = False
 		Werfe Würfel neu
 		Setze alle Würfel auf gültig
-		Schalte Boni für erreichte Runde frei
-	
+		Schalte Bonus für erreichte Runde frei\\
+		Prüfe ob Spiel abgeschlossen wurde
 	elif Wurf in Runde >= 3:
 		Rundenanzahl -= 1
 		Wurf in Runde = 1
 		Setze alle Würfel auf gültig
 		if Extra-Wahl-Boni >= 1:
-			Extra Wahl nach eigener Runde = True
+			Extra-Wahl nach eigener Runde = True
 		else:
 			Wahl vom Silbertablett = True
 			Werfe Würfel neu
-			Setze drei zufällige Würfel auf ungültig
-			
+			Setze drei zufällige Würfel auf ungültig	
 	else:
 		Wurf in Runde += 1
 		Werfe Würfel neu

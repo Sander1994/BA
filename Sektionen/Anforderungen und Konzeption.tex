@@ -18,7 +18,7 @@ Diese Funktionalitäten sind:
 
 \item Ein Mechanismus, welcher Würfel mit einer niedrigeren Augenzahl als der aktuell gewählte Würfel als ungültig für die Runde markiert, solange sich das Spiel nicht in einer Wahl vom Silbertablett oder einer Wahl mithilfe des Extra-Wahl-Bonus befindet.
 
-\item Ein Runden-System, bei dem insgesamt sechs Runden gespielt werden, in denen jeweils bis zu drei Würfe erfolgen, solange bei einem der Würfe noch gültige Würfel zur Verfügung stehen. Zudem erfolgt nach jeder Runde die Auswahl eines Würfels vom Silbertablett, welches die ungültigen Würfel eines anderen Spielers beinhaltet. Wenn das Spiel alleine gespielt wird und es dadurch keinen anderen Spieler gibt, werden hierzu alle Würfel geworfen und drei davon auf das Silbertablett gelegt. Außerdem werden Boni am Anfang der ersten, zweiten, dritten und vierten Runde für alle Spieler freigeschaltet [s. Unterabschnitt 2.1.1].
+\item Ein Runden-System, bei dem insgesamt sechs Runden gespielt werden, in denen jeweils bis zu drei Würfe erfolgen, solange bei einem der Würfe noch gültige Würfel zur Verfügung stehen. Zudem erfolgt nach jeder Runde die Auswahl eines Würfels vom Silbertablett, welches die ungültigen Würfel eines anderen Spielers beinhaltet. Wenn das Spiel alleine gespielt wird und es dadurch keinen anderen Spieler gibt, werden hierzu alle Würfel geworfen und die drei niedrigsten auf das Silbertablett gelegt. Außerdem werden Boni am Anfang der ersten, zweiten, dritten und vierten Runde für alle Spieler freigeschaltet [s. Unterabschnitt 2.1.1].
 
 \item Die fünf farbigen Felder, gelb, blau, grün, orange und lila. Jedes Feld hat seine eigenen Regeln, wenn es darum geht wann ein Würfel gewählt werden darf, um eines der Kästchen auf diesem Feld auszufüllen [s. Unterabschnitt 2.1.1]. Die Felder beinhalten verschiedene Belohnungen, die freigespielt werden, wenn bestimmte Kästchen oder Kombinationen aus diesen ausgefüllt worden sind [s. Unterabschnitt 2.1.1].
 
@@ -28,6 +28,8 @@ Diese Funktionalitäten sind:
 
 \item Ein Mechanismus, der Würfel zur richtigen Zeit wieder als gültig markiert. Dies erfolgt nach dem dritten Wurf in der Runde, nach Extra-Wahlen im eigenen Zug (nach dem dritten Wurf), nach der Wahl vom Silbertablett des Gegners und nach Extra-Wahlen, die nach der Wahl vom Silbertablett des Gegners erfolgt sind. Würfel werden nicht nach jedem Einsatz eines Extra-Wahl-Bonus wieder gültig, sondern erst nachdem der Spieler keinen weiteren Extra-Wahl-Bonus mehr hat oder sich entscheidet zum gegebenen Zeitpunkt keinen weiteren zu verwenden.
 \end{itemize}
+
+\newpage
 \subsubsection{Künstliche Intelligenz}
 Die Künstliche Intelligenz soll das Spiel möglichst gut spielen können. Es sollen geeignete Methoden zur Verfügung stehen, um die KI trainieren und mit ihr nach dem Training Vorhersagen [s. Unterabschnitt 2.1.2] treffen zu können. Außerdem sollte sie Möglichkeiten bieten verschiedene Parameter anzupassen, um den Trainingsprozess zu optimieren.
 
@@ -39,6 +41,8 @@ Die wichtigsten dieser Parameter sind unter anderem:
 \item Mindestens einen Faktor, welcher das Ausmaß von Erkundung (exploration) und Ausbeutung (exploitation) steuern soll. 
 \end{itemize}
 Außerdem soll die Implementierung auf einfache Art und Weise möglich sein, damit der zeitliche Rahmen der Arbeit eingehalten werden kann.
+
+\newpage
 \subsection{Konzeption}
 In diesem Kapitel wird das Grundkonzept der Künstlichen Intelligenz sowie der Spielumgebung und deren Zusammenspiel beschrieben.\\
 
@@ -50,7 +54,9 @@ Abbildung 6 zeigt das Zusammenspiel von Spielumgebung und KI während des Traini
 	\caption[Swimlane-Diagramm des Trainingsprozesses der KI]{Swimlane-Diagramm des Trainingsprozesses der KI\\ Quelle: Eigene Darstellung}
 \end{figure}	
 
-Zunächst wird der Trainingsprozess angestoßen und die Umgebung wird initialisiert. Dazu wird der Konstruktor der Umgebung aufgerufen. Daraufhin wird eine Aktion von der KI ausgewählt und an die Umgebung weitergeleitet. Die Umgebung führt diese Aktion aus und prüft ob der Endzustand des Spiels erreicht wurde oder nicht. Wenn der Endzustand erreicht wurde, wird die Umgebung auf ihren Anfangszustand zurückgesetzt. Wenn der Endzustand nicht erreicht worden ist, wird der Prozess ohne Weiteres fortgesetzt. Daraufhin liefert die Umgebung der KI eine Belohnung für den ausgeführten Schritt und den neuen Zustand der Umgebung nach Ausführung der Aktion [s. Unterabschnitt 2.1.3]. Die Belohnung ist hierbei die in diesem Spielschritt (mit dieser Aktion) freigespielte Punktebelohnung im Spiel und der Zustand beinhaltet alle relevanten Faktoren der Umgebung, die für die Entscheidungsfindung der Künstlichen Intelligenz relevant sind. Diese Faktoren sind:
+Zunächst wird der Trainingsprozess angestoßen und die Umgebung wird initialisiert. Dazu wird der Konstruktor der Umgebung aufgerufen. Daraufhin wird eine Aktion von der KI ausgewählt und an die Umgebung weitergeleitet. Die Umgebung führt diese Aktion aus und prüft ob der Endzustand des Spiels erreicht wurde oder nicht. Wenn der Endzustand erreicht wurde, wird die Umgebung auf ihren Anfangszustand zurückgesetzt. Wenn der Endzustand nicht erreicht worden ist, wird der Prozess ohne Weiteres fortgesetzt. Daraufhin liefert die Umgebung der KI eine Belohnung für den ausgeführten Schritt und den neuen Zustand der Umgebung nach Ausführung der Aktion [s. Unterabschnitt 2.1.3]. Die Belohnung ist hierbei die in diesem Spielschritt (mit dieser Aktion) freigespielte Punktebelohnung im Spiel und der Zustand beinhaltet alle relevanten Faktoren der Umgebung, die für die Entscheidungsfindung der Künstlichen Intelligenz relevant sind. 
+
+Diese Faktoren sind:
 \begin{itemize} 
 \item Die Zustände der farbigen Felder auf dem Spielbrett.
 \item Die Zustände der Würfel
@@ -65,8 +71,8 @@ Die Abbildungen 7 und 8 veranschaulichen den grundlegenden Ablauf in der Spielum
 \nopagebreak
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Bilder/step3.drawio} 
-	\caption[Ablauf-Diagramm der Schritt-Funktion 1]{Ablauf-Diagramm der Schritt Funktion 1\\ Quelle: Eigene Darstellung}
+	\includegraphics[width=0.9\textwidth]{Bilder/stepf1.drawio (1)} 
+	\caption[Ablauf-Diagramm der Schritt-Funktion 1]{Ablauf-Diagramm der Schritt-Funktion 1\\ Quelle: Eigene Darstellung}
 \end{figure}	
 
 Der Vorgang durch eine Aktion angestoßen. Nach dem Anstoßen, werden die Variablen der Funktion zurückgesetzt, um einen klaren Schnitt zwischen vergangenen Aktionen und der aktuellen Aktion zu erzielen.
@@ -75,33 +81,27 @@ Anschließend wird die Aktion ihrem entsprechenden Ablauf zugeordnet. Es gibt Ak
 
 Ist die Aktion nicht gültig, wird die Runde inkrementiert und der Zustand der Umgebung zurückgegeben.
 
-Wird die Neu Würfeln Boni verwendet, werden die gültigen Würfel neu geworfen und anschließend der Zustand zurückgegeben.
+Wird ein Neu-Würfeln-Bonus verwendet, werden die gültigen Würfel neu geworfen und anschließend der Zustand zurückgegeben.
 
 Ist beides nicht der Fall kommt es zu einer Auswahl zwischen den wesentlichen Aktionen der Umgebung. Es gibt sogenannte Extra-Wahlen. Diese spalten sich auf in Extra-Wahlen mit einem Extra-Wahl-Bonus und Wahlen vom Silbertablett eines Mitspielers.
 
-Handelt es sich nicht um eine Extra-Wahl, so folgt eine Unterteilung in Extra-Runden und Normale-Runden. Bei Extra-Runden wird eine der Boni verwendet (in Abb. 8: Boni Wahl), die es erlauben eines der farbigen Felder direkt auszufüllen [s. Unterabschnitt 2.1.1].
+Handelt es sich nicht um eine Extra-Wahl, so folgt eine Unterteilung in Bonusrunden und normale Runden. Bei Bonusrunden wird eine der Boni verwendet, die es erlauben eines der farbigen Felder direkt auszufüllen [s. Unterabschnitt 2.1.1].
 
-Handelt es sich nicht um eine Extra-Runde muss es sich in diesem Fall um eine Normale-Runde (in Abb. 8: Normale Wurf Wahl) nach einem gewöhnlichen Wurf handeln [s. Abb. 2].
+Handelt es sich nicht um eine Bonusrunde muss es sich in diesem Fall um eine normale Runde nach einem gewöhnlichen Wurf handeln [s. Abb. 2].
 
-Handelt es sich um eine Extra-Wahl mit Boni (mit Extra-Wahl-Bonus), dann steht noch die Aktion "Passen" zur Wahl. Diese inkrementiert lediglich die Runde, sodass das Spiel weiter fortgesetzt werden kann. Dies spiegelt die Möglichkeit im Spiel wieder auf die Nutzung eines Extra-Wahl-Bonus zu verzichten.\\
+Handelt es sich um eine Extra-Wahl mit Boni (mit Extra-Wahl-Bonus), dann steht noch die Aktion "Passen" zur Wahl. Diese inkrementiert lediglich die Runde und prüft ob das Spiel bereits abgeschlossen wurde. Diese Aktion spiegelt die Möglichkeit im Spiel wieder auf die Nutzung eines Extra-Wahl-Bonus zu verzichten.\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Bilder/step2.drawio} 
-	\caption[Ablauf-Diagramm der Schritt-Funktion 2]{Ablauf-Diagramm der Schritt Funktion 2\\ Quelle: Eigene Darstellung}
+	\includegraphics[width=0.9\textwidth]{Bilder/stepf2.drawio (1)} 
+	\caption[Ablauf-Diagramm der Schritt-Funktion 2]{Ablauf-Diagramm der Schritt-Funktion 2\\ Quelle: Eigene Darstellung}
 \end{figure}
 
-Wie in Abbildung 8 dargestellt gestaltet sich der folgende Ablauf der Funktion relativ ähnlich bei allen vier Varianten. Es wird das Kästchen ermittel, welches ausgefüllt werden soll woraufhin es ausgefüllt wird. Danach wird die Belohnung für diesen Schritt ermittelt.
+Wie in Abbildung 8 dargestellt gestaltet sich der folgende Ablauf der Funktion relativ ähnlich bei allen vier Varianten. Es wird das Kästchen ermittel, welches ausgefüllt werden soll woraufhin es ausgefüllt wird. Danach wird die Belohnung für diesen Spielschritt ermittelt.
 
-Am Ende der Funktion unterscheiden sich die vier Varianten wieder. Bei einer Normalen-Runde nach einem normalen Wurf werden die entsprechenden Würfel als ungültig markiert [s. Unterabschnitt 2.1.1] und die Runde wird inkrementiert. Außerdem prüft die Funktion bei dieser Variante am Ende, ob das Spiel terminiert ist oder nicht.
+Am Ende der Funktion unterscheiden sich die vier Varianten wieder. Bei einer normalen Runde nach einem gewöhnlichen Wurf werden die entsprechenden Würfel als ungültig markiert [s. Unterabschnitt 2.1.1] und die Runde wird inkrementiert. Außerdem prüft die Funktion bei dieser Variante am Ende, ob das Spiel terminiert ist oder nicht.
 
-Beim Ausfüllen eines Feldes mittels Bonus (kein Extra-Wahl-Bonus) wird der entsprechende Bonus dekrementiert.
-
-Bei der Extra-Wahl vom Silbertablett wird die Runde inkrementiert.
-
-Bei der Extra-Wahl mittels Bonus wird der gewählte Würfel als ungültig markiert und der Extra-Wahl-Bonus dekrementiert.
-
-Bei allen vier Varianten wird am Ende der Funktion der aktuelle Zustand der Umgebung sowie die erhaltene Belohnung für den Schritt zurückgegeben.
+Beim Ausfüllen eines Feldes mittels Bonus (kein Extra-Wahl-Bonus) wird der entsprechende Bonus dekrementiert. Bei der Extra-Wahl vom Silbertablett wird die Runde inkrementiert. Bei der Extra-Wahl mittels Extra-Wahl-Bonus wird der gewählte Würfel als ungültig markiert und der Extra-Wahl-Bonus dekrementiert. Bei allen vier Varianten wird am Ende der Funktion der aktuelle Zustand der Umgebung sowie die erhaltene Belohnung für den Spielschritt zurückgegeben.
 
 \subsubsection{Künstliche Intelligenz}
 Abbildung 9 zeigt die wesentlichen Hyperparameter, die bei der Entwicklung der Künstlichen Intelligenz von Bedeutung sind:
@@ -148,5 +148,5 @@ Abbildung 10 zeigt den Graphen der ReLU-Funktion:
 \item Batch Size: Das Datenpaket von nSteps wird vor der Verwendung für das Updaten des neuronalen Netzes in kleinere Datenpakete, die sogenannten Batches, zerlegt. Daraufhin werden Updates mit jedem dieser Batches durchgeführt. Die Aufteilung erfolgt per Zufall, daher ist mit hoher Wahrscheinlichkeit keines der Datenpakete (Batches) wie das andere, selbst wenn dasselbe Gesamtdatenpaket durch ein hohes nEpochs viele male verwendet wird. Batch Size legt fest wie groß diese kleineren Datenpakete (Batches) sind.
 
 \item 
-Trainingsdauer: Die Trainingsdauer legt fest, wie lange trainiert wird. Die Implementierung von Stable Baselines [s. Unterabschnitt 2.2.2] verwendet standardmäßig Timesteps zur Messung von Zeit. Eine Timestep ist ein ausgeführter Schritt beziehungsweise eine ausgeführte Aktion in einer Umgebung. Die Timesteps von mehreren parallel laufenden Umgebungen werden aufsummiert, somit kommt es nicht zu vermehrtem Training alleine durch Erhöhung der Umgebungsanzahl bei gleichbleibender Trainingsdauer in Timesteps.
+Trainingsdauer: Die Trainingsdauer legt fest, wie lange trainiert wird. Die Implementierung von Stable Baselines 3 [s. Unterabschnitt 2.2.2] verwendet standardmäßig Timesteps zur Messung von Zeit. Eine Timestep ist ein ausgeführter Schritt beziehungsweise eine ausgeführte Aktion in einer Umgebung. Die Timesteps von mehreren parallel laufenden Umgebungen werden aufsummiert, somit kommt es nicht zu vermehrtem Training alleine durch Erhöhung der Umgebungsanzahl bei gleichbleibender Trainingsdauer in Timesteps.
 \end{itemize}
